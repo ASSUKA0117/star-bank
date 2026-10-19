@@ -111,11 +111,6 @@ connectionInfo.textContent = '接続先：' + status.dataset.connection;
 connectionInfo.style.cssText = 'margin-top:10px;font-weight:bold;color:#956a1e';
 status.append(connectionInfo);
 
-const connectionInfo = document.createElement('div');
-connectionInfo.textContent = '接続先：' + status.dataset.connection;
-connectionInfo.style.cssText = 'margin-top:10px;font-weight:bold;color:#956a1e';
-status.append(connectionInfo);
-
 
   
 unsubscribeBank=onSnapshot(doc(db,'starBank','main'),{includeMetadataChanges:true},snapshot=>{
