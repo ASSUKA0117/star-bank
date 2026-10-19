@@ -105,7 +105,17 @@ onAuthStateChanged(auth,user=>{
   const note=document.createElement('div');note.textContent='※ 2人分のIDを確認して、Firestoreのルールで許可するまでは残高を表示できないよ。';
   status.append(intro,uid,copy,note);
   
-  note.insertAdjacentText('afterend','接続先：'+status.dataset.connection);
+
+const connectionInfo = document.createElement('div');
+connectionInfo.textContent = '接続先：' + status.dataset.connection;
+connectionInfo.style.cssText = 'margin-top:10px;font-weight:bold;color:#956a1e';
+status.append(connectionInfo);
+
+const connectionInfo = document.createElement('div');
+connectionInfo.textContent = '接続先：' + status.dataset.connection;
+connectionInfo.style.cssText = 'margin-top:10px;font-weight:bold;color:#956a1e';
+status.append(connectionInfo);
+
 
   
 unsubscribeBank=onSnapshot(doc(db,'starBank','main'),{includeMetadataChanges:true},snapshot=>{
