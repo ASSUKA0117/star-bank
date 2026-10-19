@@ -105,7 +105,7 @@ body[data-theme="moon"] .back{color:#f2f0ff}
 body[data-theme="moon"] .footer,
 body[data-theme="moon"] #storageStatus{color:#e0e6f8}
 
-/* シルエット */
+/* シルエット：画像は変更しない */
 .scene{
   position:relative;width:100%;border-radius:18px;
   overflow:hidden;display:flex;align-items:center;
@@ -124,14 +124,14 @@ body[data-theme="moon"] #storageStatus{color:#e0e6f8}
 }
 .hero-scene img{width:88%}
 .lala-scene{
-  height:165px;
+  height:145px;
   background:radial-gradient(
     ellipse at 50% 90%,#f7d68e,transparent 75%
   );
 }
 .lala-scene img{width:85%}
 .moon-scene{
-  height:165px;
+  height:145px;
   background:radial-gradient(
     ellipse at 50% 90%,#536397,transparent 75%
   );
@@ -157,43 +157,12 @@ body[data-theme="moon"] #storageStatus{color:#e0e6f8}
 .hero-stars{font-size:16px;color:#cfa45e;letter-spacing:9px}
 .hero h1{font-size:23px;margin:7px 0}
 .hero p{margin:0;color:#89919d;font-size:12px;line-height:1.8}
-
-/*
-  画像と文章の重なりを修正
-  画像・説明文・残高を縦方向に分離する
-*/
-.account-scene-wrap{
-  display:flex;
-  flex-direction:column;
-  gap:0;
-  width:100%;
-  margin:0 0 26px;
-  padding:0;
-}
-.account-scene-wrap .scene{
-  flex:0 0 auto;
-  width:100%;
-  margin:0;
-}
+.account-scene-wrap{margin:-5px -5px 15px}
 .account-scene-caption{
-  display:block;
-  position:relative;
-  flex:0 0 auto;
-  width:100%;
-  min-height:44px;
-  margin:0;
-  padding:17px 8px 0;
-  text-align:center;
-  color:#655744;
-  font-size:13px;
-  font-weight:600;
-  line-height:1.8;
-  letter-spacing:.02em;
-  overflow-wrap:anywhere;
+  text-align:center;color:#a29b91;
+  font-size:11px;margin-top:-5px;
 }
-.moon-mode .account-scene-caption{
-  color:#536585;
-}
+.moon-mode .account-scene-caption{color:#818da9}
 
 /* ホーム口座 */
 .account-card{
@@ -870,6 +839,7 @@ let stopHomeBanks=[];
 let pendingCorrection=null;
 
 /*
+  ★ 今回の修正箇所 ★
   正しいコレクション名は「Star Bank」
   半角スペースを含む。
 */
