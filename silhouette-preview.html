@@ -2,633 +2,295 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#fff5dd">
-<title>星粒銀行・シルエット試着室 2</title>
-
+<title>星粒銀行・シルエット試着室 第3案</title>
 <style>
-:root{
-  font-family:-apple-system,BlinkMacSystemFont,
-    "Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
-  color:#363c49;
-}
 *{box-sizing:border-box}
 body{
   margin:0;
   background:#f7f5f0;
+  color:#394052;
+  font-family:-apple-system,BlinkMacSystemFont,
+    "Hiragino Kaku Gothic ProN",sans-serif;
 }
 main{
-  max-width:640px;
+  max-width:650px;
   margin:auto;
-  padding:24px 16px 60px;
+  padding:24px 16px 50px;
 }
 h1{
   font-size:21px;
-  margin:0 0 10px;
+  margin:0 0 8px;
 }
 p{
-  color:#818895;
+  color:#7c8492;
   font-size:13px;
   line-height:1.8;
 }
 .panel{
   background:white;
-  border:1px solid #e9e8e5;
   border-radius:22px;
   padding:18px;
-  margin-top:18px;
-  box-shadow:0 5px 22px #2630470a;
+  margin-top:20px;
+  box-shadow:0 5px 22px #26304712;
 }
-.heading{
-  font-size:13px;
-  font-weight:800;
-  margin:15px 0 9px;
+h2{
+  font-size:14px;
+  margin:8px 0 12px;
 }
-.controls{
+.buttons{
   display:flex;
   flex-wrap:wrap;
   gap:8px;
+  margin-bottom:18px;
 }
 button{
-  border:1px solid #dedfe5;
   background:white;
-  color:#626b7a;
+  border:1px solid #dedfe5;
   border-radius:12px;
   padding:11px 13px;
+  color:#677082;
   font-size:12px;
-  font-weight:800;
-  cursor:pointer;
+  font-weight:bold;
 }
 button.active{
-  border-color:#cba35f;
-  background:#fff0cc;
-  color:#916824;
+  background:#fff0ca;
+  color:#8c672a;
+  border-color:#cfa966;
 }
 .stage{
-  margin-top:19px;
-  border-radius:20px;
-  min-height:290px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
   position:relative;
-  transition:background .5s;
-}
-.stage.day{
-  background:
-    radial-gradient(ellipse at 50% 85%,#ffe9a8,transparent 72%),
-    linear-gradient(160deg,#fff0c9,#fffbf2);
-}
-.stage.night{
-  background:
-    radial-gradient(ellipse at 80% 10%,#43557f,transparent 55%),
-    linear-gradient(165deg,#17213d,#3d4f79);
-}
-.stage svg{
-  display:block;
   width:100%;
-  max-width:500px;
-  height:auto;
-  overflow:visible;
+  height:320px;
+  overflow:hidden;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:background .3s;
 }
-.stage .scene{display:none}
-.stage .scene.active{display:block}
-
-/* 実際のシルエットの色 */
-.boy-shape{fill:#343746}
-.cat-shape{fill:#242835}
-.curl{
-  fill:none;
-  stroke:#343746;
-  stroke-width:8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+.stage.home{
+  background:linear-gradient(160deg,
+    #ffe9b7,#fff9e9);
 }
-.curl-fine{
-  fill:none;
-  stroke:#343746;
-  stroke-width:5.5;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+.stage.lala{
+  background:linear-gradient(160deg,
+    #ffe3a1,#fff6d8);
 }
-.garment{
-  fill:none;
-  stroke:#f2d48f;
-  stroke-width:5;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+.stage.moon{
+  background:linear-gradient(160deg,
+    #18213c,#435580);
 }
-.floor{
-  stroke:#bda67b;
-  stroke-width:2.5;
-  fill:none;
-  stroke-linecap:round;
+.stars{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 16% 18%,
+      #f5d48c 0 2px,transparent 3px),
+    radial-gradient(circle at 77% 25%,
+      #f5d48c 0 1.5px,transparent 3px),
+    radial-gradient(circle at 62% 12%,
+      #f5d48c 0 2px,transparent 3px),
+    radial-gradient(circle at 88% 68%,
+      #f5d48c 0 1px,transparent 3px);
 }
-.night .floor{stroke:#899ac3}
-.spark{fill:#d5a657}
-.night .spark{fill:#d6dfff}
-.stage .cutout{
-  fill:none;
-  stroke:#fff2d2;
-  stroke-width:3;
-  stroke-linecap:round;
+.moon .stars{
+  opacity:.85;
 }
-.night .cutout{
-  stroke:#34476c;
+.silhouette{
+  position:relative;
+  z-index:1;
+  display:block;
+  max-width:none;
+  object-fit:contain;
+  filter:none;
+  transition:
+    width .2s,
+    filter .2s;
 }
-
+.stage.home .silhouette{
+  width:85%;
+}
+.stage.lala .silhouette{
+  width:80%;
+}
+.stage.moon .silhouette{
+  width:94%;
+}
+.stage.light .silhouette{
+  filter:brightness(0) invert(1);
+}
 .caption{
+  margin-top:14px;
   text-align:center;
   font-size:13px;
-  font-weight:750;
-  color:#717a89;
-  margin:17px 0 3px;
+  color:#7d8593;
 }
-.description{
+.range{
+  width:100%;
+  accent-color:#cda359;
+}
+.range-label{
+  display:flex;
+  justify-content:space-between;
+  color:#7d8593;
   font-size:12px;
-  color:#939aa5;
-  text-align:center;
-  line-height:1.7;
+  margin:12px 0 5px;
 }
 .note{
   margin-top:18px;
+  padding:14px;
   background:#faf7ef;
   border-radius:13px;
-  padding:14px;
-  color:#777f8b;
   font-size:12px;
   line-height:1.9;
+  color:#747c8a;
 }
 </style>
 </head>
-
 <body>
 <main>
 
 <h1>✦ 星粒銀行・シルエット試着室</h1>
 <p>
-第2案。角ばった形を減らして、
-丸い頭・くるくる前髪・しなやかな黒猫を
-重点的に描き直したよ。
+第3案。今回はSVGで描き直さず、
+アップロードしたPNG画像をそのまま表示するよ。
 </p>
 
 <section class="panel">
 
-  <div class="heading">ポーズを選ぶ</div>
-
-  <div class="controls">
-    <button class="pose active" data-pose="flat">
-      ぺしょっと寝そべる
-    </button>
-    <button class="pose" data-pose="sit">
-      並んで座る
-    </button>
-    <button class="pose" data-pose="close">
-      寄り添って座る
-    </button>
-  </div>
-
-  <div class="heading">背景を選ぶ</div>
-
-  <div class="controls">
-    <button class="color active" data-color="day">
-      ✦ LaLa・黄色
-    </button>
-    <button class="color" data-color="night">
-      ☾ 月見里・紺色
-    </button>
-  </div>
-
-  <div id="stage" class="stage day">
-
-    <!-- ─────────────────────
-      1：床にぺしょっと寝そべる
-      横方向の低いカメラ位置
-    ───────────────────── -->
-
-    <svg id="flat" class="scene active"
-      viewBox="0 0 480 280"
-      xmlns="http://www.w3.org/2000/svg">
-
-      <path class="floor"
-        d="M28 220
-           C140 223 325 223 452 220"/>
-
-      <!-- 男の子の小さな胴体 -->
-      <path class="boy-shape"
-        d="M172 166
-           C193 153 218 157 236 166
-           C257 177 271 189 278 201
-           C281 209 271 215 260 215
-           L165 215
-           C153 207 156 179 172 166 Z"/>
-
-      <!-- 後ろに伸ばした短い足 -->
-      <path class="boy-shape"
-        d="M246 191
-           C266 193 276 202 297 202
-           C308 201 313 211 306 215
-           C301 220 274 217 252 217
-           L228 209 Z"/>
-
-      <path class="boy-shape"
-        d="M235 205
-           C257 211 280 218 296 218
-           C302 221 300 227 291 227
-           C267 228 242 219 225 216 Z"/>
-
-      <!-- 男の子の大きな丸い頭 -->
-      <path class="boy-shape"
-        d="M66 154
-           C60 115 79 84 115 75
-           C151 65 187 81 199 113
-           C211 142 201 175 179 192
-           C160 207 128 213 101 205
-           C79 198 68 180 66 154 Z"/>
-
-      <!-- 横顔の小さな鼻 -->
-      <path class="boy-shape"
-        d="M196 145
-           C211 147 215 155 209 160
-           C205 164 198 161 193 158 Z"/>
-
-      <!-- くるん：頭の外側に独立したカール -->
-      <path class="curl"
-        d="M109 78
-           C101 64 93 58 83 62
-           C72 67 74 83 85 87
-           C95 91 102 84 98 77
-           C96 73 91 73 89 77"/>
-
-      <path class="curl-fine"
-        d="M137 73
-           C135 57 125 51 116 57
-           C110 61 112 68 118 69"/>
-
-      <!-- 手前側の短い腕 -->
-      <path class="boy-shape"
-        d="M153 187
-           C164 179 174 182 184 191
-           C196 202 211 206 229 204
-           C239 203 245 209 242 216
-           C240 222 231 222 222 221
-           C199 219 175 216 160 209
-           C150 205 147 195 153 187 Z"/>
-
-      <!-- シャツのジグザグ -->
-      <path class="garment"
-        d="M205 172
-           L215 166 L226 174
-           L237 168 L248 177"/>
-
-      <!-- 黒猫の細く長い胴体 -->
-      <path class="cat-shape"
-        d="M341 179
-           C353 161 379 162 397 168
-           C421 177 430 196 424 208
-           C419 217 400 219 376 218
-           L343 216
-           C330 208 332 192 341 179 Z"/>
-
-      <!-- 頭：大きめの耳と柔らかな頬 -->
-      <path class="cat-shape"
-        d="M288 185
-           C282 172 286 149 290 134
-           C290 131 293 130 296 133
-           L308 146
-           C317 142 329 142 337 147
-           L350 132
-           C353 128 357 131 356 136
-           C356 154 363 174 356 188
-           C348 206 331 212 310 211
-           C294 210 285 202 288 185 Z"/>
-
-      <!-- 顎を床につける -->
-      <path class="cat-shape"
-        d="M301 201
-           C315 210 339 211 352 201
-           C348 218 310 219 301 209 Z"/>
-
-      <!-- 前に伸ばした前脚 -->
-      <path class="cat-shape"
-        d="M337 197
-           C353 197 364 206 375 207
-           C387 208 390 217 381 220
-           C366 223 345 216 334 212 Z"/>
-
-      <!-- 後ろ脚 -->
-      <path class="cat-shape"
-        d="M401 202
-           C417 205 431 214 436 219
-           C434 225 422 225 413 221
-           L395 215 Z"/>
-
-      <!-- 長くしなやかな尾 -->
-      <path class="cat-shape"
-        d="M410 176
-           C434 167 444 146 433 129
-           C424 117 429 108 436 112
-           C455 123 462 151 450 170
-           C443 182 430 187 419 191 Z"/>
-
-      <!-- 星 -->
-      <path class="spark"
-        d="M253 67
-           L258 82 L273 87
-           L258 92 L253 107
-           L248 92 L233 87 L248 82 Z"/>
-      <circle class="spark" cx="383" cy="93" r="3.5"/>
-
-    </svg>
-
-    <!-- ─────────────────────
-      2：並んで座る後ろ姿
-    ───────────────────── -->
-
-    <svg id="sit" class="scene"
-      viewBox="0 0 480 280"
-      xmlns="http://www.w3.org/2000/svg">
-
-      <path class="floor"
-        d="M38 226 C140 230 325 230 443 226"/>
-
-      <!-- 小さな胴体と丸い腰 -->
-      <path class="boy-shape"
-        d="M119 160
-           C103 173 99 190 102 210
-           C108 225 132 227 160 226
-           L205 225
-           C224 217 219 191 207 174
-           C195 156 140 150 119 160 Z"/>
-
-      <!-- 小さな足 -->
-      <path class="boy-shape"
-        d="M119 209
-           C101 210 87 219 86 226
-           C88 233 115 231 141 223 Z"/>
-
-      <path class="boy-shape"
-        d="M193 209
-           C212 211 229 220 231 227
-           C227 233 202 231 182 223 Z"/>
-
-      <!-- 背中向きの大きな頭 -->
-      <path class="boy-shape"
-        d="M97 112
-           C96 79 117 55 148 50
-           C185 43 218 68 219 109
-           C220 143 191 169 155 170
-           C119 170 96 148 97 112 Z"/>
-
-      <!-- くるんと外に飛び出す前髪 -->
-      <path class="curl"
-        d="M148 52
-           C137 37 125 36 120 44
-           C113 54 124 63 133 56
-           C137 53 135 49 132 50"/>
-
-      <path class="curl-fine"
-        d="M168 49
-           C165 32 154 29 149 39"/>
-
-      <path class="curl-fine"
-        d="M185 55
-           C199 42 209 52 204 61"/>
-
-      <!-- 服の模様 -->
-      <path class="garment"
-        d="M119 193 L132 184 L148 194
-           L164 184 L180 194 L194 186"/>
-
-      <!-- 大きな耳、丸い猫の頭 -->
-      <path class="cat-shape"
-        d="M271 170
-           C267 155 269 135 273 120
-           Q275 115 279 119
-           L292 135
-           C301 131 316 132 324 135
-           L340 118
-           Q345 114 347 121
-           C351 138 351 158 347 172
-           C342 190 325 195 308 194
-           C285 194 274 187 271 170 Z"/>
-
-      <!-- 猫の細身の身体 -->
-      <path class="cat-shape"
-        d="M286 187
-           C273 194 270 211 274 225
-           C284 232 316 231 335 226
-           C347 220 343 200 327 188 Z"/>
-
-      <!-- 長い尻尾 -->
-      <path class="cat-shape"
-        d="M331 213
-           C355 219 372 203 372 183
-           C373 172 367 166 364 159
-           C361 151 367 145 373 151
-           C389 169 389 194 375 213
-           C364 229 346 235 327 227 Z"/>
-
-      <path class="spark"
-        d="M363 71 L368 86 L383 91
-           L368 96 L363 111
-           L358 96 L343 91 L358 86 Z"/>
-
-      <circle class="spark" cx="81" cy="87" r="3"/>
-
-    </svg>
-
-    <!-- ─────────────────────
-      3：寄り添って座る
-    ───────────────────── -->
-
-    <svg id="close" class="scene"
-      viewBox="0 0 480 280"
-      xmlns="http://www.w3.org/2000/svg">
-
-      <path class="floor"
-        d="M37 227 C160 231 331 230 443 227"/>
-
-      <!-- 男の子の小さな身体 -->
-      <path class="boy-shape"
-        d="M127 158
-           C107 173 104 202 113 222
-           C130 232 195 231 215 223
-           C223 206 216 181 200 161 Z"/>
-
-      <path class="boy-shape"
-        d="M126 208
-           C108 207 96 218 95 229
-           C110 234 133 230 147 223 Z"/>
-
-      <path class="boy-shape"
-        d="M193 211
-           C211 211 229 220 232 227
-           C225 234 203 231 182 224 Z"/>
-
-      <!-- 傾いた丸い頭 -->
-      <g transform="rotate(11 164 111)">
-
-        <path class="boy-shape"
-          d="M106 115
-             C105 79 127 51 158 48
-             C197 44 223 73 224 111
-             C224 145 198 172 162 173
-             C127 174 105 147 106 115 Z"/>
-
-        <path class="curl"
-          d="M150 52
-             C142 37 130 35 125 43
-             C119 52 127 61 137 56
-             C142 53 139 48 136 49"/>
-
-        <path class="curl-fine"
-          d="M170 48
-             C168 32 157 31 151 40"/>
-
-        <path class="curl-fine"
-          d="M189 54
-             C201 42 211 50 208 59"/>
-
-      </g>
-
-      <!-- 猫に向かって自然に伸ばす腕 -->
-      <path class="boy-shape"
-        d="M196 177
-           C216 183 232 194 243 204
-           C252 210 253 219 245 222
-           C235 225 224 212 214 208
-           L192 193 Z"/>
-
-      <path class="garment"
-        d="M127 192 L139 185 L151 194
-           L164 185 L178 193"/>
-
-      <!-- 猫の頭を少し男の子へ傾ける -->
-      <g transform="rotate(-7 276 151)">
-        <path class="cat-shape"
-          d="M244 168
-             C239 153 243 135 245 120
-             Q247 115 252 120
-             L265 135
-             Q279 130 291 136
-             L305 120
-             Q309 115 311 121
-             C315 140 316 156 312 171
-             C306 190 293 195 274 194
-             C254 193 246 185 244 168 Z"/>
-      </g>
-
-      <!-- 猫の細長い首と身体 -->
-      <path class="cat-shape"
-        d="M259 184
-           C261 196 252 202 253 214
-           C253 222 264 228 283 229
-           C310 231 329 223 326 207
-           C324 193 307 187 295 184 Z"/>
-
-      <!-- 前脚 -->
-      <path class="cat-shape"
-        d="M266 206
-           C264 216 265 224 267 230
-           C274 234 279 228 278 224
-           L280 205 Z"/>
-
-      <path class="cat-shape"
-        d="M297 205
-           C298 218 299 225 301 230
-           C310 232 315 225 311 220
-           L309 202 Z"/>
-
-      <!-- 尻尾は高く細くカーブ -->
-      <path class="cat-shape"
-        d="M314 214
-           C344 218 357 201 356 180
-           C355 166 346 163 345 152
-           C344 146 351 142 356 149
-           C372 167 375 194 359 214
-           C347 230 328 236 306 227 Z"/>
-
-      <!-- 小さな三日月だけ -->
-      <path class="spark"
-        d="M369 69
-           A18 18 0 1 0 388 93
-           A15 15 0 0 1 369 69 Z"/>
-
-      <circle class="spark" cx="84" cy="82" r="3"/>
-
-    </svg>
-
-  </div>
-
-  <div id="caption" class="caption">
-    ぺしょっと寝そべるふたり
-  </div>
-
-  <div id="description" class="description">
-    床の高さから見る、低い構図。
-    頭と猫の輪郭を丸くした第2案。
-  </div>
-
-</section>
-
-<div class="note">
-  ✦ これは画像生成ではなく、
-  Webページで実際に表示するSVGだよ。
-  背景の切り替えも、3種類のポーズも
-  星粒銀行本体のデータには影響しないよ。
+<h2>表示する場所</h2>
+<div class="buttons">
+  <button class="scene-btn active" data-scene="home">
+    ホーム
+  </button>
+  <button class="scene-btn" data-scene="lala">
+    LaLa預金
+  </button>
+  <button class="scene-btn" data-scene="moon">
+    月見里返済
+  </button>
 </div>
 
+<div id="stage" class="stage home">
+  <div class="stars"></div>
+
+  <img
+    id="silhouette"
+    class="silhouette"
+    src="./7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
+    alt="男の子と黒猫のシルエット"
+  >
+</div>
+
+<div id="caption" class="caption">
+  ホーム用シルエット
+</div>
+
+<h2 style="margin-top:22px">シルエットの色</h2>
+<div class="buttons">
+  <button id="darkBtn" class="active">
+    元の黒色
+  </button>
+  <button id="lightBtn">
+    明るい色で表示
+  </button>
+</div>
+
+<div class="range-label">
+  <span>画像の大きさ</span>
+  <span id="sizeText">100%</span>
+</div>
+<input
+  id="size"
+  class="range"
+  type="range"
+  min="50"
+  max="150"
+  value="100"
+>
+
+<div class="note">
+  ✦ 画像はアップロードしたものをそのまま使用。<br>
+  ✦ 大きさはスライダーで調整できるよ。<br>
+  ✦ 明るい色は夜空での見え方を試すためのもの。<br>
+  ✦ 星粒銀行本体のデータには影響しないよ。
+</div>
+
+</section>
 </main>
 
 <script>
-const stage=document.getElementById('stage');
-const caption=document.getElementById('caption');
-const description=document.getElementById('description');
-
-const captions={
-  flat:'ぺしょっと寝そべるふたり',
-  sit:'並んで座るふたり',
-  close:'寄り添って座るふたり'
+const images={
+  home:{
+    src:"./7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
+    title:"ホーム用シルエット",
+    width:85
+  },
+  lala:{
+    src:"./84C20629-6473-4327-A6FA-8A9436F8A036.png",
+    title:"LaLa預金用シルエット",
+    width:80
+  },
+  moon:{
+    src:"./69BD7493-904A-43A1-9F1E-E143989AC4F8.png",
+    title:"月見里返済用シルエット",
+    width:94
+  }
 };
 
-const descriptions={
-  flat:'床の高さから見る、低い構図。頭と猫の輪郭を丸くした第2案。',
-  sit:'横に並んだ、のんびりした後ろ姿。大きな頭と小さな身体。',
-  close:'男の子が少し猫に寄りかかった、静かな構図。'
-};
+const stage=document.getElementById("stage");
+const img=document.getElementById("silhouette");
+const caption=document.getElementById("caption");
+const slider=document.getElementById("size");
+const sizeText=document.getElementById("sizeText");
+const darkBtn=document.getElementById("darkBtn");
+const lightBtn=document.getElementById("lightBtn");
 
-document.querySelectorAll('.pose').forEach(button=>{
-  button.addEventListener('click',()=>{
-    const pose=button.dataset.pose;
+let current="home";
 
-    document.querySelectorAll('.pose').forEach(b=>{
-      b.classList.toggle('active',b===button);
+function updateSize(){
+  const base=images[current].width;
+  const scale=Number(slider.value)/100;
+  img.style.width=(base*scale)+"%";
+  sizeText.textContent=slider.value+"%";
+}
+
+document.querySelectorAll(".scene-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    current=btn.dataset.scene;
+    stage.className="stage "+current;
+    img.src=images[current].src;
+    caption.textContent=images[current].title;
+
+    document.querySelectorAll(".scene-btn").forEach(b=>{
+      b.classList.toggle("active",b===btn);
     });
 
-    document.querySelectorAll('.scene').forEach(svg=>{
-      svg.classList.toggle('active',svg.id===pose);
-    });
+    darkBtn.classList.add("active");
+    lightBtn.classList.remove("active");
 
-    caption.textContent=captions[pose];
-    description.textContent=descriptions[pose];
+    slider.value=100;
+    updateSize();
   });
 });
 
-document.querySelectorAll('.color').forEach(button=>{
-  button.addEventListener('click',()=>{
-    const color=button.dataset.color;
-
-    document.querySelectorAll('.color').forEach(b=>{
-      b.classList.toggle('active',b===button);
-    });
-
-    stage.className='stage '+color;
-  });
+darkBtn.addEventListener("click",()=>{
+  stage.classList.remove("light");
+  darkBtn.classList.add("active");
+  lightBtn.classList.remove("active");
 });
+
+lightBtn.addEventListener("click",()=>{
+  stage.classList.add("light");
+  lightBtn.classList.add("active");
+  darkBtn.classList.remove("active");
+});
+
+slider.addEventListener("input",updateSize);
+updateSize();
 </script>
-
 </body>
 </html>
