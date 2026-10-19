@@ -82,7 +82,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/fireba
 
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
-import { getFirestore, doc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { getFirestore, doc, onSnapshot, getDocFromServer } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 const firebaseConfig = {
 
@@ -256,13 +256,13 @@ onAuthStateChanged(auth,user=>{
 
   copy.addEventListener('click',async()=>{
 
-    try{
+    try {
 
       await navigator.clipboard.writeText(user.uid);
 
       copy.textContent = 'コピーしたよ';
 
-    }catch{
+    } catch {
 
       copy.textContent = '上のIDを長押ししてコピーしてね';
 
@@ -272,61 +272,59 @@ onAuthStateChanged(auth,user=>{
 
   const note = document.createElement('div');
 
-  note.textContent = '残高データを確認しています…';
+  note.textContent = 'リアルタイム監視：確認しています…';
 
   const connectionInfo = document.createElement('div');
 
-  connectionInfo.textContent =
+  connectionInfo.textContent = '接続先：' + app.options.projectId + ' / ' + (db._databaseId?.database ?? '(default)');
 
-    '接続先：' + app.options.projectId +
+  connectionInfo.style.cssText = 'margin-top:10px;font-weight:bold;color:#956a1e';
 
-    ' / ' + (db._databaseId?.database ?? '(default)');
+  const serverResult = document.createElement('div');
 
-  connectionInfo.style.cssText =
+  serverResult.textContent = 'サーバー直接取得：確認しています…';
 
-    'margin-top:10px;font-weight:bold;color:#956a1e';
+  serverResult.style.cssText = 'margin-top:10px;font-weight:bold;color:#455160';
 
-  status.append(intro,uid,copy,note,connectionInfo);
+  status.append(intro,uid,copy,note,connectionInfo,serverResult);
 
-  unsubscribeBank = onSnapshot(
+  const bankRef = doc(db,'starBank','main');
 
-    doc(db,'starBank','main'),
+  getDocFromServer(bankRef).then(snapshot=>{
 
-    {includeMetadataChanges:true},
+    serverResult.textContent = 'サーバー直接取得：存在=' + snapshot.exists() + ' / データ=' + JSON.stringify(snapshot.data());
 
-    snapshot=>{
+    if(snapshot.exists() && Number.isSafeInteger(snapshot.data().balance)){
 
-      if(snapshot.exists() && Number.isSafeInteger(snapshot.data().balance)){
-
-        el('balance').textContent =
-
-          snapshot.data().balance.toLocaleString('ja-JP');
-
-        note.textContent = '残高をFirestoreから読み込めたよ。';
-
-      }else{
-
-        note.textContent =
-
-          '診断結果：存在=' + snapshot.exists() +
-
-          ' / データ=' + JSON.stringify(snapshot.data()) +
-
-          ' / キャッシュ=' + snapshot.metadata.fromCache;
-
-      }
-
-    },
-
-    error=>{
-
-      note.textContent =
-
-        '読み込みエラー：' + error.code + ' / ' + error.message;
+      el('balance').textContent = snapshot.data().balance.toLocaleString('ja-JP');
 
     }
 
-  );
+  }).catch(error=>{
+
+    serverResult.textContent = 'サーバー直接取得エラー：' + error.code + ' / ' + error.message;
+
+  });
+
+  unsubscribeBank = onSnapshot(bankRef,{includeMetadataChanges:true},snapshot=>{
+
+    if(snapshot.exists() && Number.isSafeInteger(snapshot.data().balance)){
+
+      el('balance').textContent = snapshot.data().balance.toLocaleString('ja-JP');
+
+      note.textContent = 'リアルタイム監視：残高を読み込めたよ。';
+
+    }else{
+
+      note.textContent = 'リアルタイム監視：存在=' + snapshot.exists() + ' / データ=' + JSON.stringify(snapshot.data()) + ' / キャッシュ=' + snapshot.metadata.fromCache;
+
+    }
+
+  },error=>{
+
+    note.textContent = 'リアルタイム監視エラー：' + error.code + ' / ' + error.message;
+
+  });
 
 });
 
