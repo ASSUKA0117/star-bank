@@ -1,134 +1,337 @@
+
+
 <!doctype html>
+
 <html lang="ja">
+
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff">
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="theme-color" content="#ffffff">
+
 <title>星粒銀行 | Star Bank</title>
+
 <style>
+
 :root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;color:#303540;background:#f6f7f9}*{box-sizing:border-box}body{margin:0}header{background:white;border-bottom:1px solid #e8e9ed;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:20px;font-weight:800;letter-spacing:.04em}.star{color:#c99839}.tag{font-size:11px;color:#8b744c;background:#fff6e4;padding:6px 9px;border-radius:20px}main{max-width:520px;margin:auto;padding:24px 17px 50px}.card{background:white;border:1px solid #e8e9ed;border-radius:22px;padding:23px;margin-bottom:18px;box-shadow:0 4px 18px #24304a08}.eyebrow{font-size:13px;color:#7c8490;font-weight:700}.balance{font-size:43px;font-weight:800;letter-spacing:-.04em;margin:15px 0 7px}.coin{display:inline-grid;place-items:center;width:39px;height:39px;border-radius:50%;vertical-align:4px;font-size:23px;color:#fff;background:linear-gradient(140deg,#f6d78b,#c8963c);border:3px solid #f9e9c2;box-shadow:inset 0 0 0 1px #b8852e}.sub{font-size:12px;color:#8b929e}.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:23px}.action{border:0;border-radius:13px;padding:14px 10px;font-weight:750;font-size:15px;background:#fff5df;color:#956a1e}.action.secondary{background:#f1f3f6;color:#455160}.section{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 12px}.section h2{font-size:16px;margin:0}.section span{font-size:12px;color:#8c949f}.empty{text-align:center;padding:22px 4px;color:#8c929b;font-size:13px}.illustration{height:115px;position:relative;display:flex;justify-content:center;align-items:end;gap:8px;margin-bottom:14px}.boy{position:relative;width:58px;height:85px}.boy .head{position:absolute;top:0;left:11px;width:39px;height:39px;background:#343a42;border-radius:48% 48% 47% 47%}.boy .hair{position:absolute;top:-5px;left:26px;width:13px;height:12px;border-left:4px solid #343a42;transform:rotate(35deg);border-radius:50%}.boy .body{position:absolute;bottom:0;left:4px;width:53px;height:47px;background:#343a42;border-radius:21px 21px 8px 8px}.boy .zig{position:absolute;top:47px;left:20px;color:#e6c67e;font-weight:900;font-size:23px;letter-spacing:-6px;transform:rotate(-5deg)}.cat-svg{display:block;width:58px;height:67px;flex:none;overflow:visible}.tiny-star{position:absolute;top:9px;right:27%;font-size:24px;color:#d4a34b}.ground{width:150px;height:2px;background:#e5e6e8;margin:-2px auto 0}.notice{font-size:12px;color:#7c8592;text-align:center;line-height:1.8}.history{list-style:none;margin:0;padding:0}.history li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #eff0f2;padding:14px 0;font-size:14px}.history small{display:block;color:#969ca5;margin-top:4px}.history strong{white-space:nowrap}.foot{text-align:center;font-size:12px;color:#a0a6ae;margin-top:25px}.modal{position:fixed;inset:0;background:#17202d70;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.dialog{background:#fff;border-radius:20px;padding:24px;width:min(100%,400px)}.dialog h2{font-size:19px;margin:0 0 12px}.dialog p{font-size:13px;line-height:1.7;color:#69717d}.dialog button{width:100%;padding:12px;background:#f2f3f5;border:0;border-radius:12px;margin-top:8px;font-size:15px}button{cursor:pointer}
 
-/* ログイン用の追加スタイル。既存の画面デザインは変更しない */
-#bankApp[hidden],#authPanel[hidden]{display:none!important}.auth-card{max-width:520px;margin:0 auto 18px}.auth-card h1{font-size:20px;margin:0 0 10px}.auth-card p{font-size:13px;line-height:1.8;color:#69717d}.auth-field{display:block;font-size:13px;font-weight:700;margin:16px 0 0}.auth-field input{display:block;width:100%;margin-top:7px;border:1px solid #dce0e6;background:#fff;border-radius:12px;padding:12px;font-size:16px;color:#303540}.auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.auth-buttons button{border:0;border-radius:13px;padding:13px 9px;font-size:14px;font-weight:750;background:#fff5df;color:#956a1e}.auth-buttons button.secondary{background:#f1f3f6;color:#455160}.auth-buttons button:disabled{opacity:.5;cursor:wait}.auth-status{font-size:13px;line-height:1.7;margin-top:12px;color:#69717d;overflow-wrap:anywhere}.auth-status.error{color:#b3261e}.account{font-size:12px;color:#7c8490;max-width:220px;overflow-wrap:anywhere;text-align:right}.account button{margin-left:8px;border:0;border-radius:10px;background:#f1f3f6;color:#455160;padding:8px;font-size:12px}.uid-info{margin-top:12px;padding:12px;background:#f6f7f9;border-radius:12px;font-size:12px;overflow-wrap:anywhere;line-height:1.8}.uid-info button{border:0;border-radius:8px;background:#fff5df;color:#956a1e;padding:7px 10px}.storage-status{font-size:12px;color:#8b929e;margin-top:12px;line-height:1.6}
+#bankApp[hidden],#authPanel[hidden]{display:none!important}.auth-card{max-width:520px;margin:0 auto 18px}.auth-card h1{font-size:20px;margin:0 0 10px}.auth-card p{font-size:13px;line-height:1.8;color:#69717d}.auth-field{display:block;font-size:13px;font-weight:700;margin:16px 0 0}.auth-field input{display:block;width:100%;margin-top:7px;border:1px solid #dce0e6;background:#fff;border-radius:12px;padding:12px;font-size:16px;color:#303540}.auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.auth-buttons button{border:0;border-radius:13px;padding:13px 9px;font-size:14px;font-weight:750;background:#fff5df;color:#956a1e}.auth-buttons button.secondary{background:#f1f3f6;color:#455160}.auth-buttons button:disabled{opacity:.5;cursor:wait}.auth-status{font-size:13px;line-height:1.7;margin-top:12px;color:#69717d;overflow-wrap:anywhere}.auth-status.error{color:#b3261e}.account{font-size:12px;color:#7c8490;max-width:220px;overflow-wrap:anywhere;text-align:right}.account button{margin-left:8px;border:0;border-radius:10px;background:#f1f3f6;color:#455160;padding:8px;font-size:12px}.uid-info{margin-top:12px;padding:12px;background:#f6f7f9;border-radius:12px;font-size:12px;overflow-wrap:anywhere;line-height:1.8}.uid-info button{border:0;border-radius:8px;background:#fff5df;color:#956a1e;padding:7px 10px}.storage-status{font-size:12px;color:#8b929e;margin-top:12px;line-height:1.6;overflow-wrap:anywhere}
+
 </style>
+
 </head>
+
 <body>
+
 <header><div class="brand"><span class="star">✦</span> 星粒銀行</div><div id="account" class="account"><span class="tag">STAR BANK</span></div></header>
+
 <main>
+
 <section id="authPanel" class="card auth-card">
+
   <h1>星粒銀行へようこそ ✦</h1>
+
   <p>LaLaと晩餐館、それぞれのメールアドレスでログインできるよ。初めてなら「新規登録」を選んでね。</p>
+
   <form id="authForm">
+
     <label class="auth-field">メールアドレス<input id="email" type="email" autocomplete="email" required></label>
+
     <label class="auth-field">パスワード<input id="password" type="password" minlength="6" autocomplete="current-password" required></label>
+
     <div class="auth-buttons"><button id="signIn" type="submit">ログイン</button><button class="secondary" id="signUp" type="button">新規登録</button></div>
+
   </form>
+
   <div id="authStatus" class="auth-status" role="status" aria-live="polite">接続しています…</div>
+
 </section>
+
 <div id="bankApp" hidden>
+
 <section class="card"><div class="eyebrow">保有星粒</div><div class="balance"><span class="coin">★</span> <span id="balance">0</span> <span style="font-size:18px">粒</span></div><div class="sub">あなたの星粒残高</div><div class="actions"><button class="action" onclick="info('チャージ')">＋ チャージ</button><button class="action secondary" onclick="info('使用')">✧ 星粒を使う</button></div></section>
-<div class="section"><h2>星粒の履歴</h2><span>最近の取引</span></div><section class="card"><ul id="history" class="history"></ul><div id="empty" class="empty"><div class="illustration" aria-hidden="true"><span class="tiny-star">✦</span><div class="boy"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="zig">⌁⌁</div></div><svg class="cat-svg" viewBox="0 0 58 67" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#343a42"><path d="M42 48 C54 45 54 32 50 25 C47 19 51 17 54 21 C63 34 57 54 43 57 Z"/><path d="M14 42 C14 32 21 28 29 28 C39 28 45 35 45 47 L45 65 L13 65 Z"/><path d="M9 23 L11 3 Q12 0 15 4 L23 12 Q29 10 35 12 L43 4 Q46 0 47 4 L49 23 Q49 42 29 42 Q9 42 9 23 Z"/></g></svg></div><div class="ground"></div><p>まだ取引履歴はないよ。<br>星粒が動いたら、ここに表示されるよ ✨</p></div></section>
-<p id="storageStatus" class="storage-status">データを確認しています…</p><p class="notice">✦ 星粒銀行はただいま準備中です。<br>チャージと使用は、安全な保存ルールの設定後に利用できます。</p><div class="foot">Star Bank</div>
+
+<div class="section"><h2>星粒の履歴</h2><span>最近の取引</span></div>
+
+<section class="card"><ul id="history" class="history"></ul><div id="empty" class="empty"><div class="illustration" aria-hidden="true"><span class="tiny-star">✦</span><div class="boy"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="zig">⌁⌁</div></div><svg class="cat-svg" viewBox="0 0 58 67" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#343a42"><path d="M42 48 C54 45 54 32 50 25 C47 19 51 17 54 21 C63 34 57 54 43 57 Z"/><path d="M14 42 C14 32 21 28 29 28 C39 28 45 35 45 47 L45 65 L13 65 Z"/><path d="M9 23 L11 3 Q12 0 15 4 L23 12 Q29 10 35 12 L43 4 Q46 0 47 4 L49 23 Q49 42 29 42 Q9 42 9 23 Z"/></g></svg></div><div class="ground"></div><p>まだ取引履歴はないよ。<br>星粒が動いたら、ここに表示されるよ ✨</p></div></section>
+
+<p id="storageStatus" class="storage-status">データを確認しています…</p>
+
+<p class="notice">✦ 星粒銀行はただいま準備中です。<br>チャージと使用は、安全な保存ルールの設定後に利用できます。</p>
+
+<div class="foot">Star Bank</div>
+
 </div>
+
 </main>
+
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog"><h2 id="modalTitle"></h2><p>この機能は次の開発段階で、Firebaseのログインとデータ保存に接続するよ。今は操作の見た目だけ確認してね。</p><button onclick="document.getElementById('modal').classList.remove('show')">閉じる</button></div></div>
+
 <script>
+
 function info(name){document.getElementById('modalTitle').textContent=name+'（準備中）';document.getElementById('modal').classList.add('show')}
+
 </script>
+
 <script type="module">
+
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+
 import { getFirestore, doc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
 const firebaseConfig = {
+
   apiKey: 'AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s',
+
   authDomain: 'star-bank-f4d5a.firebaseapp.com',
+
   projectId: 'star-bank-f4d5a',
+
   storageBucket: 'star-bank-f4d5a.firebasestorage.app',
+
   messagingSenderId: '484567746900',
+
   appId: '1:484567746900:web:dc6e0c69765c1c851920c1'
+
 };
+
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
 
 const db = getFirestore(app);
-console.log('Firebase接続先', app.options.projectId, db._databaseId?.database);
-
-document.title = '星粒銀行 | ' + app.options.projectId;
-document.getElementById('storageStatus').dataset.connection =
-  app.options.projectId + ' / ' + (db._databaseId?.database ?? '不明');
-
 
 const el = id => document.getElementById(id);
-const setStatus = (message, error = false) => { el('authStatus').textContent = message; el('authStatus').classList.toggle('error', error); };
+
+const setStatus = (message, error = false) => {
+
+  el('authStatus').textContent = message;
+
+  el('authStatus').classList.toggle('error', error);
+
+};
+
 const errors = {
+
   'auth/email-already-in-use':'そのメールアドレスは登録済みだよ。ログインしてね。',
+
   'auth/invalid-email':'メールアドレスを確認してね。',
+
   'auth/weak-password':'パスワードは6文字以上にしてね。',
+
   'auth/invalid-credential':'メールアドレスかパスワードを確認してね。',
+
   'auth/too-many-requests':'試行回数が多いため、一度時間をおいてね。',
+
   'auth/network-request-failed':'ネットワーク接続を確認してね。',
+
   'auth/operation-not-allowed':'Firebaseでメール／パスワード認証を有効にしてね。',
+
   'auth/unauthorized-domain':'Firebaseの認可済みドメインに assuka0117.github.io を追加してね。'
+
 };
+
 let unsubscribeBank = null;
+
 let busy = false;
+
 const runAuth = async (register) => {
+
   if(busy) return;
-  const email = el('email').value.trim(), password = el('password').value;
+
+  const email = el('email').value.trim();
+
+  const password = el('password').value;
+
   if(!el('authForm').reportValidity()) return;
-  busy = true; el('signIn').disabled = el('signUp').disabled = true;
+
+  busy = true;
+
+  el('signIn').disabled = el('signUp').disabled = true;
+
   setStatus(register ? 'アカウントを作成しています…' : 'ログインしています…');
+
   try {
+
     if(register) await createUserWithEmailAndPassword(auth,email,password);
+
     else await signInWithEmailAndPassword(auth,email,password);
-    el('password').value='';
-  } catch(e) { setStatus(errors[e.code] || '認証できなかったよ。少し待ってからやり直してね。',true); }
-  finally {busy=false; el('signIn').disabled=el('signUp').disabled=false;}
+
+    el('password').value = '';
+
+  } catch(e) {
+
+    setStatus(errors[e.code] || '認証できなかったよ。少し待ってからやり直してね。',true);
+
+  } finally {
+
+    busy = false;
+
+    el('signIn').disabled = el('signUp').disabled = false;
+
+  }
+
 };
-el('authForm').addEventListener('submit',e=>{e.preventDefault();runAuth(false);});
-el('signUp').addEventListener('click',()=>runAuth(true));
-onAuthStateChanged(auth,user=>{
-  if(unsubscribeBank){unsubscribeBank();unsubscribeBank=null;}
-  el('authPanel').hidden=!!user;
-  el('bankApp').hidden=!user;
-  if(!user){el('account').innerHTML='<span class="tag">STAR BANK</span>'; setStatus('メールアドレスとパスワードを入力してね。');return;}
-  el('balance').textContent='—';
-  el('empty').style.display=''; el('history').replaceChildren();
-  el('account').replaceChildren();
-  const label=document.createElement('span');label.textContent=user.email+' ';
-  const logout=document.createElement('button'); logout.textContent='ログアウト';logout.addEventListener('click',()=>signOut(auth));
-  el('account').append(label,logout);
-  const status=el('storageStatus');
-  status.replaceChildren();
-  const intro=document.createElement('div');intro.textContent='ログインできたよ！ 本人確認用のユーザーID：';
-  const uid=document.createElement('div');uid.textContent=user.uid;uid.style.fontWeight='700';uid.style.overflowWrap='anywhere';
-  const copy=document.createElement('button');copy.textContent='ユーザーIDをコピー';copy.style.cssText='border:0;border-radius:8px;background:#fff5df;color:#956a1e;padding:8px 12px;margin-top:6px';
-  copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(user.uid);copy.textContent='コピーしたよ';}catch{copy.textContent='上のIDを長押ししてコピーしてね';}});
-  const note=document.createElement('div');note.textContent='※ 2人分のIDを確認して、Firestoreのルールで許可するまでは残高を表示できないよ。';
-  status.append(intro,uid,copy,note);
-  
 
-const connectionInfo = document.createElement('div');
-connectionInfo.textContent = '接続先：' + status.dataset.connection;
-connectionInfo.style.cssText = 'margin-top:10px;font-weight:bold;color:#956a1e';
-status.append(connectionInfo);
+el('authForm').addEventListener('submit',e=>{
 
+  e.preventDefault();
 
-  
-unsubscribeBank=onSnapshot(doc(db,'starBank','main'),{includeMetadataChanges:true},snapshot=>{
+  runAuth(false);
 
-    if(snapshot.exists() && Number.isSafeInteger(snapshot.data().balance)){
-      el('balance').textContent=snapshot.data().balance.toLocaleString('ja-JP');
-      note.textContent='残高をFirestoreから読み込めたよ。チャージ・使用機能は次の段階で追加するね。';
-   
-}else{
-  note.textContent='診断結果：存在='+snapshot.exists()+
-    ' / データ='+JSON.stringify(snapshot.data())+
-    ' / キャッシュ='+snapshot.metadata.fromCache;
-}
-
-  },error=>{
-    note.textContent='読み込みエラー：'+error.code+' / '+error.message;
-  });
 });
+
+el('signUp').addEventListener('click',()=>runAuth(true));
+
+onAuthStateChanged(auth,user=>{
+
+  if(unsubscribeBank){
+
+    unsubscribeBank();
+
+    unsubscribeBank = null;
+
+  }
+
+  el('authPanel').hidden = !!user;
+
+  el('bankApp').hidden = !user;
+
+  if(!user){
+
+    el('account').innerHTML = '<span class="tag">STAR BANK</span>';
+
+    setStatus('メールアドレスとパスワードを入力してね。');
+
+    return;
+
+  }
+
+  el('balance').textContent = '—';
+
+  el('empty').style.display = '';
+
+  el('history').replaceChildren();
+
+  el('account').replaceChildren();
+
+  const label = document.createElement('span');
+
+  label.textContent = user.email + ' ';
+
+  const logout = document.createElement('button');
+
+  logout.textContent = 'ログアウト';
+
+  logout.addEventListener('click',()=>signOut(auth));
+
+  el('account').append(label,logout);
+
+  const status = el('storageStatus');
+
+  status.replaceChildren();
+
+  const intro = document.createElement('div');
+
+  intro.textContent = 'ログインできたよ！ 本人確認用のユーザーID：';
+
+  const uid = document.createElement('div');
+
+  uid.textContent = user.uid;
+
+  uid.style.fontWeight = '700';
+
+  uid.style.overflowWrap = 'anywhere';
+
+  const copy = document.createElement('button');
+
+  copy.textContent = 'ユーザーIDをコピー';
+
+  copy.style.cssText = 'border:0;border-radius:8px;background:#fff5df;color:#956a1e;padding:8px 12px;margin-top:6px';
+
+  copy.addEventListener('click',async()=>{
+
+    try{
+
+      await navigator.clipboard.writeText(user.uid);
+
+      copy.textContent = 'コピーしたよ';
+
+    }catch{
+
+      copy.textContent = '上のIDを長押ししてコピーしてね';
+
+    }
+
+  });
+
+  const note = document.createElement('div');
+
+  note.textContent = '残高データを確認しています…';
+
+  const connectionInfo = document.createElement('div');
+
+  connectionInfo.textContent =
+
+    '接続先：' + app.options.projectId +
+
+    ' / ' + (db._databaseId?.database ?? '(default)');
+
+  connectionInfo.style.cssText =
+
+    'margin-top:10px;font-weight:bold;color:#956a1e';
+
+  status.append(intro,uid,copy,note,connectionInfo);
+
+  unsubscribeBank = onSnapshot(
+
+    doc(db,'starBank','main'),
+
+    {includeMetadataChanges:true},
+
+    snapshot=>{
+
+      if(snapshot.exists() && Number.isSafeInteger(snapshot.data().balance)){
+
+        el('balance').textContent =
+
+          snapshot.data().balance.toLocaleString('ja-JP');
+
+        note.textContent = '残高をFirestoreから読み込めたよ。';
+
+      }else{
+
+        note.textContent =
+
+          '診断結果：存在=' + snapshot.exists() +
+
+          ' / データ=' + JSON.stringify(snapshot.data()) +
+
+          ' / キャッシュ=' + snapshot.metadata.fromCache;
+
+      }
+
+    },
+
+    error=>{
+
+      note.textContent =
+
+        '読み込みエラー：' + error.code + ' / ' + error.message;
+
+    }
+
+  );
+
+});
+
 </script>
 
-</body></html>
+</body>
+
+</html>
