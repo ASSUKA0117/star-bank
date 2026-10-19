@@ -97,7 +97,9 @@ onAuthStateChanged(auth,user=>{
   const note=document.createElement('div');note.textContent='※ 2人分のIDを確認して、Firestoreのルールで許可するまでは残高を表示できないよ。';
   status.append(intro,uid,copy,note);
   
-  unsubscribeBank=onSnapshot(doc(db,'starBank','main'),snapshot=>{
+  
+unsubscribeBank=onSnapshot(doc(db,'starBank','main'),{includeMetadataChanges:true},snapshot=>{
+
     if(snapshot.exists() && Number.isSafeInteger(snapshot.data().balance)){
       el('balance').textContent=snapshot.data().balance.toLocaleString('ja-JP');
       note.textContent='残高をFirestoreから読み込めたよ。チャージ・使用機能は次の段階で追加するね。';
