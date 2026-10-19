@@ -105,7 +105,7 @@ body[data-theme="moon"] .back{color:#f2f0ff}
 body[data-theme="moon"] .footer,
 body[data-theme="moon"] #storageStatus{color:#e0e6f8}
 
-/* シルエット：画像は変更しない */
+/* シルエット */
 .scene{
   position:relative;width:100%;border-radius:18px;
   overflow:hidden;display:flex;align-items:center;
@@ -157,12 +157,44 @@ body[data-theme="moon"] #storageStatus{color:#e0e6f8}
 .hero-stars{font-size:16px;color:#cfa45e;letter-spacing:9px}
 .hero h1{font-size:23px;margin:7px 0}
 .hero p{margin:0;color:#89919d;font-size:12px;line-height:1.8}
-.account-scene-wrap{margin:-5px -5px 15px}
-.account-scene-caption{
-  text-align:center;color:#a29b91;
-  font-size:11px;margin-top:-5px;
+
+/*
+  ★ レイアウト修正 ★
+  画像と説明文を別々の領域に配置。
+  画像サイズとファイルは変更しない。
+*/
+.account-scene-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin:0 0 24px;
+  padding:0;
 }
-.moon-mode .account-scene-caption{color:#818da9}
+.account-scene-wrap .scene{
+  flex:none;
+  margin:0;
+}
+.account-scene-caption{
+  position:relative;
+  display:block;
+  flex:none;
+  margin:0;
+  padding:0 6px;
+  min-height:18px;
+  text-align:center;
+  color:#8d806d;
+  font-size:12px;
+  font-weight:500;
+  line-height:1.7;
+  letter-spacing:.025em;
+  overflow-wrap:anywhere;
+}
+.moon-mode .account-scene-caption{
+  color:#697b9e;
+}
+.balance-card .balance-label{
+  clear:both;
+}
 
 /* ホーム口座 */
 .account-card{
@@ -838,11 +870,7 @@ let stopHistory=null;
 let stopHomeBanks=[];
 let pendingCorrection=null;
 
-/*
-  ★ 今回の修正箇所 ★
-  正しいコレクション名は「Star Bank」
-  半角スペースを含む。
-*/
+/* 正しいFirestoreコレクション名 */
 const BANK_COLLECTION='Star Bank';
 
 function bankRef(id){
