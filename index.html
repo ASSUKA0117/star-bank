@@ -9,12 +9,10 @@
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,
-  "Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+    "Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
   color:#353a45;
   --gold:#c99b48;
-  --gold-dark:#9a702b;
   --navy:#263455;
-  --muted:#88919e;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -33,46 +31,54 @@ textarea:focus-visible{
   outline-offset:3px;
 }
 
-/* ── 昼と夜 ── */
+/* ── 3種類の空 ── */
 .sky-day,.sky-night{
   position:fixed;
   inset:0;
-  pointer-events:none;
   z-index:-3;
-  transition:opacity 1s ease;
+  pointer-events:none;
+  transition:opacity .7s ease,background .7s ease;
 }
 .sky-day{
   background:
-    radial-gradient(ellipse at 12% 9%,#ffe9a9,transparent 48%),
-    radial-gradient(ellipse at 92% 84%,#f9e9c5,transparent 48%),
-    linear-gradient(160deg,#fff4d8,#fffdf8 65%,#fff0d0);
+    radial-gradient(ellipse at 76% 85%,
+      #ffe7ad,transparent 62%),
+    linear-gradient(165deg,
+      #f6b9d0 0%,#ffd2bf 47%,#ffe9c2 100%);
   opacity:1;
+}
+body[data-theme="lala"] .sky-day{
+  background:
+    radial-gradient(ellipse at 50% 90%,
+      #f7d68e,transparent 65%),
+    linear-gradient(160deg,
+      #fff7df 0%,#ffebba 55%,#f5d591 100%);
 }
 .sky-night{
   background:
-    radial-gradient(ellipse at 80% 5%,#52618b,transparent 40%),
-    radial-gradient(ellipse at 7% 95%,#202a50,transparent 48%),
-    linear-gradient(165deg,#18233f,#35466e 58%,#202b4b);
+    radial-gradient(ellipse at 78% 18%,
+      #536397,transparent 55%),
+    linear-gradient(165deg,
+      #151d38 0%,#27365d 55%,#4b4b83 100%);
   opacity:0;
 }
 body[data-theme="moon"] .sky-day{opacity:0}
 body[data-theme="moon"] .sky-night{opacity:1}
+
 .sky-stars{
   position:fixed;
   inset:0;
-  pointer-events:none;
   z-index:-2;
+  pointer-events:none;
   overflow:hidden;
 }
 .sky-stars span{
   position:absolute;
-  color:#d4ad68;
+  color:#fff7e5;
   animation:twinkle 5s ease-in-out infinite;
-  transition:color .7s;
 }
-body[data-theme="moon"] .sky-stars span{
-  color:#e2e8ff;
-}
+body[data-theme="lala"] .sky-stars span{color:#cda04c}
+body[data-theme="moon"] .sky-stars span{color:#e2e8ff}
 .sky-stars span:nth-child(1){left:8%;top:13%;font-size:19px}
 .sky-stars span:nth-child(2){right:9%;top:22%;font-size:13px;animation-delay:1s}
 .sky-stars span:nth-child(3){left:4%;top:42%;font-size:11px;animation-delay:2s}
@@ -82,7 +88,7 @@ body[data-theme="moon"] .sky-stars span{
 .sky-stars span:nth-child(7){right:31%;top:11%;font-size:9px;animation-delay:2.5s}
 .sky-stars span:nth-child(8){left:26%;top:61%;font-size:9px;animation-delay:3.6s}
 
-/* ── 共通画面 ── */
+/* ── 共通 ── */
 header{
   position:sticky;
   top:0;
@@ -96,7 +102,11 @@ header{
   align-items:center;
   justify-content:space-between;
 }
-.brand{font-size:20px;font-weight:850;white-space:nowrap}
+.brand{
+  font-size:20px;
+  font-weight:850;
+  white-space:nowrap;
+}
 .brand-star{color:var(--gold)}
 .account-info{
   font-size:11px;
@@ -154,7 +164,7 @@ body[data-theme="moon"] #storageStatus{
   color:#e0e6f8;
 }
 
-/* ── シルエットの舞台 ── */
+/* ── PNGシルエット ── */
 .scene{
   position:relative;
   width:100%;
@@ -164,64 +174,62 @@ body[data-theme="moon"] #storageStatus{
   align-items:center;
   justify-content:center;
 }
-.scene svg{
+.scene img{
   display:block;
-  width:100%;
-  max-width:295px;
-  height:auto;
-  overflow:visible;
-  filter:drop-shadow(0 4px 3px #202b3c0b);
+  height:100%;
+  max-width:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 3px #202b3c12);
 }
 .hero-scene{
   height:175px;
   background:
-    radial-gradient(ellipse at 50% 90%,#f7dfaa,transparent 58%);
+    radial-gradient(ellipse at 50% 90%,
+      #ffe7ad,transparent 70%);
 }
+.hero-scene img{width:88%}
 .lala-scene{
-  height:132px;
+  height:145px;
   background:
-    radial-gradient(ellipse at 55% 90%,#fff0c6,transparent 65%);
+    radial-gradient(ellipse at 50% 90%,
+      #f7d68e,transparent 75%);
 }
+.lala-scene img{width:85%}
 .moon-scene{
-  height:132px;
+  height:145px;
   background:
-    radial-gradient(ellipse at 55% 90%,#e5e9f9,transparent 65%);
+    radial-gradient(ellipse at 50% 90%,
+      #536397,transparent 75%);
 }
-.scene .figure{
-  fill:#353b47;
+.moon-scene img{
+  width:94%;
+  filter:
+    brightness(0)
+    saturate(100%)
+    invert(95%)
+    sepia(12%)
+    saturate(347%)
+    hue-rotate(322deg)
+    brightness(104%);
 }
-.scene .cat-shape{
-  fill:#292e39;
+.moon-scene::after{
+  content:"";
+  position:absolute;
+  top:15px;
+  right:27px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  box-shadow:-5px 3px 0 #f2e8c6;
+  transform:rotate(-17deg);
+  pointer-events:none;
 }
-.scene .hair-curl{
-  fill:none;
-  stroke:#353b47;
-  stroke-width:4;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-.scene .clothes-mark{
-  fill:none;
-  stroke:#edcd82;
-  stroke-width:4;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-.scene .floor-line{
-  fill:none;
-  stroke:#c7b697;
-  stroke-width:2;
-  stroke-linecap:round;
-  opacity:.75;
-}
-.moon-scene .floor-line{stroke:#a8b2d4}
-.scene .star-detail{fill:#d3a554}
-.scene .moon-detail{fill:#b9c6e9}
 .hero{
   text-align:center;
   padding:18px 18px 26px;
   background:
-    radial-gradient(circle at 50% 10%,#fff5df,transparent 75%),
+    radial-gradient(circle at 50% 10%,
+      #fff5df,transparent 75%),
     #fff;
 }
 .hero-stars{
@@ -261,19 +269,21 @@ body[data-theme="moon"] #storageStatus{
   border-radius:20px;
   border:1px solid #ead8b5;
   background:
-    radial-gradient(circle at 100% 0,#fff0c0,transparent 60%),
+    radial-gradient(circle at 100% 0,
+      #fff0c0,transparent 60%),
     white;
   margin-bottom:12px;
   box-shadow:0 5px 18px #50422a0a;
   position:relative;
   overflow:hidden;
-  transition:transform .2s,box-shadow .2s;
+  transition:transform .2s;
 }
 .account-card:active{transform:scale(.98)}
 .account-card.repayment{
   border-color:#dce2f0;
   background:
-    radial-gradient(circle at 100% 0,#e3e9fb,transparent 60%),
+    radial-gradient(circle at 100% 0,
+      #e3e9fb,transparent 60%),
     white;
 }
 .account-card:after{
@@ -362,13 +372,15 @@ body[data-theme="moon"] #storageStatus{
   border:3px solid #fae9c6;
   border-radius:50%;
   color:white;
-  background:linear-gradient(135deg,#f7df9f,#c39139);
+  background:linear-gradient(135deg,
+    #f7df9f,#c39139);
   font-size:21px;
   vertical-align:4px;
 }
 .moon-mode .coin{
   border-color:#dce4f8;
-  background:linear-gradient(135deg,#aebce0,#596d98);
+  background:linear-gradient(135deg,
+    #aebce0,#596d98);
 }
 .actions{
   display:grid;
@@ -380,18 +392,19 @@ body[data-theme="moon"] #storageStatus{
   border:0;
   border-radius:13px;
   padding:14px 5px;
-  background:linear-gradient(135deg,#fff4d8,#f3dda9);
+  background:linear-gradient(135deg,
+    #fff4d8,#f3dda9);
   color:#926b26;
   font-size:13px;
   font-weight:800;
-  transition:transform .15s;
 }
 .action.secondary{
   background:#f0f2f6;
   color:#566071;
 }
 .action.moon-action{
-  background:linear-gradient(135deg,#edf1ff,#cdd9f7);
+  background:linear-gradient(135deg,
+    #edf1ff,#cdd9f7);
   color:#4b5c84;
 }
 .action:active{transform:scale(.95)}
@@ -424,7 +437,8 @@ body[data-theme="moon"] #storageStatus{
   width:0;
   height:100%;
   border-radius:20px;
-  background:linear-gradient(90deg,#c99b4f,#f4d78b,#c99b4f);
+  background:linear-gradient(90deg,
+    #c99b4f,#f4d78b,#c99b4f);
   transition:width .9s ease;
   overflow:hidden;
 }
@@ -432,7 +446,8 @@ body[data-theme="moon"] #storageStatus{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(90deg,transparent,#ffffff9c,transparent);
+  background:linear-gradient(90deg,
+    transparent,#ffffff9c,transparent);
   animation:barShine 4s infinite;
 }
 .progress-label{
@@ -623,7 +638,8 @@ body[data-theme="moon"] #storageStatus{
   background:#f1f3f6;
 }
 .dialog .confirm{
-  background:linear-gradient(135deg,#fbe9c3,#efd18d);
+  background:linear-gradient(135deg,
+    #fbe9c3,#efd18d);
   color:#886121;
   font-weight:850;
 }
@@ -640,7 +656,11 @@ body[data-theme="moon"] #storageStatus{
 
 /* ── ログイン ── */
 .auth h1{font-size:21px;margin-top:0}
-.auth p{font-size:13px;color:#7c8592;line-height:1.7}
+.auth p{
+  font-size:13px;
+  color:#7c8592;
+  line-height:1.7;
+}
 .auth label{
   display:block;
   margin-top:15px;
@@ -675,7 +695,7 @@ body[data-theme="moon"] #storageStatus{
   color:#55606e;
 }
 
-/* ── 成功時の演出 ── */
+/* ── 成功演出 ── */
 .toast{
   position:fixed;
   left:50%;
@@ -726,7 +746,8 @@ body[data-theme="moon"] #storageStatus{
   width:170px;
   height:170px;
   border-radius:50%;
-  background:radial-gradient(circle,#fff2c3b3,transparent 72%);
+  background:radial-gradient(circle,
+    #fff2c3b3,transparent 72%);
 }
 .balance-glow{animation:balanceFlash .8s ease-out}
 
@@ -772,7 +793,9 @@ body[data-theme="moon"] #storageStatus{
   <div class="brand">
     <span class="brand-star">✦</span> 星粒銀行
   </div>
-  <div id="accountInfo" class="account-info">STAR BANK</div>
+  <div id="accountInfo" class="account-info">
+    STAR BANK
+  </div>
 </header>
 
 <main>
@@ -793,8 +816,12 @@ body[data-theme="moon"] #storageStatus{
         autocomplete="current-password" required>
     </label>
     <div class="auth-buttons">
-      <button id="signIn" type="submit">ログイン</button>
-      <button id="signUp" type="button">新規登録</button>
+      <button id="signIn" type="submit">
+        ログイン
+      </button>
+      <button id="signUp" type="button">
+        新規登録
+      </button>
     </div>
   </form>
   <p id="authStatus">接続しています…</p>
@@ -808,126 +835,10 @@ body[data-theme="moon"] #storageStatus{
     <div class="hero-stars">✦ ☾ ✧</div>
 
     <div class="scene hero-scene">
-      <!-- 横を向いて座る男の子と、寄り添う黒猫 -->
-      <svg viewBox="0 0 300 160" aria-hidden="true">
-        <path class="floor-line"
-          d="M24 146 Q150 151 277 146"/>
-
-        <!-- 男の子：短い足と丸い靴 -->
-        <path class="figure"
-          d="M105 120 Q96 127 90 141
-             Q88 147 101 148
-             L117 147 L129 132 Z"/>
-        <path class="figure"
-          d="M143 121 Q153 127 164 141
-             Q169 147 155 148
-             L139 145 L127 132 Z"/>
-
-        <!-- 小さな身体・斜め向き -->
-        <path class="figure"
-          d="M111 90
-             Q98 98 102 119
-             Q107 137 128 137
-             Q153 137 158 117
-             Q159 100 142 91 Z"/>
-
-        <!-- 片手を少し横へ -->
-        <path class="figure"
-          d="M105 102
-             Q91 107 87 118
-             Q85 126 93 128
-             Q99 129 102 119
-             L113 112 Z"/>
-
-        <!-- 反対の手は床についている -->
-        <path class="figure"
-          d="M146 101
-             Q158 105 161 120
-             L165 138
-             Q168 144 175 140
-             Q180 137 175 131
-             L170 112 Q168 102 157 96 Z"/>
-
-        <!-- 大きな丸い頭、少し右向き -->
-        <path class="figure"
-          d="M91 51
-             C91 22 113 8 139 13
-             C163 17 177 36 176 58
-             C175 78 160 94 137 99
-             C110 104 89 85 91 51 Z"/>
-
-        <!-- ちょこんとした鼻 -->
-        <path class="figure"
-          d="M173 58
-             Q186 61 179 68
-             L171 69 Z"/>
-
-        <!-- くるくる前髪 -->
-        <path class="hair-curl"
-          d="M128 17
-             Q119 7 112 13
-             Q106 18 113 23
-             Q119 25 120 19"/>
-        <path class="hair-curl"
-          d="M143 18
-             Q144 4 134 5
-             Q126 6 131 13"/>
-        <path class="hair-curl"
-          d="M153 22
-             Q163 10 168 19
-             Q170 26 164 28"/>
-
-        <!-- シャツのジグザグ -->
-        <path class="clothes-mark"
-          d="M109 113 L120 107 L130 115
-             L141 108 L152 115"/>
-
-        <!-- 黒猫：大きな耳と小顔 -->
-        <path class="cat-shape"
-          d="M205 100
-             Q198 89 202 73
-             L207 58 L217 68
-             Q226 65 235 68
-             L246 58 L249 75
-             Q254 95 240 103 Z"/>
-
-        <!-- すらっとした細い首 -->
-        <path class="cat-shape"
-          d="M216 96 L239 96
-             Q235 110 242 121
-             L213 124
-             Q222 109 216 96 Z"/>
-
-        <!-- 細身の胴体 -->
-        <path class="cat-shape"
-          d="M215 116
-             Q205 125 207 137
-             Q213 147 231 146
-             Q251 146 255 132
-             Q256 119 243 116 Z"/>
-
-        <!-- 長い脚 -->
-        <path class="cat-shape"
-          d="M211 132 L210 146
-             Q215 151 222 147
-             L225 132 Z"/>
-        <path class="cat-shape"
-          d="M239 132 L241 147
-             Q249 150 253 145
-             L250 130 Z"/>
-
-        <!-- しなやかな尻尾 -->
-        <path class="cat-shape"
-          d="M250 128
-             C267 130 276 116 271 103
-             C267 94 272 90 277 94
-             C291 114 278 144 252 143 Z"/>
-
-        <path class="star-detail"
-          d="M48 51 L52 63 L64 67 L52 71
-             L48 83 L44 71 L32 67 L44 63 Z"/>
-        <circle class="star-detail" cx="261" cy="35" r="3"/>
-      </svg>
+      <img
+        src="./7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
+        alt="男の子と黒猫のシルエット"
+      >
     </div>
 
     <h1>星粒銀行へようこそ</h1>
@@ -964,6 +875,7 @@ body[data-theme="moon"] #storageStatus{
   </button>
 
   <div class="section-title">☾ 返済のあゆみ</div>
+
   <section class="card progress-card">
     <h2>月見里返済の進捗</h2>
     <div class="progress-number">
@@ -977,17 +889,28 @@ body[data-theme="moon"] #storageStatus{
       <div id="progressFill" class="progress-fill"></div>
     </div>
     <div class="progress-label">
-      <span>達成率 <strong id="progressPercent">—</strong></span>
-      <span>残り <strong id="progressRemaining">—</strong>粒</span>
+      <span>
+        達成率
+        <strong id="progressPercent">—</strong>
+      </span>
+      <span>
+        残り
+        <strong id="progressRemaining">—</strong>粒
+      </span>
     </div>
+
     <div class="transfer-summary">
       <div class="transfer-row">
         <span>LaLa預金へ振替済み</span>
-        <strong><span id="homeTransferred">—</span>粒</strong>
+        <strong>
+          <span id="homeTransferred">—</span>粒
+        </strong>
       </div>
       <div class="transfer-row available">
         <span>振替可能</span>
-        <strong><span id="homeAvailable">—</span>粒</strong>
+        <strong>
+          <span id="homeAvailable">—</span>粒
+        </strong>
       </div>
     </div>
   </section>
@@ -1000,241 +923,39 @@ body[data-theme="moon"] #storageStatus{
   </button>
 
   <div class="tabs">
-    <button class="tab active" id="tabLaLa" type="button">
+    <button class="tab active"
+      id="tabLaLa" type="button">
       ✦ LaLa預金
     </button>
-    <button class="tab" id="tabYamanashi" type="button">
+    <button class="tab"
+      id="tabYamanashi" type="button">
       ☾ 月見里返済
     </button>
   </div>
 
   <section class="card balance-card" id="balanceCard">
 
-    <!-- LaLa：床と同じ目線から見た、ぺしょっとしたふたり -->
+    <!-- LaLa：寝そべるふたり -->
     <div id="lalaArtwork" class="account-scene-wrap">
       <div class="scene lala-scene">
-        <svg viewBox="0 0 300 130" aria-hidden="true">
-          <path class="floor-line"
-            d="M15 111 Q150 114 287 111"/>
-
-          <!-- 男の子の小さな身体・うつ伏せ -->
-          <path class="figure"
-            d="M109 83
-               Q132 71 160 79
-               Q176 84 184 96
-               L178 107
-               L106 107 Z"/>
-
-          <!-- ぺたっと伸ばした足 -->
-          <path class="figure"
-            d="M168 92 L198 95
-               Q207 97 203 104
-               Q199 110 188 108
-               L167 106 Z"/>
-          <path class="figure"
-            d="M162 103 L193 108
-               Q199 111 195 115
-               Q188 119 178 113 L157 111 Z"/>
-
-          <!-- 大きな頭・床すれすれの横顔 -->
-          <path class="figure"
-            d="M45 77
-               C43 55 56 33 81 29
-               C104 25 126 39 130 61
-               C136 87 120 108 93 110
-               C65 112 47 101 45 77 Z"/>
-
-          <!-- 右側の鼻 -->
-          <path class="figure"
-            d="M128 79
-               Q141 82 136 89
-               L128 91 Z"/>
-
-          <!-- くるんと飛び出す前髪 -->
-          <path class="hair-curl"
-            d="M76 32
-               Q70 19 61 25
-               Q55 30 62 36
-               Q69 39 70 32"/>
-          <path class="hair-curl"
-            d="M91 29
-               Q91 16 82 17
-               Q77 18 80 24"/>
-          <path class="hair-curl"
-            d="M104 33
-               Q115 20 120 28
-               Q123 34 116 37"/>
-
-          <!-- 前へ投げ出した短い腕 -->
-          <path class="figure"
-            d="M98 96
-               Q111 94 124 101
-               Q135 105 149 102
-               Q157 101 160 107
-               Q161 114 150 114
-               L113 112
-               Q99 112 93 104 Z"/>
-
-          <!-- 猫：床に長く伸びた胴体 -->
-          <path class="cat-shape"
-            d="M209 92
-               Q220 80 247 86
-               Q269 90 273 101
-               Q272 109 251 109
-               L220 107 Z"/>
-
-          <!-- 猫の大きめの頭と耳 -->
-          <path class="cat-shape"
-            d="M177 88
-               L179 65 L190 73
-               Q202 68 211 74
-               L221 65 L224 87
-               Q225 105 202 109
-               Q181 112 177 88 Z"/>
-
-          <!-- 猫の前脚がぺしょ -->
-          <path class="cat-shape"
-            d="M213 101 L226 104
-               L229 112
-               Q225 117 216 112
-               L208 108 Z"/>
-
-          <!-- 猫の後脚 -->
-          <path class="cat-shape"
-            d="M257 102 L275 109
-               Q281 115 271 116
-               L253 109 Z"/>
-
-          <!-- 長いしっぽが上にくるん -->
-          <path class="cat-shape"
-            d="M266 91
-               C280 82 280 63 272 53
-               C266 45 269 38 275 41
-               C292 53 293 77 278 96 Z"/>
-
-          <!-- 星は小さめ -->
-          <path class="star-detail"
-            d="M148 27 L152 37 L162 41
-               L152 45 L148 55
-               L144 45 L134 41 L144 37 Z"/>
-          <circle class="star-detail" cx="238" cy="34" r="3"/>
-        </svg>
+        <img
+          src="./84C20629-6473-4327-A6FA-8A9436F8A036.png"
+          alt="床に寝そべる男の子と黒猫"
+        >
       </div>
       <div class="account-scene-caption">
         星粒といっしょに、ひとやすみ。
       </div>
     </div>
 
-    <!-- 月見里：静かに寄り添うふたり -->
-    <div id="moonArtwork" class="account-scene-wrap" hidden>
+    <!-- 月見里：明るいシルエット -->
+    <div id="moonArtwork"
+      class="account-scene-wrap" hidden>
       <div class="scene moon-scene">
-        <svg viewBox="0 0 300 130" aria-hidden="true">
-          <path class="floor-line"
-            d="M20 115 Q150 118 280 115"/>
-
-          <!-- 男の子の身体は少し斜め -->
-          <path class="figure"
-            d="M103 83
-               Q91 89 92 108
-               L95 115
-               L151 115
-               Q159 92 144 84 Z"/>
-
-          <!-- 短い足 -->
-          <path class="figure"
-            d="M104 106
-               Q92 112 86 115
-               Q85 122 98 121
-               L120 115 Z"/>
-          <path class="figure"
-            d="M139 105
-               L159 113
-               Q165 118 155 120
-               L134 116 Z"/>
-
-          <!-- 頭を少し猫側へ傾ける -->
-          <g transform="rotate(9 121 58)">
-            <path class="figure"
-              d="M85 57
-                 C85 32 103 17 125 18
-                 C148 19 162 36 161 58
-                 C160 80 145 97 120 97
-                 C96 97 84 79 85 57 Z"/>
-            <path class="figure"
-              d="M158 61 Q170 64 164 71 L157 72 Z"/>
-            <path class="hair-curl"
-              d="M112 22
-                 Q103 10 96 17
-                 Q90 24 99 28
-                 Q105 30 106 23"/>
-            <path class="hair-curl"
-              d="M126 20
-                 Q125 9 117 10
-                 Q111 11 115 17"/>
-            <path class="hair-curl"
-              d="M140 24
-                 Q149 13 154 20
-                 Q157 26 151 30"/>
-          </g>
-
-          <!-- 腕を猫に向けて置く -->
-          <path class="figure"
-            d="M144 96
-               Q158 96 166 106
-               Q174 111 179 106
-               Q185 103 188 110
-               Q188 120 176 118
-               Q157 116 146 110 Z"/>
-
-          <!-- 猫：細身のお座り -->
-          <path class="cat-shape"
-            d="M195 81
-               L197 52 L208 62
-               Q218 58 228 62
-               L240 52 L242 80
-               Q242 95 226 98
-               L207 98 Q194 94 195 81 Z"/>
-
-          <!-- 細長い首 -->
-          <path class="cat-shape"
-            d="M207 93 L230 93
-               Q227 105 236 111
-               L201 112
-               Q212 104 207 93 Z"/>
-
-          <!-- すらっとした身体 -->
-          <path class="cat-shape"
-            d="M204 104
-               Q193 111 195 117
-               L249 117
-               Q251 105 235 103 Z"/>
-
-          <!-- 長い前脚 -->
-          <path class="cat-shape"
-            d="M205 108 L205 120
-               Q211 123 216 119
-               L219 106 Z"/>
-          <path class="cat-shape"
-            d="M227 108 L229 120
-               Q236 122 241 117
-               L239 106 Z"/>
-
-          <!-- 猫の長い尾 -->
-          <path class="cat-shape"
-            d="M242 110
-               C265 114 277 97 270 80
-               C267 72 272 68 278 74
-               C294 96 274 127 246 121 Z"/>
-
-          <!-- 小さな三日月 -->
-          <path class="moon-detail"
-            d="M245 22
-               A12 12 0 1 0 258 38
-               A10 10 0 0 1 245 22 Z"/>
-
-          <circle class="moon-detail" cx="61" cy="32" r="2.7"/>
-          <circle class="moon-detail" cx="270" cy="52" r="2"/>
-        </svg>
+        <img
+          src="./69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
+          alt="月明かりの下の男の子と黒猫"
+        >
       </div>
       <div class="account-scene-caption">
         月明かりの下で、のんびり。
@@ -1272,7 +993,8 @@ body[data-theme="moon"] #storageStatus{
     </div>
 
     <div class="actions">
-      <button class="action" id="chargeButton" type="button">
+      <button class="action"
+        id="chargeButton" type="button">
         ＋ チャージ
       </button>
       <button class="action secondary"
@@ -1314,8 +1036,14 @@ body[data-theme="moon"] #storageStatus{
       <div id="graphFill" class="progress-fill"></div>
     </div>
     <div class="progress-label">
-      <span>達成率 <strong id="graphPercent">—</strong></span>
-      <span>残り <strong id="graphRemaining">—</strong>粒</span>
+      <span>
+        達成率
+        <strong id="graphPercent">—</strong>
+      </span>
+      <span>
+        残り
+        <strong id="graphRemaining">—</strong>粒
+      </span>
     </div>
   </section>
   <p class="muted">
@@ -1329,7 +1057,9 @@ body[data-theme="moon"] #storageStatus{
   <section class="card">
     <p style="font-weight:800">星粒銀行</p>
     <p class="muted">返済目標：18,000粒</p>
-    <p class="muted">口座：LaLa預金・月見里返済</p>
+    <p class="muted">
+      口座：LaLa預金・月見里返済
+    </p>
     <p class="muted">
       取引の訂正記録は削除せず保存されるよ。
     </p>
@@ -1370,10 +1100,12 @@ body[data-theme="moon"] #storageStatus{
   <div class="dialog">
     <h2 id="transactionTitle">星粒をチャージ</h2>
     <form id="transactionForm">
-      <label id="amountLabel" for="transactionAmount">
+      <label id="amountLabel"
+        for="transactionAmount">
         チャージする星粒数
       </label>
-      <input id="transactionAmount" type="number"
+      <input id="transactionAmount"
+        type="number"
         min="1" max="1000000" step="1"
         inputmode="numeric" required
         placeholder="例：10">
@@ -1400,7 +1132,8 @@ body[data-theme="moon"] #storageStatus{
       <label for="correctionReason">
         訂正理由（任意）
       </label>
-      <textarea id="correctionReason" maxlength="200"
+      <textarea id="correctionReason"
+        maxlength="200"
         placeholder="例：入力する金額を間違えた"></textarea>
       <p class="muted">
         元の履歴は消さず、訂正済みとして残るよ。
@@ -1418,10 +1151,11 @@ body[data-theme="moon"] #storageStatus{
   </div>
 </div>
 
-<!-- 演出用 -->
+<!-- 演出 -->
 <div id="toast" class="toast"
   role="status" aria-live="polite"></div>
-<div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+<div id="fxLayer" class="fx-layer"
+  aria-hidden="true"></div>
 
 <script type="module">
 import {initializeApp} from
@@ -1456,17 +1190,15 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 
 const el=id=>document.getElementById(id);
-const format=n=>n.toLocaleString('ja-J');
+const format=n=>n.toLocaleString('ja-JP');
 
 const accounts={
   LaLa:{name:'LaLa預金'},
   yamanashi:{name:'月見里返済'}
 };
-
 const names={
   'BIR5n29dcHPytcnfDftUwDB4XGG2':'LaLa'
 };
-
 const GOAL=18000;
 
 let selectedAccount='LaLa';
@@ -1508,7 +1240,7 @@ const reduceMotion=window.matchMedia(
   '(prefers-reduced-motion: reduce)'
 );
 
-/* ── 数字の動き ── */
+/* ── 数字のアニメーション ── */
 const animatedNumbers=new Map();
 const numberFrames=new Map();
 
@@ -1583,7 +1315,7 @@ function glowBalance(){
   node.classList.add('balance-glow');
 }
 
-/* ── 大きめの星粒演出 ── */
+/* ── 星粒演出 ── */
 let toastTimer=null;
 
 function showToast(message){
@@ -2989,192 +2721,3 @@ onAuthStateChanged(auth,user=>{
 </script>
 </body>
 </html>
-
-
-<!-- 星粒銀行・新デザイン追加 -->
-<style>
-/* ホーム：夕焼け */
-body[data-theme="home"] .sky-day{
-  background:
-    radial-gradient(
-      ellipse at 76% 85%,
-      #ffe7ad 0%,
-      transparent 62%
-    ),
-    linear-gradient(
-      165deg,
-      #f6b9d0 0%,
-      #ffd2bf 47%,
-      #ffe9c2 100%
-    );
-}
-
-/* LaLa：クリームイエローと金色 */
-body[data-theme="lala"] .sky-day{
-  background:
-    radial-gradient(
-      ellipse at 50% 90%,
-      #f7d68e 0%,
-      transparent 65%
-    ),
-    linear-gradient(
-      160deg,
-      #fff7df 0%,
-      #ffebba 55%,
-      #f5d591 100%
-    );
-}
-
-/* 月見里：深い紺色と青紫 */
-body[data-theme="moon"] .sky-night{
-  background:
-    radial-gradient(
-      ellipse at 78% 18%,
-      #536397 0%,
-      transparent 55%
-    ),
-    linear-gradient(
-      165deg,
-      #151d38 0%,
-      #27365d 55%,
-      #4b4b83 100%
-    );
-}
-
-/* シルエットの表示領域 */
-.hero-scene{
-  height:175px;
-  background:
-    radial-gradient(
-      ellipse at 50% 90%,
-      #ffe7ad,
-      transparent 70%
-    );
-}
-
-.lala-scene{
-  height:145px;
-  background:
-    radial-gradient(
-      ellipse at 50% 90%,
-      #f7d68e,
-      transparent 75%
-    );
-}
-
-.moon-scene{
-  height:145px;
-  background:
-    radial-gradient(
-      ellipse at 50% 90%,
-      #536397,
-      transparent 75%
-    );
-}
-
-/* PNG画像 */
-.scene .bank-silhouette{
-  display:block;
-  width:90%;
-  height:100%;
-  max-width:350px;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 3px #202b3c12);
-}
-
-.hero-scene .bank-silhouette{
-  width:88%;
-}
-
-.lala-scene .bank-silhouette{
-  width:85%;
-}
-
-/* 月見里は明るいアイボリー色 */
-.moon-scene .bank-silhouette{
-  width:94%;
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(95%)
-    sepia(12%)
-    saturate(347%)
-    hue-rotate(322deg)
-    brightness(104%);
-}
-
-/* 月見里の小さな三日月 */
-.moon-scene::after{
-  content:"";
-  position:absolute;
-  top:15px;
-  right:27px;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  box-shadow:-5px 3px 0 #f2e8c6;
-  transform:rotate(-17deg);
-  pointer-events:none;
-}
-
-/* 月見里でもカードは白く読みやすく */
-body[data-theme="moon"] .card{
-  background:#fffffff4;
-}
-</style>
-
-<script>
-/*
-  既存のSVGだけを画像に差し替える。
-  残高・履歴・Firebaseの処理は変更しない。
-*/
-(function(){
-  const pictures=[
-    {
-      selector:".hero-scene",
-      file:"7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
-      alt:"ホームの男の子と黒猫"
-    },
-    {
-      selector:".lala-scene",
-      file:"84C20629-6473-4327-A6FA-8A9436F8A036.png",
-      alt:"LaLa預金の男の子と黒猫"
-    },
-    {
-      selector:".moon-scene",
-      file:"69BD7493-904A-43A1-9F1E-E143989AC4F8.png",
-      alt:"月見里返済の男の子と黒猫"
-    }
-  ];
-
-  function applyArtwork(){
-    pictures.forEach(item=>{
-      const scene=document.querySelector(item.selector);
-      if(!scene)return;
-
-      const oldSvg=scene.querySelector("svg");
-      if(oldSvg)oldSvg.remove();
-
-      if(scene.querySelector(".bank-silhouette"))return;
-
-      const img=document.createElement("img");
-      img.className="bank-silhouette";
-      img.src="./"+item.file;
-      img.alt=item.alt;
-      img.decoding="async";
-
-      scene.appendChild(img);
-    });
-  }
-
-  if(document.readyState==="loading"){
-    document.addEventListener(
-      "DOMContentLoaded",
-      applyArtwork
-    );
-  }else{
-    applyArtwork();
-  }
-})();
-</script>
-<!-- 新デザイン追加ここまで -->
