@@ -12,69 +12,47 @@
     "Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
   color:#353a45;
   --gold:#c99b48;
-  --navy:#263455;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;
-  min-height:100vh;
-  background:#fff8e9;
-}
+body{margin:0;min-height:100vh;background:#fff8e9}
 button,input,textarea{font:inherit}
 button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 button:disabled{opacity:.5;cursor:wait}
 [hidden]{display:none!important}
-button:focus-visible,input:focus-visible,
-textarea:focus-visible{
-  outline:3px solid #d3ad69;
-  outline-offset:3px;
+button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:3px solid #d3ad69;outline-offset:3px;
 }
 
-/* ── 3種類の空 ── */
+/* 背景 */
 .sky-day,.sky-night{
-  position:fixed;
-  inset:0;
-  z-index:-3;
-  pointer-events:none;
-  transition:opacity .7s ease,background .7s ease;
+  position:fixed;inset:0;z-index:-3;
+  pointer-events:none;transition:opacity .7s ease;
 }
 .sky-day{
   background:
-    radial-gradient(ellipse at 76% 85%,
-      #ffe7ad,transparent 62%),
-    linear-gradient(165deg,
-      #f6b9d0 0%,#ffd2bf 47%,#ffe9c2 100%);
-  opacity:1;
+    radial-gradient(ellipse at 76% 85%,#ffe7ad,transparent 62%),
+    linear-gradient(165deg,#f6b9d0,#ffd2bf 47%,#ffe9c2);
 }
 body[data-theme="lala"] .sky-day{
   background:
-    radial-gradient(ellipse at 50% 90%,
-      #f7d68e,transparent 65%),
-    linear-gradient(160deg,
-      #fff7df 0%,#ffebba 55%,#f5d591 100%);
+    radial-gradient(ellipse at 50% 90%,#f7d68e,transparent 65%),
+    linear-gradient(160deg,#fff7df,#ffebba 55%,#f5d591);
 }
 .sky-night{
   background:
-    radial-gradient(ellipse at 78% 18%,
-      #536397,transparent 55%),
-    linear-gradient(165deg,
-      #151d38 0%,#27365d 55%,#4b4b83 100%);
+    radial-gradient(ellipse at 78% 18%,#536397,transparent 55%),
+    linear-gradient(165deg,#151d38,#27365d 55%,#4b4b83);
   opacity:0;
 }
 body[data-theme="moon"] .sky-day{opacity:0}
 body[data-theme="moon"] .sky-night{opacity:1}
-
 .sky-stars{
-  position:fixed;
-  inset:0;
-  z-index:-2;
-  pointer-events:none;
-  overflow:hidden;
+  position:fixed;inset:0;z-index:-2;
+  pointer-events:none;overflow:hidden;
 }
 .sky-stars span{
-  position:absolute;
-  color:#fff7e5;
+  position:absolute;color:#fff7e5;
   animation:twinkle 5s ease-in-out infinite;
 }
 body[data-theme="lala"] .sky-stars span{color:#cda04c}
@@ -88,669 +66,394 @@ body[data-theme="moon"] .sky-stars span{color:#e2e8ff}
 .sky-stars span:nth-child(7){right:31%;top:11%;font-size:9px;animation-delay:2.5s}
 .sky-stars span:nth-child(8){left:26%;top:61%;font-size:9px;animation-delay:3.6s}
 
-/* ── 共通 ── */
+/* 共通 */
 header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:#ffffffed;
-  border-bottom:1px solid #eae6df;
+  position:sticky;top:0;z-index:10;
+  background:#ffffffed;border-bottom:1px solid #eae6df;
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
-  padding:16px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  padding:16px 18px;display:flex;
+  align-items:center;justify-content:space-between;
 }
-.brand{
-  font-size:20px;
-  font-weight:850;
-  white-space:nowrap;
-}
+.brand{font-size:20px;font-weight:850;white-space:nowrap}
 .brand-star{color:var(--gold)}
 .account-info{
-  font-size:11px;
-  color:#818995;
-  text-align:right;
-  max-width:190px;
-  overflow-wrap:anywhere;
+  font-size:11px;color:#818995;text-align:right;
+  max-width:190px;overflow-wrap:anywhere;
 }
 .account-info button{
-  display:block;
-  margin:6px 0 0 auto;
-  padding:7px;
-  border:0;
-  border-radius:9px;
-  background:#f1f2f5;
-  color:#596272;
-  font-size:11px;
+  display:block;margin:6px 0 0 auto;padding:7px;
+  border:0;border-radius:9px;background:#f1f2f5;
+  color:#596272;font-size:11px;
 }
-main{
-  max-width:520px;
-  margin:auto;
-  padding:19px 16px 112px;
-}
+main{max-width:520px;margin:auto;padding:19px 16px 112px}
 .card{
-  background:#fffffff4;
-  border:1px solid #eae7e1;
-  border-radius:23px;
-  padding:21px;
-  box-shadow:0 7px 26px #1d27360d;
-  margin-bottom:15px;
+  background:#fffffff4;border:1px solid #eae7e1;
+  border-radius:23px;padding:21px;
+  box-shadow:0 7px 26px #1d27360d;margin-bottom:15px;
 }
-.muted{
-  font-size:12px;
-  color:#8b939f;
-  line-height:1.8;
-}
+.muted{font-size:12px;color:#8b939f;line-height:1.8}
 .section-title{
-  font-size:17px;
-  font-weight:850;
-  margin:25px 2px 13px;
+  font-size:17px;font-weight:850;margin:25px 2px 13px;
 }
 body[data-theme="moon"] .section-title,
-body[data-theme="moon"] .back{
-  color:#f2f0ff;
-}
+body[data-theme="moon"] .back{color:#f2f0ff}
 .footer{
-  margin-top:24px;
-  text-align:center;
-  font-size:11px;
-  letter-spacing:.16em;
-  color:#a3a9b2;
+  margin-top:24px;text-align:center;font-size:11px;
+  letter-spacing:.16em;color:#a3a9b2;
 }
 body[data-theme="moon"] .footer,
-body[data-theme="moon"] #storageStatus{
-  color:#e0e6f8;
-}
+body[data-theme="moon"] #storageStatus{color:#e0e6f8}
 
-/* ── PNGシルエット ── */
+/* シルエット：画像は変更しない */
 .scene{
-  position:relative;
-  width:100%;
-  border-radius:18px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
+  position:relative;width:100%;border-radius:18px;
+  overflow:hidden;display:flex;align-items:center;
   justify-content:center;
 }
 .scene img{
-  display:block;
-  height:100%;
-  max-width:100%;
+  display:block;height:100%;max-width:100%;
   object-fit:contain;
   filter:drop-shadow(0 4px 3px #202b3c12);
 }
 .hero-scene{
   height:175px;
-  background:
-    radial-gradient(ellipse at 50% 90%,
-      #ffe7ad,transparent 70%);
+  background:radial-gradient(
+    ellipse at 50% 90%,#ffe7ad,transparent 70%
+  );
 }
 .hero-scene img{width:88%}
 .lala-scene{
   height:145px;
-  background:
-    radial-gradient(ellipse at 50% 90%,
-      #f7d68e,transparent 75%);
+  background:radial-gradient(
+    ellipse at 50% 90%,#f7d68e,transparent 75%
+  );
 }
 .lala-scene img{width:85%}
 .moon-scene{
   height:145px;
-  background:
-    radial-gradient(ellipse at 50% 90%,
-      #536397,transparent 75%);
+  background:radial-gradient(
+    ellipse at 50% 90%,#536397,transparent 75%
+  );
 }
 .moon-scene img{
   width:94%;
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(95%)
-    sepia(12%)
-    saturate(347%)
-    hue-rotate(322deg)
-    brightness(104%);
+  filter:brightness(0) saturate(100%)
+    invert(95%) sepia(12%) saturate(347%)
+    hue-rotate(322deg) brightness(104%);
 }
 .moon-scene::after{
-  content:"";
-  position:absolute;
-  top:15px;
-  right:27px;
-  width:18px;
-  height:18px;
-  border-radius:50%;
+  content:"";position:absolute;top:15px;right:27px;
+  width:18px;height:18px;border-radius:50%;
   box-shadow:-5px 3px 0 #f2e8c6;
-  transform:rotate(-17deg);
-  pointer-events:none;
+  transform:rotate(-17deg);pointer-events:none;
 }
 .hero{
-  text-align:center;
-  padding:18px 18px 26px;
-  background:
-    radial-gradient(circle at 50% 10%,
-      #fff5df,transparent 75%),
-    #fff;
+  text-align:center;padding:18px 18px 26px;
+  background:radial-gradient(
+    circle at 50% 10%,#fff5df,transparent 75%
+  ),#fff;
 }
-.hero-stars{
-  font-size:16px;
-  color:#cfa45e;
-  letter-spacing:9px;
-}
-.hero h1{
-  font-size:23px;
-  margin:7px 0;
-}
-.hero p{
-  margin:0;
-  color:#89919d;
-  font-size:12px;
-  line-height:1.8;
-}
-.account-scene-wrap{
-  margin:-5px -5px 15px;
-}
+.hero-stars{font-size:16px;color:#cfa45e;letter-spacing:9px}
+.hero h1{font-size:23px;margin:7px 0}
+.hero p{margin:0;color:#89919d;font-size:12px;line-height:1.8}
+.account-scene-wrap{margin:-5px -5px 15px}
 .account-scene-caption{
-  text-align:center;
-  color:#a29b91;
-  font-size:11px;
-  margin-top:-5px;
+  text-align:center;color:#a29b91;
+  font-size:11px;margin-top:-5px;
 }
-.moon-mode .account-scene-caption{
-  color:#818da9;
-}
+.moon-mode .account-scene-caption{color:#818da9}
 
-/* ── ホーム口座カード ── */
+/* ホーム口座 */
 .account-card{
-  display:block;
-  width:100%;
-  text-align:left;
-  padding:20px;
-  border-radius:20px;
-  border:1px solid #ead8b5;
-  background:
-    radial-gradient(circle at 100% 0,
-      #fff0c0,transparent 60%),
-    white;
-  margin-bottom:12px;
-  box-shadow:0 5px 18px #50422a0a;
-  position:relative;
-  overflow:hidden;
-  transition:transform .2s;
+  display:block;width:100%;text-align:left;padding:20px;
+  border-radius:20px;border:1px solid #ead8b5;
+  background:radial-gradient(
+    circle at 100% 0,#fff0c0,transparent 60%
+  ),white;
+  margin-bottom:12px;box-shadow:0 5px 18px #50422a0a;
+  position:relative;overflow:hidden;transition:transform .2s;
 }
 .account-card:active{transform:scale(.98)}
 .account-card.repayment{
   border-color:#dce2f0;
-  background:
-    radial-gradient(circle at 100% 0,
-      #e3e9fb,transparent 60%),
-    white;
+  background:radial-gradient(
+    circle at 100% 0,#e3e9fb,transparent 60%
+  ),white;
 }
 .account-card:after{
-  content:"✦";
-  position:absolute;
-  right:18px;
-  bottom:-10px;
-  color:#d7b36c;
-  opacity:.23;
-  font-size:77px;
+  content:"✦";position:absolute;right:18px;bottom:-10px;
+  color:#d7b36c;opacity:.23;font-size:77px;
 }
-.account-card.repayment:after{
-  content:"☾";
-  color:#8999c7;
-}
+.account-card.repayment:after{content:"☾";color:#8999c7}
 .account-card .top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display:flex;align-items:center;justify-content:space-between;
 }
 .account-card .name{font-size:15px;font-weight:850}
 .account-card .arrow{font-size:21px;color:#a2a7b0}
 .account-card .amount{
-  margin:11px 0 4px;
-  font-size:32px;
-  font-weight:850;
+  margin:11px 0 4px;font-size:32px;font-weight:850;
   font-variant-numeric:tabular-nums;
 }
 .account-card .unit{font-size:15px}
 .account-card .hint{font-size:12px;color:#939aa4}
 
-/* ── 口座 ── */
+/* 口座 */
 .back{
-  border:0;
-  background:none;
-  padding:8px 0 16px;
-  color:#9c7738;
-  font-weight:800;
+  border:0;background:none;padding:8px 0 16px;
+  color:#9c7738;font-weight:800;
 }
 .tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:15px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:9px;margin-bottom:15px;
 }
 .tab{
-  border:1px solid #e7e8ed;
-  border-radius:13px;
-  padding:13px 6px;
-  background:#ffffffed;
-  font-weight:800;
-  font-size:13px;
-  color:#89919e;
+  border:1px solid #e7e8ed;border-radius:13px;
+  padding:13px 6px;background:#ffffffed;
+  font-weight:800;font-size:13px;color:#89919e;
 }
 .tab.active{
-  background:#fff1cb;
-  border-color:#d9b16d;
-  color:#946b2c;
+  background:#fff1cb;border-color:#d9b16d;color:#946b2c;
 }
 .tab.active.moon-tab{
-  background:#dfe7fc;
-  border-color:#b9c5e4;
-  color:#40537c;
+  background:#dfe7fc;border-color:#b9c5e4;color:#40537c;
 }
-.balance-card{
-  position:relative;
-  overflow:hidden;
-}
-.balance-label{
-  font-size:13px;
-  font-weight:800;
-  color:#818b99;
-}
+.balance-card{position:relative;overflow:hidden}
+.balance-label{font-size:13px;font-weight:800;color:#818b99}
 .balance-number{
-  font-size:39px;
-  font-weight:850;
+  font-size:39px;font-weight:850;
   font-variant-numeric:tabular-nums;
-  letter-spacing:-1px;
-  margin:15px 0;
+  letter-spacing:-1px;margin:15px 0;
 }
 .coin{
-  display:inline-grid;
-  place-items:center;
-  width:36px;
-  height:36px;
-  border:3px solid #fae9c6;
-  border-radius:50%;
-  color:white;
-  background:linear-gradient(135deg,
-    #f7df9f,#c39139);
-  font-size:21px;
-  vertical-align:4px;
+  display:inline-grid;place-items:center;
+  width:36px;height:36px;border:3px solid #fae9c6;
+  border-radius:50%;color:white;
+  background:linear-gradient(135deg,#f7df9f,#c39139);
+  font-size:21px;vertical-align:4px;
 }
 .moon-mode .coin{
   border-color:#dce4f8;
-  background:linear-gradient(135deg,
-    #aebce0,#596d98);
+  background:linear-gradient(135deg,#aebce0,#596d98);
 }
 .actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:22px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:22px;
 }
 .action{
-  border:0;
-  border-radius:13px;
-  padding:14px 5px;
-  background:linear-gradient(135deg,
-    #fff4d8,#f3dda9);
-  color:#926b26;
-  font-size:13px;
-  font-weight:800;
+  border:0;border-radius:13px;padding:14px 5px;
+  background:linear-gradient(135deg,#fff4d8,#f3dda9);
+  color:#926b26;font-size:13px;font-weight:800;
 }
-.action.secondary{
-  background:#f0f2f6;
-  color:#566071;
-}
+.action.secondary{background:#f0f2f6;color:#566071}
 .action.moon-action{
-  background:linear-gradient(135deg,
-    #edf1ff,#cdd9f7);
+  background:linear-gradient(135deg,#edf1ff,#cdd9f7);
   color:#4b5c84;
 }
 .action:active{transform:scale(.95)}
 
-/* ── 返済進捗 ── */
-.progress-card h2{
-  margin:0 0 13px;
-  font-size:16px;
-}
+/* 返済進捗 */
+.progress-card h2{margin:0 0 13px;font-size:16px}
 .progress-number{
-  font-size:29px;
-  font-weight:850;
+  font-size:29px;font-weight:850;
   font-variant-numeric:tabular-nums;
 }
 .progress-number span{font-size:14px}
-.progress-sub{
-  margin-top:5px;
-  color:#9299a3;
-  font-size:12px;
-}
+.progress-sub{margin-top:5px;color:#9299a3;font-size:12px}
 .progress-track{
-  height:12px;
-  overflow:hidden;
-  margin:16px 0 10px;
-  background:#eeedf1;
-  border-radius:20px;
+  height:12px;overflow:hidden;margin:16px 0 10px;
+  background:#eeedf1;border-radius:20px;
 }
 .progress-fill{
-  position:relative;
-  width:0;
-  height:100%;
+  position:relative;width:0;height:100%;
   border-radius:20px;
-  background:linear-gradient(90deg,
-    #c99b4f,#f4d78b,#c99b4f);
-  transition:width .9s ease;
-  overflow:hidden;
+  background:linear-gradient(90deg,#c99b4f,#f4d78b,#c99b4f);
+  transition:width .9s ease;overflow:hidden;
 }
 .progress-fill:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(90deg,
-    transparent,#ffffff9c,transparent);
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(
+    90deg,transparent,#ffffff9c,transparent
+  );
   animation:barShine 4s infinite;
 }
 .progress-label{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  color:#838b97;
-  font-size:12px;
+  display:flex;justify-content:space-between;gap:10px;
+  color:#838b97;font-size:12px;
 }
 .progress-label strong{color:#a77c31}
 .transfer-summary{
-  margin-top:15px;
-  padding:15px;
-  border:1px solid #f1e8d4;
-  border-radius:14px;
+  margin-top:15px;padding:15px;
+  border:1px solid #f1e8d4;border-radius:14px;
   background:#faf8f2;
 }
 .transfer-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  padding:7px 0;
-  font-size:13px;
+  display:flex;justify-content:space-between;
+  align-items:center;gap:8px;padding:7px 0;font-size:13px;
 }
 .transfer-row span{color:#818995}
 .transfer-row strong{color:#a67b32}
 .transfer-row.available{
   border-top:1px solid #e9ddc5;
-  padding-top:13px;
-  margin-top:7px;
+  padding-top:13px;margin-top:7px;
 }
 .transfer-row.available strong{font-size:20px}
 
-/* ── 履歴 ── */
-.history{
-  list-style:none;
-  margin:0;
-  padding:0;
-}
+/* 履歴 */
+.history{list-style:none;margin:0;padding:0}
 .history li{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  border-top:1px solid #f0f0f2;
-  padding:15px 0;
-  font-size:13px;
+  display:flex;justify-content:space-between;gap:12px;
+  border-top:1px solid #f0f0f2;padding:15px 0;font-size:13px;
 }
 .history li:first-child{border-top:0}
 .history-details{min-width:0;flex:1}
 .history-title{font-weight:800;line-height:1.55}
 .history small{
-  display:block;
-  font-size:11px;
-  color:#9aa0aa;
-  margin-top:5px;
-  line-height:1.6;
-  overflow-wrap:anywhere;
+  display:block;font-size:11px;color:#9aa0aa;
+  margin-top:5px;line-height:1.6;overflow-wrap:anywhere;
 }
 .history-amount{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:7px;
-  white-space:nowrap;
+  display:flex;flex-direction:column;align-items:flex-end;
+  gap:7px;white-space:nowrap;
 }
 .history-amount strong{color:#a57a2d}
 .history-amount strong.minus{color:#57616e}
 .history-amount strong.cancelled{
-  color:#a5aab2;
-  text-decoration:line-through;
+  color:#a5aab2;text-decoration:line-through;
 }
 .correction-button{
-  border:1px solid #e8d9b9;
-  border-radius:8px;
-  background:#fffaf0;
-  color:#a17a35;
-  padding:6px 9px;
-  font-size:11px;
-  font-weight:800;
+  border:1px solid #e8d9b9;border-radius:8px;
+  background:#fffaf0;color:#a17a35;
+  padding:6px 9px;font-size:11px;font-weight:800;
 }
 .corrected-tag{
-  padding:4px 7px;
-  border-radius:7px;
-  background:#f0f1f3;
-  color:#89909b;
-  font-size:10px;
+  padding:4px 7px;border-radius:7px;
+  background:#f0f1f3;color:#89909b;font-size:10px;
 }
 .correction-entry{
-  padding-left:9px!important;
-  padding-right:9px!important;
-  border-radius:10px;
-  background:#fcfbf8;
+  padding-left:9px!important;padding-right:9px!important;
+  border-radius:10px;background:#fcfbf8;
 }
 .empty{
-  padding:24px 0;
-  text-align:center;
-  color:#9299a3;
-  font-size:13px;
+  padding:24px 0;text-align:center;
+  color:#9299a3;font-size:13px;
 }
-.status{
-  font-size:12px;
-  color:#8b929e;
-  line-height:1.7;
-}
+.status{font-size:12px;color:#8b929e;line-height:1.7}
 
-/* ── 下部ナビ ── */
+/* ナビ */
 .bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:10;
-  display:flex;
-  justify-content:center;
-  background:#fffffff0;
-  border-top:1px solid #e8e9ed;
+  position:fixed;bottom:0;left:0;right:0;z-index:10;
+  display:flex;justify-content:center;
+  background:#fffffff0;border-top:1px solid #e8e9ed;
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
   padding:10px 10px max(10px,env(safe-area-inset-bottom));
 }
 .nav-inner{
-  width:min(100%,520px);
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:5px;
+  width:min(100%,520px);display:grid;
+  grid-template-columns:repeat(4,1fr);gap:5px;
 }
 .nav-btn{
-  border:0;
-  background:transparent;
-  padding:5px 2px;
-  display:grid;
-  justify-items:center;
-  gap:5px;
-  color:#a1a6af;
-  font-size:11px;
+  border:0;background:transparent;padding:5px 2px;
+  display:grid;justify-items:center;gap:5px;
+  color:#a1a6af;font-size:11px;
 }
 .nav-btn .symbol{font-size:22px}
 .nav-btn.active{color:#b88c3d;font-weight:800}
 
-/* ── モーダル ── */
+/* モーダル */
 .modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:20;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:#17203a85;
-  backdrop-filter:blur(5px);
+  display:none;position:fixed;inset:0;z-index:20;
+  align-items:center;justify-content:center;padding:20px;
+  background:#17203a85;backdrop-filter:blur(5px);
   -webkit-backdrop-filter:blur(5px);
 }
 .modal.show{display:flex}
 .dialog{
-  width:min(100%,400px);
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  background:white;
-  border-radius:22px;
+  width:min(100%,400px);max-height:90vh;overflow:auto;
+  padding:24px;background:white;border-radius:22px;
   box-shadow:0 20px 65px #121a3036;
   animation:dialogIn .27s ease-out;
 }
 .dialog h2{font-size:19px;margin:0 0 14px}
-.dialog p{
-  color:#707986;
-  font-size:13px;
-  line-height:1.7;
-}
+.dialog p{color:#707986;font-size:13px;line-height:1.7}
 .dialog label{font-size:13px;font-weight:800}
 .dialog input,.dialog textarea{
-  width:100%;
-  padding:13px;
-  border:1px solid #dce0e6;
-  border-radius:12px;
-  font-size:16px;
-  margin:10px 0;
+  width:100%;padding:13px;border:1px solid #dce0e6;
+  border-radius:12px;font-size:16px;margin:10px 0;
   background:white;
 }
 .dialog textarea{resize:vertical;min-height:85px}
 .dialog button{
-  width:100%;
-  padding:13px;
-  margin-top:9px;
-  border:0;
-  border-radius:12px;
-  background:#f1f3f6;
+  width:100%;padding:13px;margin-top:9px;border:0;
+  border-radius:12px;background:#f1f3f6;
 }
 .dialog .confirm{
-  background:linear-gradient(135deg,
-    #fbe9c3,#efd18d);
-  color:#886121;
-  font-weight:850;
+  background:linear-gradient(135deg,#fbe9c3,#efd18d);
+  color:#886121;font-weight:850;
 }
 .dialog .warning{
-  padding:13px;
-  margin:12px 0;
-  border-radius:12px;
-  background:#fff9ed;
-  color:#89672d;
-  font-size:12px;
-  line-height:1.8;
-  white-space:pre-line;
+  padding:13px;margin:12px 0;border-radius:12px;
+  background:#fff9ed;color:#89672d;font-size:12px;
+  line-height:1.8;white-space:pre-line;
 }
 
-/* ── ログイン ── */
+/* ログイン */
 .auth h1{font-size:21px;margin-top:0}
-.auth p{
-  font-size:13px;
-  color:#7c8592;
-  line-height:1.7;
-}
+.auth p{font-size:13px;color:#7c8592;line-height:1.7}
 .auth label{
-  display:block;
-  margin-top:15px;
-  font-size:13px;
-  font-weight:800;
+  display:block;margin-top:15px;font-size:13px;font-weight:800;
 }
 .auth input{
-  display:block;
-  width:100%;
-  padding:12px;
-  margin-top:7px;
-  border:1px solid #dce0e6;
-  border-radius:12px;
-  font-size:16px;
+  display:block;width:100%;padding:12px;margin-top:7px;
+  border:1px solid #dce0e6;border-radius:12px;font-size:16px;
 }
 .auth-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:18px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:18px;
 }
 .auth-buttons button{
-  padding:13px;
-  border:0;
-  border-radius:12px;
-  background:#fff3da;
-  color:#956d28;
-  font-weight:800;
+  padding:13px;border:0;border-radius:12px;
+  background:#fff3da;color:#956d28;font-weight:800;
 }
 .auth-buttons button+button{
-  background:#f1f3f6;
-  color:#55606e;
+  background:#f1f3f6;color:#55606e;
 }
 
-/* ── 成功演出 ── */
+/* 成功演出 */
 .toast{
-  position:fixed;
-  left:50%;
+  position:fixed;left:50%;
   bottom:calc(94px + env(safe-area-inset-bottom));
-  z-index:30;
-  width:max-content;
+  z-index:30;width:max-content;
   max-width:calc(100vw - 36px);
-  padding:15px 21px;
-  border-radius:18px;
-  background:#343e57;
-  color:white;
-  text-align:center;
-  font-size:14px;
-  line-height:1.6;
-  font-weight:850;
+  padding:15px 21px;border-radius:18px;
+  background:#343e57;color:white;text-align:center;
+  font-size:14px;line-height:1.6;font-weight:850;
   box-shadow:0 12px 35px #14203842;
-  opacity:0;
-  pointer-events:none;
+  opacity:0;pointer-events:none;
   transform:translate(-50%,20px);
   transition:opacity .25s,transform .25s;
 }
 .toast.visible{
-  opacity:1;
-  transform:translate(-50%,0);
+  opacity:1;transform:translate(-50%,0);
 }
 .fx-layer{
-  position:fixed;
-  inset:0;
-  z-index:35;
-  pointer-events:none;
-  overflow:hidden;
+  position:fixed;inset:0;z-index:35;
+  pointer-events:none;overflow:hidden;
 }
 .fx-star{
-  position:absolute;
-  display:block;
-  font-family:Georgia,serif;
-  font-weight:bold;
+  position:absolute;display:block;
+  font-family:Georgia,serif;font-weight:bold;
   line-height:1;
-  text-shadow:
-    0 0 10px #fff8d9,
-    0 0 25px #f9d58a;
+  text-shadow:0 0 10px #fff8d9,0 0 25px #f9d58a;
   will-change:transform,opacity;
 }
 .fx-flash{
-  position:absolute;
-  left:50%;
-  top:43%;
-  width:170px;
-  height:170px;
-  border-radius:50%;
-  background:radial-gradient(circle,
-    #fff2c3b3,transparent 72%);
+  position:absolute;left:50%;top:43%;
+  width:170px;height:170px;border-radius:50%;
+  background:radial-gradient(circle,#fff2c3b3,transparent 72%);
 }
 .balance-glow{animation:balanceFlash .8s ease-out}
-
 @keyframes twinkle{
   0%,100%{opacity:.25;transform:scale(.8)}
   50%{opacity:1;transform:scale(1.2)}
@@ -781,30 +484,22 @@ body[data-theme="moon"] #storageStatus{
 <body data-theme="home">
 <div class="sky-day"></div>
 <div class="sky-night"></div>
-
 <div class="sky-stars" aria-hidden="true">
-  <span>✦</span><span>✧</span>
-  <span>✦</span><span>✧</span>
-  <span>✦</span><span>✧</span>
-  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span><span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span><span>✦</span><span>✧</span>
 </div>
 
 <header>
   <div class="brand">
     <span class="brand-star">✦</span> 星粒銀行
   </div>
-  <div id="accountInfo" class="account-info">
-    STAR BANK
-  </div>
+  <div id="accountInfo" class="account-info">STAR BANK</div>
 </header>
 
 <main>
-
-<!-- ログイン -->
 <section id="authPanel" class="card auth">
   <h1>星粒銀行へようこそ ✦</h1>
   <p>メールアドレスとパスワードでログインしてね。</p>
-
   <form id="authForm">
     <label>メールアドレス
       <input id="email" type="email"
@@ -812,266 +507,204 @@ body[data-theme="moon"] #storageStatus{
     </label>
     <label>パスワード
       <input id="password" type="password"
-        minlength="6"
-        autocomplete="current-password" required>
+        minlength="6" autocomplete="current-password" required>
     </label>
     <div class="auth-buttons">
-      <button id="signIn" type="submit">
-        ログイン
-      </button>
-      <button id="signUp" type="button">
-        新規登録
-      </button>
+      <button id="signIn" type="submit">ログイン</button>
+      <button id="signUp" type="button">新規登録</button>
     </div>
   </form>
   <p id="authStatus">接続しています…</p>
 </section>
 
 <div id="bankApp" hidden>
-
-<!-- ホーム -->
-<section id="homePage">
-  <div class="card hero">
-    <div class="hero-stars">✦ ☾ ✧</div>
-
-    <div class="scene hero-scene">
-      <img
-        src="./7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
-        alt="男の子と黒猫のシルエット"
-      >
-    </div>
-
-    <h1>星粒銀行へようこそ</h1>
-    <p>ふたりの星粒を、大切に。</p>
-  </div>
-
-  <div class="section-title">✦ あなたの口座</div>
-
-  <button class="account-card" id="homeLaLa" type="button">
-    <div class="top">
-      <span class="name">✦ LaLa預金</span>
-      <span class="arrow">›</span>
-    </div>
-    <div class="amount">
-      <span id="homeLaLaBalance">—</span>
-      <span class="unit">粒</span>
-    </div>
-    <div class="hint">現在の預金残高</div>
-  </button>
-
-  <button class="account-card repayment"
-    id="homeYamanashi" type="button">
-    <div class="top">
-      <span class="name">☾ 月見里返済</span>
-      <span class="arrow">›</span>
-    </div>
-    <div class="amount">
-      <span id="homeYamanashiBalance">—</span>
-      <span class="unit">粒</span>
-    </div>
-    <div class="hint">
-      月見里から返済された星粒の累計
-    </div>
-  </button>
-
-  <div class="section-title">☾ 返済のあゆみ</div>
-
-  <section class="card progress-card">
-    <h2>月見里返済の進捗</h2>
-    <div class="progress-number">
-      <span id="progressPaid">—</span>
-      <span> / 18,000粒</span>
-    </div>
-    <div class="progress-sub">
-      これまでに返済された星粒
-    </div>
-    <div class="progress-track">
-      <div id="progressFill" class="progress-fill"></div>
-    </div>
-    <div class="progress-label">
-      <span>
-        達成率
-        <strong id="progressPercent">—</strong>
-      </span>
-      <span>
-        残り
-        <strong id="progressRemaining">—</strong>粒
-      </span>
-    </div>
-
-    <div class="transfer-summary">
-      <div class="transfer-row">
-        <span>LaLa預金へ振替済み</span>
-        <strong>
-          <span id="homeTransferred">—</span>粒
-        </strong>
-      </div>
-      <div class="transfer-row available">
-        <span>振替可能</span>
-        <strong>
-          <span id="homeAvailable">—</span>粒
-        </strong>
-      </div>
-    </div>
-  </section>
-</section>
-
-<!-- 口座画面 -->
-<section id="accountsPage" hidden>
-  <button class="back" id="backHome" type="button">
-    ‹ ホームに戻る
-  </button>
-
-  <div class="tabs">
-    <button class="tab active"
-      id="tabLaLa" type="button">
-      ✦ LaLa預金
-    </button>
-    <button class="tab"
-      id="tabYamanashi" type="button">
-      ☾ 月見里返済
-    </button>
-  </div>
-
-  <section class="card balance-card" id="balanceCard">
-
-    <!-- LaLa：寝そべるふたり -->
-    <div id="lalaArtwork" class="account-scene-wrap">
-      <div class="scene lala-scene">
+  <section id="homePage">
+    <div class="card hero">
+      <div class="hero-stars">✦ ☾ ✧</div>
+      <div class="scene hero-scene">
         <img
-          src="./84C20629-6473-4327-A6FA-8A9436F8A036.png"
-          alt="床に寝そべる男の子と黒猫"
-        >
+          src="./7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
+          alt="男の子と黒猫のシルエット">
       </div>
-      <div class="account-scene-caption">
-        星粒といっしょに、ひとやすみ。
-      </div>
+      <h1>星粒銀行へようこそ</h1>
+      <p>ふたりの星粒を、大切に。</p>
     </div>
 
-    <!-- 月見里：明るいシルエット -->
-    <div id="moonArtwork"
-      class="account-scene-wrap" hidden>
-      <div class="scene moon-scene">
-        <img
-          src="./69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
-          alt="月明かりの下の男の子と黒猫"
-        >
+    <div class="section-title">✦ あなたの口座</div>
+
+    <button class="account-card" id="homeLaLa" type="button">
+      <div class="top">
+        <span class="name">✦ LaLa預金</span>
+        <span class="arrow">›</span>
       </div>
-      <div class="account-scene-caption">
-        月明かりの下で、のんびり。
+      <div class="amount">
+        <span id="homeLaLaBalance">—</span>
+        <span class="unit">粒</span>
       </div>
-    </div>
+      <div class="hint">現在の預金残高</div>
+    </button>
 
-    <div class="balance-label" id="balanceTitle">
-      LaLa預金
-    </div>
-
-    <div class="balance-number" id="balanceWrapper">
-      <span class="coin" id="accountCoin">★</span>
-      <span id="balance">—</span>
-      <span style="font-size:17px">粒</span>
-    </div>
-
-    <div class="muted" id="balanceHint">
-      現在の預金残高
-    </div>
-
-    <div class="transfer-summary"
-      id="accountTransferSummary" hidden>
-      <div class="transfer-row">
-        <span>振替済み</span>
-        <strong>
-          <span id="accountTransferred">—</span>粒
-        </strong>
+    <button class="account-card repayment"
+      id="homeYamanashi" type="button">
+      <div class="top">
+        <span class="name">☾ 月見里返済</span>
+        <span class="arrow">›</span>
       </div>
-      <div class="transfer-row available">
-        <span>振替可能</span>
-        <strong>
-          <span id="accountAvailable">—</span>粒
-        </strong>
+      <div class="amount">
+        <span id="homeYamanashiBalance">—</span>
+        <span class="unit">粒</span>
       </div>
-    </div>
+      <div class="hint">月見里から返済された星粒の累計</div>
+    </button>
 
-    <div class="actions">
-      <button class="action"
-        id="chargeButton" type="button">
-        ＋ チャージ
+    <div class="section-title">☾ 返済のあゆみ</div>
+    <section class="card progress-card">
+      <h2>月見里返済の進捗</h2>
+      <div class="progress-number">
+        <span id="progressPaid">—</span>
+        <span> / 18,000粒</span>
+      </div>
+      <div class="progress-sub">これまでに返済された星粒</div>
+      <div class="progress-track">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <div class="progress-label">
+        <span>達成率 <strong id="progressPercent">—</strong></span>
+        <span>残り <strong id="progressRemaining">—</strong>粒</span>
+      </div>
+      <div class="transfer-summary">
+        <div class="transfer-row">
+          <span>LaLa預金へ振替済み</span>
+          <strong><span id="homeTransferred">—</span>粒</strong>
+        </div>
+        <div class="transfer-row available">
+          <span>振替可能</span>
+          <strong><span id="homeAvailable">—</span>粒</strong>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section id="accountsPage" hidden>
+    <button class="back" id="backHome" type="button">
+      ‹ ホームに戻る
+    </button>
+    <div class="tabs">
+      <button class="tab active" id="tabLaLa" type="button">
+        ✦ LaLa預金
       </button>
-      <button class="action secondary"
-        id="withdrawButton" type="button">
-        ✧ 星粒を使う
-      </button>
-      <button class="action moon-action"
-        id="transferButton" type="button" hidden>
-        ✦ LaLaへ振替
+      <button class="tab" id="tabYamanashi" type="button">
+        ☾ 月見里返済
       </button>
     </div>
+
+    <section class="card balance-card" id="balanceCard">
+      <div id="lalaArtwork" class="account-scene-wrap">
+        <div class="scene lala-scene">
+          <img
+            src="./84C20629-6473-4327-A6FA-8A9436F8A036.png"
+            alt="男の子と黒猫">
+        </div>
+        <div class="account-scene-caption">
+          星粒といっしょに、ひとやすみ。
+        </div>
+      </div>
+
+      <div id="moonArtwork" class="account-scene-wrap" hidden>
+        <div class="scene moon-scene">
+          <img
+            src="./69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
+            alt="月明かりの下の男の子と黒猫">
+        </div>
+        <div class="account-scene-caption">
+          月明かりの下で、のんびり。
+        </div>
+      </div>
+
+      <div class="balance-label" id="balanceTitle">LaLa預金</div>
+      <div class="balance-number" id="balanceWrapper">
+        <span class="coin" id="accountCoin">★</span>
+        <span id="balance">—</span>
+        <span style="font-size:17px">粒</span>
+      </div>
+      <div class="muted" id="balanceHint">現在の預金残高</div>
+
+      <div class="transfer-summary"
+        id="accountTransferSummary" hidden>
+        <div class="transfer-row">
+          <span>振替済み</span>
+          <strong><span id="accountTransferred">—</span>粒</strong>
+        </div>
+        <div class="transfer-row available">
+          <span>振替可能</span>
+          <strong><span id="accountAvailable">—</span>粒</strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="action" id="chargeButton" type="button">
+          ＋ チャージ
+        </button>
+        <button class="action secondary"
+          id="withdrawButton" type="button">
+          ✧ 星粒を使う
+        </button>
+        <button class="action moon-action"
+          id="transferButton" type="button" hidden>
+          ✦ LaLaへ振替
+        </button>
+      </div>
+    </section>
+
+    <div class="section-title" id="historyTitle">
+      LaLa預金の履歴
+    </div>
+    <section class="card">
+      <p class="muted">
+        間違えた取引は「訂正する」から取り消せるよ。
+        元の記録も残るので安心してね。
+      </p>
+      <ul id="history" class="history"></ul>
+      <div class="empty" id="empty">
+        まだ取引履歴はないよ ✦
+      </div>
+    </section>
   </section>
 
-  <div class="section-title" id="historyTitle">
-    LaLa預金の履歴
-  </div>
-  <section class="card">
-    <p class="muted">
-      間違えた取引は「訂正する」から取り消せるよ。
-      元の記録も残るので安心してね。
-    </p>
-    <ul id="history" class="history"></ul>
-    <div class="empty" id="empty">
-      まだ取引履歴はないよ ✦
-    </div>
+  <section id="graphPage" hidden>
+    <div class="section-title">✧ グラフ</div>
+    <section class="card progress-card">
+      <h2>☾ 月見里返済</h2>
+      <div class="progress-number">
+        <span id="graphPaid">—</span>
+        <span> / 18,000粒</span>
+      </div>
+      <div class="progress-track">
+        <div id="graphFill" class="progress-fill"></div>
+      </div>
+      <div class="progress-label">
+        <span>達成率 <strong id="graphPercent">—</strong></span>
+        <span>残り <strong id="graphRemaining">—</strong>粒</span>
+      </div>
+    </section>
+    <p class="muted">取引推移のグラフは今後追加予定だよ。</p>
   </section>
-</section>
 
-<!-- グラフ -->
-<section id="graphPage" hidden>
-  <div class="section-title">✧ グラフ</div>
-  <section class="card progress-card">
-    <h2>☾ 月見里返済</h2>
-    <div class="progress-number">
-      <span id="graphPaid">—</span>
-      <span> / 18,000粒</span>
-    </div>
-    <div class="progress-track">
-      <div id="graphFill" class="progress-fill"></div>
-    </div>
-    <div class="progress-label">
-      <span>
-        達成率
-        <strong id="graphPercent">—</strong>
-      </span>
-      <span>
-        残り
-        <strong id="graphRemaining">—</strong>粒
-      </span>
-    </div>
+  <section id="settingsPage" hidden>
+    <div class="section-title">⚙ 設定</div>
+    <section class="card">
+      <p style="font-weight:800">星粒銀行</p>
+      <p class="muted">返済目標：18,000粒</p>
+      <p class="muted">口座：LaLa預金・月見里返済</p>
+      <p class="muted">取引の訂正記録は削除せず保存されるよ。</p>
+    </section>
   </section>
-  <p class="muted">
-    取引推移のグラフは今後追加予定だよ。
-  </p>
-</section>
 
-<!-- 設定 -->
-<section id="settingsPage" hidden>
-  <div class="section-title">⚙ 設定</div>
-  <section class="card">
-    <p style="font-weight:800">星粒銀行</p>
-    <p class="muted">返済目標：18,000粒</p>
-    <p class="muted">
-      口座：LaLa預金・月見里返済
-    </p>
-    <p class="muted">
-      取引の訂正記録は削除せず保存されるよ。
-    </p>
-  </section>
-</section>
-
-<p id="storageStatus" class="status" role="status"></p>
-<div class="footer">✦ Star Bank ✦</div>
+  <p id="storageStatus" class="status" role="status"></p>
+  <div class="footer">✦ Star Bank ✦</div>
 </div>
 </main>
 
-<!-- 下部メニュー -->
 <nav id="bottomNav" class="bottom-nav" hidden>
   <div class="nav-inner">
     <button class="nav-btn active"
@@ -1093,22 +726,18 @@ body[data-theme="moon"] #storageStatus{
   </div>
 </nav>
 
-<!-- 取引モーダル -->
 <div class="modal" id="transactionModal"
   role="dialog" aria-modal="true"
   aria-labelledby="transactionTitle">
   <div class="dialog">
     <h2 id="transactionTitle">星粒をチャージ</h2>
     <form id="transactionForm">
-      <label id="amountLabel"
-        for="transactionAmount">
+      <label id="amountLabel" for="transactionAmount">
         チャージする星粒数
       </label>
-      <input id="transactionAmount"
-        type="number"
+      <input id="transactionAmount" type="number"
         min="1" max="1000000" step="1"
-        inputmode="numeric" required
-        placeholder="例：10">
+        inputmode="numeric" required placeholder="例：10">
       <p id="transactionStatus" role="status"></p>
       <button id="transactionConfirm"
         class="confirm" type="submit">
@@ -1121,7 +750,6 @@ body[data-theme="moon"] #storageStatus{
   </div>
 </div>
 
-<!-- 訂正モーダル -->
 <div class="modal" id="correctionModal"
   role="dialog" aria-modal="true"
   aria-labelledby="correctionTitle">
@@ -1129,17 +757,13 @@ body[data-theme="moon"] #storageStatus{
     <h2 id="correctionTitle">✧ 取引を訂正</h2>
     <div id="correctionSummary" class="warning"></div>
     <form id="correctionForm">
-      <label for="correctionReason">
-        訂正理由（任意）
-      </label>
-      <textarea id="correctionReason"
-        maxlength="200"
+      <label for="correctionReason">訂正理由（任意）</label>
+      <textarea id="correctionReason" maxlength="200"
         placeholder="例：入力する金額を間違えた"></textarea>
       <p class="muted">
         元の履歴は消さず、訂正済みとして残るよ。
       </p>
-      <p id="correctionStatus"
-        class="status" role="status"></p>
+      <p id="correctionStatus" class="status" role="status"></p>
       <button id="correctionConfirm"
         class="confirm" type="submit">
         この取引を訂正する
@@ -1151,11 +775,9 @@ body[data-theme="moon"] #storageStatus{
   </div>
 </div>
 
-<!-- 演出 -->
 <div id="toast" class="toast"
   role="status" aria-live="polite"></div>
-<div id="fxLayer" class="fx-layer"
-  aria-hidden="true"></div>
+<div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
 
 <script type="module">
 import {initializeApp} from
@@ -1175,7 +797,6 @@ import {
 } from
 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
-/* ── Firebase設定 ── */
 const firebaseConfig={
   apiKey:'AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s',
   authDomain:'star-bank-f4d5a.firebaseapp.com',
@@ -1217,14 +838,21 @@ let stopHistory=null;
 let stopHomeBanks=[];
 let pendingCorrection=null;
 
+/*
+  ★ 今回の修正箇所 ★
+  正しいコレクション名は「Star Bank」
+  半角スペースを含む。
+*/
+const BANK_COLLECTION='Star Bank';
+
 function bankRef(id){
-  return doc(db,'StarBank',id);
+  return doc(db,BANK_COLLECTION,id);
 }
 function historyRef(id){
-  return collection(db,'StarBank',id,'history');
+  return collection(db,BANK_COLLECTION,id,'history');
 }
 function entryRef(id,entryId){
-  return doc(db,'StarBank',id,'history',entryId);
+  return doc(db,BANK_COLLECTION,id,'history',entryId);
 }
 function correctionId(originalId){
   return 'correction_'+originalId;
@@ -1240,7 +868,7 @@ const reduceMotion=window.matchMedia(
   '(prefers-reduced-motion: reduce)'
 );
 
-/* ── 数字のアニメーション ── */
+/* 数字 */
 const animatedNumbers=new Map();
 const numberFrames=new Map();
 
@@ -1282,21 +910,16 @@ function setNumber(id,value){
   function step(now){
     const p=Math.min(1,(now-start)/750);
     const ease=1-Math.pow(1-p,3);
-
     node.textContent=format(
       Math.round(previous+difference*ease)
     );
-
     if(p<1){
-      numberFrames.set(
-        id,requestAnimationFrame(step)
-      );
+      numberFrames.set(id,requestAnimationFrame(step));
     }else{
       node.textContent=format(value);
       numberFrames.delete(id);
     }
   }
-
   numberFrames.set(id,requestAnimationFrame(step));
 }
 
@@ -1315,7 +938,7 @@ function glowBalance(){
   node.classList.add('balance-glow');
 }
 
-/* ── 星粒演出 ── */
+/* 演出 */
 let toastTimer=null;
 
 function showToast(message){
@@ -1323,7 +946,6 @@ function showToast(message){
   clearTimeout(toastTimer);
   node.textContent=message;
   node.classList.add('visible');
-
   toastTimer=setTimeout(()=>{
     node.classList.remove('visible');
   },3500);
@@ -1347,7 +969,6 @@ function animateAndRemove(node,frames,duration,delay=0){
     easing:'cubic-bezier(.2,.7,.2,1)',
     fill:'both'
   });
-
   animation.finished.then(()=>{
     node.remove();
   }).catch(()=>{
@@ -1439,7 +1060,6 @@ function playEffect(kind){
     if(kind==='withdraw'){
       const dx=Math.cos(angle)*distance*.7;
       const dy=-130-(i%3)*50;
-
       frames=[
         {
           opacity:0,
@@ -1458,7 +1078,6 @@ function playEffect(kind){
     }else if(kind==='correction'){
       const dx=Math.cos(angle)*distance;
       const dy=Math.sin(angle)*distance;
-
       frames=[
         {
           opacity:0,
@@ -1477,7 +1096,6 @@ function playEffect(kind){
     }else if(kind==='repayment'){
       const dx=75+i*14;
       const dy=-95-i*13;
-
       frames=[
         {
           opacity:0,
@@ -1496,7 +1114,6 @@ function playEffect(kind){
     }else{
       const dx=Math.cos(angle)*distance;
       const dy=Math.sin(angle)*distance;
-
       frames=[
         {
           opacity:0,
@@ -1534,17 +1151,14 @@ function clearEffects(){
   el('fxLayer').replaceChildren();
 }
 
-/* ── 進捗表示 ── */
+/* 進捗 */
 function updateProgress(){
   const paid=balances.yamanashi;
   const ready=validAmount(paid);
-
   const percent=ready
     ?Math.min(100,paid/GOAL*100):0;
-
   const percentText=ready
     ?(paid/GOAL*100).toFixed(2)+'%':'—';
-
   const remaining=ready
     ?format(Math.max(0,GOAL-paid)):'—';
 
@@ -1556,11 +1170,9 @@ function updateProgress(){
   for(const id of ['progressPercent','graphPercent']){
     el(id).textContent=percentText;
   }
-
   for(const id of ['progressRemaining','graphRemaining']){
     el(id).textContent=remaining;
   }
-
   for(const id of ['progressFill','graphFill']){
     el(id).style.width=percent+'%';
   }
@@ -1573,14 +1185,13 @@ function updateProgress(){
     'homeTransferred',
     transferReady?transferred:null
   );
-
   setNumber(
     'homeAvailable',
     transferReady?paid-transferred:null
   );
 }
 
-/* ── ページ切り替え ── */
+/* ページ */
 function showPage(page){
   if(transacting||correcting)return;
 
@@ -1596,12 +1207,10 @@ function showPage(page){
     );
   });
 
-  if(page==='accounts'){
-    document.body.dataset.theme=
-      selectedAccount==='yamanashi'?'moon':'lala';
-  }else{
-    document.body.dataset.theme='home';
-  }
+  document.body.dataset.theme=
+    page==='accounts'
+      ?(selectedAccount==='yamanashi'?'moon':'lala')
+      :'home';
 
   window.scrollTo(0,0);
 }
@@ -1623,7 +1232,6 @@ function openAccount(id){
     selectedAccount=id;
     watchSelectedAccount();
   }
-
   showPage('accounts');
 }
 
@@ -1640,7 +1248,7 @@ el('tabYamanashi').addEventListener('click',()=>{
   openAccount('yamanashi');
 });
 
-/* ── 履歴 ── */
+/* 履歴 */
 const labels={
   charge:'✦ チャージ',
   withdraw:'✧ 星粒を使用',
@@ -1657,7 +1265,6 @@ function transactionLabel(type,accountId){
 
 function dateLabel(value){
   const date=value?.toDate?.();
-
   return date
     ?date.toLocaleString('ja-JP',{
       year:'numeric',
@@ -1676,7 +1283,6 @@ function renderHistory(snapshot){
   const items=snapshot.docs.map(s=>({
     id:s.id,...s.data()
   }));
-
   const corrections=new Map();
 
   for(const item of items){
@@ -1687,7 +1293,6 @@ function renderHistory(snapshot){
 
   for(const item of items){
     const type=item.type;
-
     if(![
       'charge','withdraw','transfer_in',
       'transfer_out','correction'
@@ -1710,7 +1315,6 @@ function renderHistory(snapshot){
     if(type==='correction'){
       li.classList.add('correction-entry');
       title.textContent='↶ 取引の訂正';
-
       small.textContent=
         dateLabel(item.createdAt)+' ・ LaLa';
 
@@ -1726,7 +1330,6 @@ function renderHistory(snapshot){
       const originalSign=
         item.originalType==='withdraw'?-1:
         item.originalType==='transfer_out'?0:1;
-
       const correctionSign=-originalSign;
 
       if(item.originalType==='transfer_out'){
@@ -1750,11 +1353,9 @@ function renderHistory(snapshot){
     title.textContent=transactionLabel(
       type,selectedAccount
     );
-
     small.textContent=
       dateLabel(item.createdAt)+' ・ '+
       (item.actorName||'不明');
-
     details.append(title,small);
 
     const negative=type==='withdraw';
@@ -1763,17 +1364,13 @@ function renderHistory(snapshot){
       amount.textContent=format(value)+'粒';
     }else{
       amount.textContent=
-        (negative?'−':'+')+
-        format(value)+'粒';
+        (negative?'−':'+')+format(value)+'粒';
     }
 
     if(negative)amount.classList.add('minus');
 
-    const corrected=corrections.has(item.id);
-
-    if(corrected){
+    if(corrections.has(item.id)){
       amount.classList.add('cancelled');
-
       const tag=document.createElement('span');
       tag.className='corrected-tag';
       tag.textContent='訂正済み';
@@ -1783,11 +1380,9 @@ function renderHistory(snapshot){
       button.className='correction-button';
       button.type='button';
       button.textContent='訂正する';
-
       button.addEventListener('click',()=>{
         openCorrection(item);
       });
-
       right.append(amount,button);
     }
 
@@ -1798,15 +1393,13 @@ function renderHistory(snapshot){
   el('empty').hidden=list.children.length>0;
 }
 
-/* ── 口座監視 ── */
+/* 口座監視 */
 function stopAccountListeners(){
   accountVersion++;
-
   if(stopSelectedBank){
     stopSelectedBank();
     stopSelectedBank=null;
   }
-
   if(stopHistory){
     stopHistory();
     stopHistory=null;
@@ -1823,15 +1416,13 @@ function updateAccountTransferView(){
     'accountTransferred',
     ready?currentTransferred:null
   );
-
   setNumber(
     'accountAvailable',
     ready?currentBalance-currentTransferred:null
   );
 
   el('transferButton').disabled=
-    !ready
-    ||currentBalance-currentTransferred===0;
+    !ready||currentBalance-currentTransferred===0;
 }
 
 function watchSelectedAccount(){
@@ -1851,29 +1442,17 @@ function watchSelectedAccount(){
   el('history').replaceChildren();
   el('empty').hidden=false;
 
-  el('tabLaLa').classList.toggle(
-    'active',!isRepayment
-  );
-  el('tabYamanashi').classList.toggle(
-    'active',isRepayment
-  );
-  el('tabYamanashi').classList.toggle(
-    'moon-tab',isRepayment
-  );
-  el('balanceCard').classList.toggle(
-    'moon-mode',isRepayment
-  );
+  el('tabLaLa').classList.toggle('active',!isRepayment);
+  el('tabYamanashi').classList.toggle('active',isRepayment);
+  el('tabYamanashi').classList.toggle('moon-tab',isRepayment);
+  el('balanceCard').classList.toggle('moon-mode',isRepayment);
 
   el('lalaArtwork').hidden=isRepayment;
   el('moonArtwork').hidden=!isRepayment;
 
-  el('accountCoin').textContent=
-    isRepayment?'☾':'★';
-
+  el('accountCoin').textContent=isRepayment?'☾':'★';
   el('balanceTitle').textContent=accounts[id].name;
-  el('historyTitle').textContent=
-    accounts[id].name+'の履歴';
-
+  el('historyTitle').textContent=accounts[id].name+'の履歴';
   el('balanceHint').textContent=isRepayment
     ?'月見里から返済された星粒の累計'
     :'現在の預金残高';
@@ -1881,7 +1460,6 @@ function watchSelectedAccount(){
   el('chargeButton').textContent=isRepayment
     ?'＋ 返済を記録'
     :'＋ チャージ';
-
   el('chargeButton').classList.toggle(
     'moon-action',isRepayment
   );
@@ -1899,7 +1477,6 @@ function watchSelectedAccount(){
 
       const data=snapshot.exists()
         ?snapshot.data():null;
-
       const value=data?.balance;
 
       if(validAmount(value)){
@@ -1934,7 +1511,6 @@ function watchSelectedAccount(){
     },
     error=>{
       if(version!==accountVersion)return;
-
       balanceReady=false;
       el('storageStatus').textContent=
         '口座を読み込めなかったよ。';
@@ -1976,8 +1552,8 @@ function watchHomeBalances(){
       snapshot=>{
         const data=snapshot.exists()
           ?snapshot.data():null;
-
         const value=data?.balance;
+
         balances[id]=validAmount(value)
           ?value:null;
 
@@ -1985,7 +1561,6 @@ function watchHomeBalances(){
           transferred=validAmount(data?.transferred)
             ?data.transferred:null;
         }
-
         updateProgress();
       },
       error=>{
@@ -1998,12 +1573,11 @@ function watchHomeBalances(){
         console.error(error);
       }
     );
-
     stopHomeBanks.push(stop);
   }
 }
 
-/* ── 取引画面 ── */
+/* 取引画面 */
 function closeTransaction(){
   el('transactionModal').classList.remove('show');
 }
@@ -2027,14 +1601,12 @@ function openTransaction(type){
     withdraw:'✧ 星粒を使う',
     transfer:'✦ LaLa預金へ振替'
   };
-
   const label={
     charge:repayment
       ?'返済された星粒数':'チャージする星粒数',
     withdraw:'使用する星粒数',
     transfer:'振り替える星粒数'
   };
-
   const confirm={
     charge:repayment
       ?'返済を記録する':'チャージする',
@@ -2074,7 +1646,7 @@ el('transactionCancel').addEventListener('click',()=>{
   if(!transacting)closeTransaction();
 });
 
-/* ── 通常取引保存 ── */
+/* 通常取引 */
 async function ordinaryTransaction(user,id,type,amount){
   const targetBank=bankRef(id);
   const entry=doc(historyRef(id));
@@ -2087,7 +1659,6 @@ async function ordinaryTransaction(user,id,type,amount){
     }
 
     const old=snapshot.data().balance;
-
     if(!validAmount(old)){
       throw new Error('残高データを確認できないよ。');
     }
@@ -2111,10 +1682,8 @@ async function ordinaryTransaction(user,id,type,amount){
     }
 
     tx.update(targetBank,{balance:next});
-
     tx.set(entry,{
-      type,
-      amount,
+      type,amount,
       actorUid:user.uid,
       actorName:names[user.uid]||'未登録ユーザー',
       createdAt:serverTimestamp()
@@ -2122,7 +1691,7 @@ async function ordinaryTransaction(user,id,type,amount){
   });
 }
 
-/* ── 振替保存 ── */
+/* 振替 */
 async function transferTransaction(user,amount){
   const lalaBank=bankRef('LaLa');
   const repaymentBank=bankRef('yamanashi');
@@ -2153,7 +1722,6 @@ async function transferTransaction(user,amount){
     }
 
     const available=repaid-alreadyTransferred;
-
     if(amount>available){
       throw new Error(
         '振替可能額を超えているよ。現在の振替可能額：'+
@@ -2173,7 +1741,6 @@ async function transferTransaction(user,amount){
       balance:nextLaLa,
       lastTransferId:transferId
     });
-
     tx.update(repaymentBank,{
       transferred:nextTransferred,
       lastTransferId:transferId
@@ -2189,18 +1756,16 @@ async function transferTransaction(user,amount){
     tx.set(lalaEntry,{
       ...common,type:'transfer_in'
     });
-
     tx.set(repaymentEntry,{
       ...common,type:'transfer_out'
     });
   });
 }
 
-/* ── 取引フォーム ── */
+/* 取引フォーム */
 el('transactionForm').addEventListener(
   'submit',async e=>{
     e.preventDefault();
-
     if(transacting||correcting||!balanceReady)return;
 
     const user=auth.currentUser;
@@ -2228,7 +1793,6 @@ el('transactionForm').addEventListener(
 
     if(type==='transfer'){
       if(id!=='yamanashi')return;
-
       if(amount>currentBalance-currentTransferred){
         el('transactionStatus').textContent=
           '振替可能額を超えているよ。';
@@ -2273,7 +1837,6 @@ el('transactionForm').addEventListener(
       celebrate(text,effect);
     }catch(error){
       console.error(error);
-
       el('transactionStatus').textContent=
         error.code==='permission-denied'
         ?'保存権限がないよ。Firestoreルールを確認してね。'
@@ -2286,13 +1849,12 @@ el('transactionForm').addEventListener(
   }
 );
 
-/* ── 訂正画面 ── */
+/* 訂正画面 */
 function openCorrection(item){
   if(transacting||correcting)return;
 
   const accountId=selectedAccount;
   const amount=Number(item.amount);
-
   if(!validTransactionAmount(amount))return;
 
   pendingCorrection={
@@ -2302,10 +1864,7 @@ function openCorrection(item){
     amount
   };
 
-  const name=transactionLabel(
-    item.type,accountId
-  );
-
+  const name=transactionLabel(item.type,accountId);
   let explanation='';
 
   if(item.type==='charge'){
@@ -2317,8 +1876,7 @@ function openCorrection(item){
   }
 
   if(item.type==='withdraw'){
-    explanation='LaLa預金に'+format(amount)+
-      '粒を戻すよ。';
+    explanation='LaLa預金に'+format(amount)+'粒を戻すよ。';
   }
 
   if(item.type==='transfer_in'
@@ -2332,8 +1890,7 @@ function openCorrection(item){
 
   el('correctionSummary').textContent=
     '訂正対象：'+name+
-    '（'+format(amount)+'粒）\n'+
-    explanation;
+    '（'+format(amount)+'粒）\n'+explanation;
 
   el('correctionReason').value='';
   el('correctionStatus').textContent=
@@ -2346,13 +1903,11 @@ function closeCorrection(){
   pendingCorrection=null;
 }
 
-el('correctionCancel').addEventListener(
-  'click',()=>{
-    if(!correcting)closeCorrection();
-  }
-);
+el('correctionCancel').addEventListener('click',()=>{
+  if(!correcting)closeCorrection();
+});
 
-/* ── 通常取引の訂正 ── */
+/* 通常取引の訂正 */
 async function correctOrdinary(user,target,reason){
   const {
     accountId,originalId,originalType,amount
@@ -2370,15 +1925,10 @@ async function correctOrdinary(user,target,reason){
     const correctionSnap=await tx.get(correction);
 
     if(!bankSnap.exists()||!originalSnap.exists()){
-      throw new Error(
-        '訂正対象のデータが見つからないよ。'
-      );
+      throw new Error('訂正対象のデータが見つからないよ。');
     }
-
     if(correctionSnap.exists()){
-      throw new Error(
-        'この取引はすでに訂正済みだよ。'
-      );
+      throw new Error('この取引はすでに訂正済みだよ。');
     }
 
     const data=originalSnap.data();
@@ -2386,9 +1936,7 @@ async function correctOrdinary(user,target,reason){
     if(data.type!==originalType
       ||data.amount!==amount
       ||!['charge','withdraw'].includes(data.type)){
-      throw new Error(
-        '元の取引データが一致しないよ。'
-      );
+      throw new Error('元の取引データが一致しないよ。');
     }
 
     if(accountId==='yamanashi'
@@ -2397,7 +1945,6 @@ async function correctOrdinary(user,target,reason){
     }
 
     const old=bankSnap.data().balance;
-
     if(!validAmount(old)){
       throw new Error('残高を確認できないよ。');
     }
@@ -2427,13 +1974,9 @@ async function correctOrdinary(user,target,reason){
     }
 
     tx.update(targetBank,{balance:next});
-
     tx.set(correction,{
       type:'correction',
-      originalId,
-      originalType,
-      amount,
-      reason,
+      originalId,originalType,amount,reason,
       actorUid:user.uid,
       actorName:'LaLa',
       createdAt:serverTimestamp()
@@ -2441,7 +1984,7 @@ async function correctOrdinary(user,target,reason){
   });
 }
 
-/* ── 振替の訂正 ── */
+/* 振替の訂正 */
 async function correctTransfer(user,target,reason){
   const {originalId,amount}=target;
 
@@ -2460,16 +2003,10 @@ async function correctTransfer(user,target,reason){
   await runTransaction(db,async tx=>{
     const lalaSnap=await tx.get(lalaBank);
     const repaymentSnap=await tx.get(repaymentBank);
-
-    const lalaOriginalSnap=
-      await tx.get(lalaOriginal);
-    const repaymentOriginalSnap=
-      await tx.get(repaymentOriginal);
-
-    const lalaCorrectionSnap=
-      await tx.get(lalaCorrection);
-    const repaymentCorrectionSnap=
-      await tx.get(repaymentCorrection);
+    const lalaOriginalSnap=await tx.get(lalaOriginal);
+    const repaymentOriginalSnap=await tx.get(repaymentOriginal);
+    const lalaCorrectionSnap=await tx.get(lalaCorrection);
+    const repaymentCorrectionSnap=await tx.get(repaymentCorrection);
 
     if(!lalaSnap.exists()
       ||!repaymentSnap.exists()
@@ -2480,9 +2017,7 @@ async function correctTransfer(user,target,reason){
 
     if(lalaCorrectionSnap.exists()
       ||repaymentCorrectionSnap.exists()){
-      throw new Error(
-        'この振替はすでに訂正済みだよ。'
-      );
+      throw new Error('この振替はすでに訂正済みだよ。');
     }
 
     const originalIn=lalaOriginalSnap.data();
@@ -2492,9 +2027,7 @@ async function correctTransfer(user,target,reason){
       ||originalOut.type!=='transfer_out'
       ||originalIn.amount!==amount
       ||originalOut.amount!==amount){
-      throw new Error(
-        '振替の履歴が一致しないよ。'
-      );
+      throw new Error('振替の履歴が一致しないよ。');
     }
 
     const lalaBalance=lalaSnap.data().balance;
@@ -2513,7 +2046,6 @@ async function correctTransfer(user,target,reason){
         'LaLa預金の残高が足りないため訂正できないよ。'
       );
     }
-
     if(transferredAmount<amount){
       throw new Error(
         '振替済み額が不足しているため訂正できないよ。'
@@ -2533,7 +2065,6 @@ async function correctTransfer(user,target,reason){
       balance:nextLaLa,
       lastCorrectionId:id
     });
-
     tx.update(repaymentBank,{
       transferred:nextTransferred,
       lastCorrectionId:id
@@ -2541,34 +2072,27 @@ async function correctTransfer(user,target,reason){
 
     const common={
       type:'correction',
-      originalId,
-      amount,
-      reason,
+      originalId,amount,reason,
       actorUid:user.uid,
       actorName:'LaLa',
       createdAt:serverTimestamp()
     };
 
     tx.set(lalaCorrection,{
-      ...common,
-      originalType:'transfer_in'
+      ...common,originalType:'transfer_in'
     });
-
     tx.set(repaymentCorrection,{
-      ...common,
-      originalType:'transfer_out'
+      ...common,originalType:'transfer_out'
     });
   });
 }
 
-/* ── 訂正フォーム ── */
+/* 訂正フォーム */
 el('correctionForm').addEventListener(
   'submit',async e=>{
     e.preventDefault();
 
-    if(correcting||transacting||!pendingCorrection){
-      return;
-    }
+    if(correcting||transacting||!pendingCorrection)return;
 
     const user=auth.currentUser;
     if(!user)return;
@@ -2593,21 +2117,17 @@ el('correctionForm').addEventListener(
       closeCorrection();
 
       const text=
-        format(target.amount)+
-        '粒の取引を訂正したよ ✧';
+        format(target.amount)+'粒の取引を訂正したよ ✧';
 
       el('storageStatus').textContent=text;
       celebrate(text,'correction');
-
     }catch(error){
       console.error(error);
-
       el('correctionStatus').textContent=
         error.code==='permission-denied'
         ?'訂正の保存が許可されなかったよ。'+
           'Firestoreルールを確認してね。'
         :error.message||'訂正できなかったよ。';
-
     }finally{
       correcting=false;
       el('correctionConfirm').disabled=false;
@@ -2616,7 +2136,7 @@ el('correctionForm').addEventListener(
   }
 );
 
-/* ── ログイン ── */
+/* ログイン */
 async function runAuth(register){
   if(authBusy)return;
   if(!el('authForm').reportValidity())return;
@@ -2627,7 +2147,6 @@ async function runAuth(register){
 
   const email=el('email').value.trim();
   const password=el('password').value;
-
   el('authStatus').textContent='確認しています…';
 
   try{
@@ -2652,7 +2171,6 @@ async function runAuth(register){
       'auth/invalid-email':
         'メールアドレスを確認してね。'
     };
-
     el('authStatus').textContent=
       messages[error.code]||
       'ログインできなかったよ。';
@@ -2667,12 +2185,11 @@ el('authForm').addEventListener('submit',e=>{
   e.preventDefault();
   runAuth(false);
 });
-
 el('signUp').addEventListener('click',()=>{
   runAuth(true);
 });
 
-/* ── ログイン状態 ── */
+/* ログイン状態 */
 onAuthStateChanged(auth,user=>{
   stopAccountListeners();
   stopHomeBanks.forEach(stop=>stop());
