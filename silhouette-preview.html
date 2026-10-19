@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>星粒銀行・シルエット試着室 第3案</title>
+<title>星粒銀行・シルエット試着室 第4案</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -53,6 +53,7 @@ button{
   color:#677082;
   font-size:12px;
   font-weight:bold;
+  cursor:pointer;
 }
 button.active{
   background:#fff0ca;
@@ -68,37 +69,92 @@ button.active{
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:background .3s;
+  transition:background .4s;
 }
+
+/* ホーム：夕焼け */
 .stage.home{
-  background:linear-gradient(160deg,
-    #ffe9b7,#fff9e9);
+  background:
+    radial-gradient(
+      ellipse at 76% 85%,
+      #ffe7ad 0%,
+      transparent 62%
+    ),
+    linear-gradient(
+      165deg,
+      #f6b9d0 0%,
+      #ffd2bf 47%,
+      #ffe9c2 100%
+    );
 }
+
+/* LaLa：クリームと金色 */
 .stage.lala{
-  background:linear-gradient(160deg,
-    #ffe3a1,#fff6d8);
+  background:
+    radial-gradient(
+      ellipse at 50% 90%,
+      #f7d68e 0%,
+      transparent 65%
+    ),
+    linear-gradient(
+      160deg,
+      #fff7df 0%,
+      #ffebba 55%,
+      #f5d591 100%
+    );
 }
+
+/* 月見里：深い夜空 */
 .stage.moon{
-  background:linear-gradient(160deg,
-    #18213c,#435580);
+  background:
+    radial-gradient(
+      ellipse at 78% 18%,
+      #536397 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      165deg,
+      #151d38 0%,
+      #27365d 55%,
+      #4b4b83 100%
+    );
 }
+
+/* 小さな星 */
 .stars{
   position:absolute;
   inset:0;
   pointer-events:none;
   background-image:
     radial-gradient(circle at 16% 18%,
-      #f5d48c 0 2px,transparent 3px),
+      #fff7e5 0 2px,transparent 3px),
     radial-gradient(circle at 77% 25%,
-      #f5d48c 0 1.5px,transparent 3px),
+      #fff7e5 0 1.5px,transparent 3px),
     radial-gradient(circle at 62% 12%,
-      #f5d48c 0 2px,transparent 3px),
+      #fff7e5 0 2px,transparent 3px),
     radial-gradient(circle at 88% 68%,
-      #f5d48c 0 1px,transparent 3px);
+      #fff7e5 0 1px,transparent 3px),
+    radial-gradient(circle at 25% 76%,
+      #fff7e5 0 1.5px,transparent 3px);
 }
-.moon .stars{
-  opacity:.85;
+.home .stars{opacity:.55}
+.lala .stars{opacity:.95}
+.moon .stars{opacity:.8}
+
+/* 月見里だけ小さな三日月 */
+.crescent{
+  position:absolute;
+  top:36px;
+  right:46px;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  box-shadow:-7px 4px 0 0 #f2e8c6;
+  transform:rotate(-17deg);
+  display:none;
 }
+.moon .crescent{display:block}
+
 .silhouette{
   position:relative;
   z-index:1;
@@ -106,19 +162,12 @@ button.active{
   max-width:none;
   object-fit:contain;
   filter:none;
-  transition:
-    width .2s,
-    filter .2s;
+  transition:width .2s,filter .2s;
 }
-.stage.home .silhouette{
-  width:85%;
-}
-.stage.lala .silhouette{
-  width:80%;
-}
-.stage.moon .silhouette{
-  width:94%;
-}
+.stage.home .silhouette{width:85%}
+.stage.lala .silhouette{width:80%}
+.stage.moon .silhouette{width:94%}
+
 .stage.light .silhouette{
   filter:brightness(0) invert(1);
 }
@@ -155,8 +204,8 @@ button.active{
 
 <h1>✦ 星粒銀行・シルエット試着室</h1>
 <p>
-第3案。今回はSVGで描き直さず、
-アップロードしたPNG画像をそのまま表示するよ。
+第4案。3つの空をそれぞれ違う色にしたよ。
+シルエット画像はアップロードしたPNGをそのまま使用！
 </p>
 
 <section class="panel">
@@ -164,18 +213,19 @@ button.active{
 <h2>表示する場所</h2>
 <div class="buttons">
   <button class="scene-btn active" data-scene="home">
-    ホーム
+    🌇 ホーム
   </button>
   <button class="scene-btn" data-scene="lala">
-    LaLa預金
+    ✨ LaLa預金
   </button>
   <button class="scene-btn" data-scene="moon">
-    月見里返済
+    🌙 月見里返済
   </button>
 </div>
 
 <div id="stage" class="stage home">
   <div class="stars"></div>
+  <div class="crescent"></div>
 
   <img
     id="silhouette"
@@ -186,7 +236,7 @@ button.active{
 </div>
 
 <div id="caption" class="caption">
-  ホーム用シルエット
+  ホーム・夕焼けの空
 </div>
 
 <h2 style="margin-top:22px">シルエットの色</h2>
@@ -213,10 +263,10 @@ button.active{
 >
 
 <div class="note">
-  ✦ 画像はアップロードしたものをそのまま使用。<br>
-  ✦ 大きさはスライダーで調整できるよ。<br>
-  ✦ 明るい色は夜空での見え方を試すためのもの。<br>
-  ✦ 星粒銀行本体のデータには影響しないよ。
+  ✦ ホームは夕焼け色。<br>
+  ✦ LaLaは明るい金色の空。<br>
+  ✦ 月見里は星と小さな三日月の夜空。<br>
+  ✦ 星粒銀行本体やFirebaseには影響しないよ。
 </div>
 
 </section>
@@ -226,17 +276,17 @@ button.active{
 const images={
   home:{
     src:"./7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
-    title:"ホーム用シルエット",
+    title:"ホーム・夕焼けの空",
     width:85
   },
   lala:{
     src:"./84C20629-6473-4327-A6FA-8A9436F8A036.png",
-    title:"LaLa預金用シルエット",
+    title:"LaLa預金・金色の空",
     width:80
   },
   moon:{
     src:"./69BD7493-904A-43A1-9F1E-E143989AC4F8.png",
-    title:"月見里返済用シルエット",
+    title:"月見里返済・夜空",
     width:94
   }
 };
