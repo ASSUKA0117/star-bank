@@ -2989,3 +2989,192 @@ onAuthStateChanged(auth,user=>{
 </script>
 </body>
 </html>
+
+
+<!-- 星粒銀行・新デザイン追加 -->
+<style>
+/* ホーム：夕焼け */
+body[data-theme="home"] .sky-day{
+  background:
+    radial-gradient(
+      ellipse at 76% 85%,
+      #ffe7ad 0%,
+      transparent 62%
+    ),
+    linear-gradient(
+      165deg,
+      #f6b9d0 0%,
+      #ffd2bf 47%,
+      #ffe9c2 100%
+    );
+}
+
+/* LaLa：クリームイエローと金色 */
+body[data-theme="lala"] .sky-day{
+  background:
+    radial-gradient(
+      ellipse at 50% 90%,
+      #f7d68e 0%,
+      transparent 65%
+    ),
+    linear-gradient(
+      160deg,
+      #fff7df 0%,
+      #ffebba 55%,
+      #f5d591 100%
+    );
+}
+
+/* 月見里：深い紺色と青紫 */
+body[data-theme="moon"] .sky-night{
+  background:
+    radial-gradient(
+      ellipse at 78% 18%,
+      #536397 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      165deg,
+      #151d38 0%,
+      #27365d 55%,
+      #4b4b83 100%
+    );
+}
+
+/* シルエットの表示領域 */
+.hero-scene{
+  height:175px;
+  background:
+    radial-gradient(
+      ellipse at 50% 90%,
+      #ffe7ad,
+      transparent 70%
+    );
+}
+
+.lala-scene{
+  height:145px;
+  background:
+    radial-gradient(
+      ellipse at 50% 90%,
+      #f7d68e,
+      transparent 75%
+    );
+}
+
+.moon-scene{
+  height:145px;
+  background:
+    radial-gradient(
+      ellipse at 50% 90%,
+      #536397,
+      transparent 75%
+    );
+}
+
+/* PNG画像 */
+.scene .bank-silhouette{
+  display:block;
+  width:90%;
+  height:100%;
+  max-width:350px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 3px #202b3c12);
+}
+
+.hero-scene .bank-silhouette{
+  width:88%;
+}
+
+.lala-scene .bank-silhouette{
+  width:85%;
+}
+
+/* 月見里は明るいアイボリー色 */
+.moon-scene .bank-silhouette{
+  width:94%;
+  filter:
+    brightness(0)
+    saturate(100%)
+    invert(95%)
+    sepia(12%)
+    saturate(347%)
+    hue-rotate(322deg)
+    brightness(104%);
+}
+
+/* 月見里の小さな三日月 */
+.moon-scene::after{
+  content:"";
+  position:absolute;
+  top:15px;
+  right:27px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  box-shadow:-5px 3px 0 #f2e8c6;
+  transform:rotate(-17deg);
+  pointer-events:none;
+}
+
+/* 月見里でもカードは白く読みやすく */
+body[data-theme="moon"] .card{
+  background:#fffffff4;
+}
+</style>
+
+<script>
+/*
+  既存のSVGだけを画像に差し替える。
+  残高・履歴・Firebaseの処理は変更しない。
+*/
+(function(){
+  const pictures=[
+    {
+      selector:".hero-scene",
+      file:"7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
+      alt:"ホームの男の子と黒猫"
+    },
+    {
+      selector:".lala-scene",
+      file:"84C20629-6473-4327-A6FA-8A9436F8A036.png",
+      alt:"LaLa預金の男の子と黒猫"
+    },
+    {
+      selector:".moon-scene",
+      file:"69BD7493-904A-43A1-9F1E-E143989AC4F8.png",
+      alt:"月見里返済の男の子と黒猫"
+    }
+  ];
+
+  function applyArtwork(){
+    pictures.forEach(item=>{
+      const scene=document.querySelector(item.selector);
+      if(!scene)return;
+
+      const oldSvg=scene.querySelector("svg");
+      if(oldSvg)oldSvg.remove();
+
+      if(scene.querySelector(".bank-silhouette"))return;
+
+      const img=document.createElement("img");
+      img.className="bank-silhouette";
+      img.src="./"+item.file;
+      img.alt=item.alt;
+      img.decoding="async";
+
+      scene.appendChild(img);
+    });
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      applyArtwork
+    );
+  }else{
+    applyArtwork();
+  }
+})();
+</script>
+<!-- 新デザイン追加ここまで -->
