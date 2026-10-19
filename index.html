@@ -101,9 +101,10 @@ onAuthStateChanged(auth,user=>{
       el('balance').textContent=snapshot.data().balance.toLocaleString('ja-JP');
       note.textContent='残高をFirestoreから読み込めたよ。チャージ・使用機能は次の段階で追加するね。';
     }else{note.textContent='残高データが見つからないよ。Firestoreの starBank / main を確認してね。';}
-  },error=>{
-    note.textContent=error.code==='permission-denied' ? 'まだデータへのアクセス許可がないよ。2人のユーザーIDを登録してから使えるようになるよ。' : '残高を読み込めなかったよ。接続や設定を確認してね。';
-  });
+ 
+},error=>{
+  note.textContent='読み込みエラー：'+error.code+' / '+error.message;
 });
+
 </script>
 </body></html>
