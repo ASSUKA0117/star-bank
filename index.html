@@ -3,642 +3,546 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#fbf9f5">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff9e9">
 <title>星粒銀行 | Star Bank</title>
 
 <style>
-:root {
+:root{
   font-family:-apple-system,BlinkMacSystemFont,
     "Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
   color:#343943;
-  background:#fbf9f5;
-  --gold:#c7a05d;
-  --gold-dark:#a57a31;
-  --night:#48516b;
-  --muted:#8b929d;
-  --line:#ece9e3;
+  --gold:#c99c4b;
+  --muted:#89919d;
 }
-
-* { box-sizing:border-box; }
-
-html { scroll-behavior:smooth; }
-
-body {
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
   margin:0;
   min-height:100vh;
+  background:#fffaf0;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:disabled{opacity:.5;cursor:wait}
+[hidden]{display:none!important}
+button:focus-visible,input:focus-visible,
+textarea:focus-visible{
+  outline:3px solid #c5a169;
+  outline-offset:3px
+}
+
+/* ── 昼と夜の背景 ── */
+.sky{
+  position:fixed;
+  inset:0;
+  z-index:-2;
   background:
-    radial-gradient(circle at 12% 2%,#fff1d8 0,transparent 23rem),
-    radial-gradient(circle at 95% 37%,#edf0fa 0,transparent 26rem),
-    #fbf9f5;
+    radial-gradient(ellipse at 20% 8%,#fff0bd,transparent 50%),
+    linear-gradient(160deg,#fff9e9,#fffdf8 58%,#fff3dc);
+  transition:background 1s ease,opacity .8s;
 }
-
-button,input,textarea { font:inherit; }
-button { cursor:pointer; -webkit-tap-highlight-color:transparent; }
-button:disabled { opacity:.5;cursor:wait; }
-[hidden] { display:none!important; }
-
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline:3px solid #d7b778;
-  outline-offset:3px;
+body[data-theme="lala"] .sky{
+  background:
+    radial-gradient(ellipse at 17% 12%,#ffe7a2,transparent 44%),
+    radial-gradient(ellipse at 90% 70%,#ffefc0,transparent 40%),
+    linear-gradient(160deg,#fff1c6,#fffaf0 55%,#ffe9b7);
 }
+body[data-theme="moon"] .sky{
+  background:
+    radial-gradient(ellipse at 75% 10%,#48577f,transparent 44%),
+    radial-gradient(ellipse at 12% 85%,#252f55,transparent 48%),
+    linear-gradient(165deg,#18223e,#344467 58%,#202c4d);
+}
+.sky-stars{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:.65;
+  transition:opacity .7s;
+}
+.sky-stars span{
+  position:absolute;
+  color:#c39b53;
+  font-size:14px;
+  animation:twinkle 5s ease-in-out infinite;
+}
+body[data-theme="moon"] .sky-stars span{
+  color:#e8e8ff;
+}
+body[data-theme="moon"] .sky-stars{opacity:.85}
+body[data-theme="moon"] .sky-stars span:nth-child(2n){
+  color:#b9c9f8;
+}
+.sky-stars span:nth-child(1){top:11%;left:7%;font-size:19px}
+.sky-stars span:nth-child(2){top:19%;right:9%;animation-delay:1s}
+.sky-stars span:nth-child(3){top:36%;left:4%;font-size:10px;animation-delay:2s}
+.sky-stars span:nth-child(4){top:48%;right:5%;font-size:17px;animation-delay:.5s}
+.sky-stars span:nth-child(5){top:70%;left:10%;animation-delay:3s}
+.sky-stars span:nth-child(6){top:83%;right:11%;font-size:11px;animation-delay:2.5s}
+.sky-stars span:nth-child(7){top:7%;right:27%;font-size:8px;animation-delay:1.7s}
+.sky-stars span:nth-child(8){top:60%;right:21%;font-size:9px;animation-delay:3.5s}
 
-/* ── ヘッダー ── */
-
-header {
+/* ── 共通 ── */
+header{
   background:#ffffffeb;
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
   border-bottom:1px solid #eae6df;
-  padding:17px 19px;
+  padding:16px 18px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   position:sticky;
   top:0;
-  z-index:8;
+  z-index:10;
 }
-
-.brand {
-  font-weight:850;
+.brand{
   font-size:20px;
-  letter-spacing:.05em;
+  font-weight:850;
   white-space:nowrap;
 }
-
-.brand-star {
-  display:inline-block;
-  color:var(--gold);
-  animation:brandTwinkle 4s ease-in-out infinite;
-}
-
-.account-info {
+.brand-star{color:var(--gold)}
+.account-info{
   font-size:11px;
   color:#818995;
   text-align:right;
-  max-width:200px;
+  max-width:190px;
   overflow-wrap:anywhere;
 }
-
-.account-info button {
+.account-info button{
   display:block;
   margin:6px 0 0 auto;
   border:0;
-  background:#f0f1f4;
   border-radius:9px;
+  background:#f0f1f4;
+  color:#58616f;
   padding:7px;
-  color:#59616e;
   font-size:11px;
 }
-
-main {
+main{
   max-width:520px;
   margin:auto;
-  padding:20px 16px 108px;
+  padding:19px 16px 112px;
 }
-
-.card {
-  background:#fffffff5;
+.card{
+  background:#fffffff2;
   border:1px solid #eae7e1;
   border-radius:22px;
   padding:21px;
-  box-shadow:
-    0 6px 24px #55515a0a,
-    0 1px 3px #55515a08;
+  box-shadow:0 6px 25px #242c420c;
   margin-bottom:15px;
 }
-
-.muted {
-  color:var(--muted);
+.muted{
   font-size:12px;
-  line-height:1.8;
+  line-height:1.75;
+  color:#8d95a0;
 }
-
-.section-title {
+.section-title{
   font-size:17px;
   font-weight:850;
   margin:25px 2px 13px;
-  letter-spacing:.02em;
 }
-
-.gold { color:var(--gold); }
-
-/* ── ホームのイラスト ── */
-
-.hero {
-  text-align:center;
-  padding:23px 18px 25px;
-  background:
-    radial-gradient(circle at 50% 24%,#fff4dd 0,transparent 65%),
-    #fff;
-  overflow:hidden;
-  position:relative;
+.section-title.moon-heading{
+  color:#f5f0ff;
+  text-shadow:0 1px 8px #141b3540;
 }
-
-.hero:before,
-.hero:after {
-  content:"✦";
-  position:absolute;
-  color:#dfc58f;
-  font-size:17px;
-  opacity:.6;
-  animation:floatStar 4s ease-in-out infinite;
-}
-
-.hero:before { left:14%;top:30%; }
-.hero:after {
-  right:15%;top:22%;
-  font-size:12px;
-  animation-delay:1.3s;
-}
-
-.hero h1 {
-  font-size:23px;
-  margin:10px 0 6px;
-  letter-spacing:.04em;
-}
-
-.hero p {
-  font-size:12px;
-  color:#8a929e;
-  line-height:1.8;
-}
-
-.stars {
-  color:#d1a451;
-  letter-spacing:8px;
-  font-size:15px;
-}
-
-.illustration {
-  height:124px;
-  display:flex;
-  justify-content:center;
-  align-items:flex-end;
-  gap:8px;
-  margin:9px 0 4px;
-  animation:gentleFloat 5s ease-in-out infinite;
-}
-
-.boy { width:62px;height:92px;position:relative; }
-
-.boy .head {
-  position:absolute;
-  top:3px;
-  left:12px;
-  width:39px;
-  height:40px;
-  background:#353a43;
-  border-radius:48%;
-}
-
-.boy .hair {
-  position:absolute;
-  top:-2px;
-  left:27px;
-  height:14px;
-  width:14px;
-  border-left:4px solid #353a43;
-  border-radius:50%;
-  transform:rotate(35deg);
-}
-
-.boy .body {
-  position:absolute;
-  bottom:0;
-  left:4px;
-  width:54px;
-  height:48px;
-  background:#353a43;
-  border-radius:22px 22px 7px 7px;
-}
-
-.boy .zig {
-  position:absolute;
-  top:52px;
-  left:20px;
-  color:#e4c477;
-  font-size:23px;
-  font-weight:900;
-  letter-spacing:-6px;
-}
-
-.cat-svg { width:60px;height:69px;overflow:visible; }
-
-.ground {
-  height:2px;
-  width:160px;
-  background:#e9e9ed;
-  margin:0 auto;
-}
-
-/* ── ホームの口座カード ── */
-
-.account-card {
-  display:block;
-  width:100%;
-  text-align:left;
-  border:1px solid #eadfc9;
-  background:
-    radial-gradient(circle at 100% 0,#fff7e6,transparent 48%),
-    white;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:12px;
-  box-shadow:0 5px 18px #6053330a;
-  position:relative;
-  overflow:hidden;
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-.account-card:active {
-  transform:scale(.985);
-}
-
-.account-card.repayment {
-  border-color:#dfe3f0;
-  background:
-    radial-gradient(circle at 100% 0,#edf0fb,transparent 52%),
-    white;
-}
-
-.account-card:after {
-  content:"✦";
-  position:absolute;
-  right:20px;
-  bottom:9px;
-  font-size:48px;
-  color:#e8d4ab;
-  opacity:.28;
-  pointer-events:none;
-}
-
-.account-card.repayment:after {
-  content:"☾";
-  font-size:57px;
-  color:#9ca6cb;
-  bottom:3px;
-}
-
-.account-card .top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.account-card .name {
-  font-size:15px;
-  font-weight:850;
-}
-
-.account-card .arrow {
-  color:#9da3ac;
-  font-size:20px;
-}
-
-.account-card .amount {
-  font-size:32px;
-  font-weight:850;
-  margin:11px 0 4px;
-  letter-spacing:-1px;
-  font-variant-numeric:tabular-nums;
-}
-
-.account-card .unit { font-size:15px; }
-.account-card .hint { font-size:12px;color:#9198a2; }
-
-/* ── 返済進捗 ── */
-
-.progress-card h2 {
-  font-size:16px;
-  margin:0 0 13px;
-}
-
-.progress-number {
-  font-size:29px;
-  font-weight:850;
-  font-variant-numeric:tabular-nums;
-}
-
-.progress-number span { font-size:14px; }
-
-.progress-sub {
-  font-size:12px;
-  color:#9299a3;
-  margin-top:5px;
-}
-
-.progress-track {
-  height:12px;
-  border-radius:20px;
-  background:#f0eef0;
-  overflow:hidden;
-  margin:16px 0 10px;
-}
-
-.progress-fill {
-  height:100%;
-  width:0;
-  background:linear-gradient(90deg,#d5b46f,#f2d38d,#c89d4e);
-  border-radius:20px;
-  position:relative;
-  transition:width 1s cubic-bezier(.2,.8,.2,1);
-}
-
-.progress-fill:after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    90deg,transparent,#ffffff75,transparent
-  );
-  transform:translateX(-110%);
-  animation:progressShine 4s ease-in-out infinite;
-}
-
-.progress-label {
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  font-size:12px;
-  color:#838b97;
-}
-
-.progress-label strong { color:#a77c31; }
-
-.transfer-summary {
-  background:#faf8f2;
-  border:1px solid #f1e8d4;
-  border-radius:14px;
-  padding:15px;
-  margin-top:15px;
-}
-
-.transfer-row {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  font-size:13px;
-  padding:7px 0;
-}
-
-.transfer-row span { color:#818995; }
-.transfer-row strong { color:#a67b32; }
-
-.transfer-row.available {
-  border-top:1px solid #e9ddc5;
-  margin-top:7px;
-  padding-top:13px;
-}
-
-.transfer-row.available strong { font-size:20px; }
-
-/* ── 口座ページ ── */
-
-.back {
-  border:0;
-  background:transparent;
-  color:#9a732e;
-  font-size:14px;
-  font-weight:800;
-  padding:7px 0 15px;
-}
-
-.tabs {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:15px;
-}
-
-.tab {
-  padding:13px 7px;
-  border:1px solid #e7e9ed;
-  border-radius:13px;
-  background:white;
-  color:#8b919b;
-  font-weight:750;
-  font-size:13px;
-  transition:background .2s,transform .2s;
-}
-
-.tab:active { transform:scale(.97); }
-
-.tab.active {
-  border-color:#d9b46e;
-  background:#fff7e8;
-  color:#956d28;
-}
-
-.tab.active.moon-tab {
-  border-color:#a8b0ca;
-  background:#f0f2fa;
-  color:#596584;
-}
-
-.balance-card {
-  position:relative;
-  overflow:hidden;
-}
-
-.balance-card:before {
-  content:"✦";
-  position:absolute;
-  top:8px;
-  right:16px;
-  font-size:65px;
-  color:#e7d3a7;
-  opacity:.18;
-  pointer-events:none;
-}
-
-.balance-card.moon-mode:before {
-  content:"☾";
-  color:#8996be;
-}
-
-.balance-label {
-  font-size:13px;
-  color:#848c97;
-  font-weight:750;
-}
-
-.balance-number {
-  font-size:39px;
-  font-weight:850;
-  margin:15px 0;
-  font-variant-numeric:tabular-nums;
-  letter-spacing:-1px;
-  position:relative;
-  z-index:1;
-}
-
-.coin {
-  display:inline-grid;
-  place-items:center;
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#f5d990,#c39139);
-  border:3px solid #f9e8c2;
-  color:white;
-  font-size:21px;
-  vertical-align:4px;
-  box-shadow:0 3px 10px #c59a5430;
-}
-
-.moon-mode .coin {
-  background:linear-gradient(135deg,#aeb8da,#687593);
-  border-color:#dce2f3;
-  box-shadow:0 3px 10px #7c89b530;
-}
-
-.actions {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:22px;
-}
-
-.action {
-  border:0;
-  border-radius:13px;
-  padding:14px 5px;
-  font-size:13px;
-  font-weight:800;
-  background:linear-gradient(135deg,#fff5df,#f8e6bf);
-  color:#946b26;
-  transition:
-    transform .16s ease,
-    box-shadow .16s ease;
-}
-
-.action.secondary {
-  background:#f1f3f6;
-  color:#515b69;
-}
-
-.action.moon-action {
-  background:linear-gradient(135deg,#edf0fb,#dce3f5);
-  color:#556485;
-}
-
-.action:active {
-  transform:scale(.96);
-}
-
-/* ── 履歴 ── */
-
-.history {
-  padding:0;
-  margin:0;
-  list-style:none;
-}
-
-.history li {
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  border-top:1px solid #f0f0f2;
-  padding:15px 0;
-  font-size:13px;
-  animation:historyAppear .3s ease both;
-}
-
-.history li:first-child { border-top:0; }
-
-.history-details { min-width:0;flex:1; }
-
-.history-title {
-  font-weight:750;
-  line-height:1.55;
-}
-
-.history small {
-  display:block;
-  color:#9aa0aa;
-  margin-top:5px;
-  font-size:11px;
-  line-height:1.6;
-  overflow-wrap:anywhere;
-}
-
-.history-amount {
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:7px;
-  white-space:nowrap;
-}
-
-.history-amount strong { color:#a57a2d; }
-.history-amount strong.minus { color:#57616e; }
-
-.history-amount strong.cancelled {
-  color:#a5aab2;
-  text-decoration:line-through;
-}
-
-.correction-button {
-  border:1px solid #e8d9b9;
-  background:#fffaf0;
-  color:#a17a35;
-  border-radius:8px;
-  padding:6px 9px;
-  font-size:11px;
-  font-weight:750;
-}
-
-.correction-button:active {
-  transform:scale(.96);
-}
-
-.corrected-tag {
-  display:inline-block;
-  background:#f0f1f3;
-  color:#89909b;
-  border-radius:7px;
-  padding:4px 7px;
-  font-size:10px;
-}
-
-.correction-entry {
-  background:#fcfbf8;
-  border-radius:10px;
-  padding-left:9px!important;
-  padding-right:9px!important;
-}
-
-.empty {
-  text-align:center;
-  padding:24px 0;
-  color:#9299a3;
-  font-size:13px;
-}
-
-.status {
-  font-size:12px;
-  color:#8b929e;
-  line-height:1.7;
-}
-
-.footer {
+.footer{
   text-align:center;
   font-size:11px;
   color:#a3a9b2;
   margin-top:24px;
   letter-spacing:.15em;
 }
+body[data-theme="moon"] .footer,
+body[data-theme="moon"] #storageStatus{
+  color:#dce2f5;
+}
+
+/* ── 男の子と黒猫のシルエット ── */
+.duo{
+  width:145px;
+  height:108px;
+  display:block;
+  margin:2px auto 7px;
+  overflow:visible;
+  animation:duoFloat 5s ease-in-out infinite;
+}
+.duo .person{fill:#353a43}
+.duo .cat{fill:#292e36}
+.duo .hairline{
+  fill:none;
+  stroke:#353a43;
+  stroke-width:3;
+  stroke-linecap:round;
+}
+.duo .zigzag{
+  fill:none;
+  stroke:#e7cc88;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.duo .groundline{
+  fill:none;
+  stroke:#c9bba1;
+  stroke-width:2;
+  stroke-linecap:round;
+}
+.hero{
+  text-align:center;
+  padding:22px 18px 25px;
+  background:
+    radial-gradient(circle at 50% 25%,#fff1d6,transparent 72%),
+    #fff;
+}
+.hero h1{
+  font-size:23px;
+  margin:9px 0 7px;
+}
+.hero p{
+  font-size:12px;
+  color:#89919c;
+  margin-bottom:0;
+}
+.hero-stars{
+  letter-spacing:9px;
+  color:#d0a65d;
+  margin-bottom:12px;
+}
+.corner-duo{
+  position:absolute;
+  width:95px;
+  height:74px;
+  right:10px;
+  bottom:7px;
+  opacity:.13;
+  pointer-events:none;
+}
+body[data-theme="moon"] .corner-duo{
+  opacity:.18;
+}
+
+/* ── ホーム口座カード ── */
+.account-card{
+  width:100%;
+  display:block;
+  text-align:left;
+  border:1px solid #ebddc3;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:12px;
+  background:
+    radial-gradient(circle at 100% 0,#fff0bf,transparent 60%),
+    #fff;
+  box-shadow:0 5px 20px #4b3f220a;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.account-card:active{transform:scale(.98)}
+.account-card.repayment{
+  border-color:#d9dfee;
+  background:
+    radial-gradient(circle at 100% 0,#dbe2f8,transparent 60%),
+    #fff;
+}
+.account-card:after{
+  content:"✦";
+  position:absolute;
+  right:18px;
+  bottom:0;
+  font-size:62px;
+  color:#d3b16e;
+  opacity:.23;
+}
+.account-card.repayment:after{
+  content:"☾";
+  color:#7184b4;
+  opacity:.2;
+}
+.account-card .top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.account-card .name{
+  font-size:15px;
+  font-weight:850;
+}
+.account-card .arrow{
+  font-size:21px;
+  color:#a0a5ae;
+}
+.account-card .amount{
+  font-size:32px;
+  font-weight:850;
+  margin:11px 0 4px;
+  font-variant-numeric:tabular-nums;
+}
+.account-card .unit{font-size:15px}
+.account-card .hint{
+  font-size:12px;
+  color:#9198a2;
+}
+
+/* ── 口座画面 ── */
+.back{
+  border:0;
+  background:transparent;
+  color:#9e7a3d;
+  font-weight:800;
+  padding:8px 0 16px;
+}
+body[data-theme="moon"] .back{color:#e8defc}
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:15px;
+}
+.tab{
+  border:1px solid #e7e8ed;
+  background:#ffffffed;
+  border-radius:13px;
+  padding:13px 7px;
+  color:#858e9b;
+  font-size:13px;
+  font-weight:800;
+  transition:transform .18s,background .3s;
+}
+.tab:active{transform:scale(.97)}
+.tab.active{
+  border-color:#d7ac63;
+  color:#956b28;
+  background:#fff1cb;
+}
+.tab.active.moon-tab{
+  border-color:#b5c0e3;
+  background:#dce4fa;
+  color:#344467;
+}
+.balance-card{
+  position:relative;
+  overflow:hidden;
+}
+.balance-card:before{
+  content:"✦";
+  position:absolute;
+  right:17px;
+  top:0;
+  color:#ddba70;
+  opacity:.22;
+  font-size:75px;
+  pointer-events:none;
+}
+.balance-card.moon-mode:before{
+  content:"☾";
+  color:#7788b7;
+}
+.balance-label{
+  color:#848c97;
+  font-size:13px;
+  font-weight:800;
+}
+.balance-number{
+  font-size:39px;
+  font-weight:850;
+  margin:15px 0;
+  font-variant-numeric:tabular-nums;
+  position:relative;
+  z-index:1;
+}
+.coin{
+  display:inline-grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#f7df9f,#c39139);
+  border:3px solid #fae9c6;
+  color:white;
+  font-size:21px;
+  vertical-align:4px;
+}
+.moon-mode .coin{
+  background:linear-gradient(135deg,#aebde3,#566790);
+  border-color:#dbe2f5;
+}
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:22px;
+}
+.action{
+  border:0;
+  border-radius:13px;
+  background:linear-gradient(135deg,#fff3d7,#f3ddab);
+  color:#916925;
+  padding:14px 5px;
+  font-size:13px;
+  font-weight:800;
+  transition:transform .18s;
+}
+.action.secondary{
+  background:#f0f2f6;
+  color:#566071;
+}
+.action.moon-action{
+  background:linear-gradient(135deg,#e7edff,#ccd6f2);
+  color:#46577d;
+}
+.action:active{transform:scale(.95)}
+
+/* ── 進捗 ── */
+.progress-card h2{
+  font-size:16px;
+  margin:0 0 13px;
+}
+.progress-number{
+  font-size:29px;
+  font-weight:850;
+  font-variant-numeric:tabular-nums;
+}
+.progress-number span{font-size:14px}
+.progress-sub{
+  font-size:12px;
+  color:#9299a3;
+  margin-top:5px;
+}
+.progress-track{
+  height:12px;
+  border-radius:20px;
+  background:#eeedf1;
+  overflow:hidden;
+  margin:16px 0 10px;
+}
+.progress-fill{
+  height:100%;
+  width:0;
+  border-radius:20px;
+  background:linear-gradient(90deg,#c99c50,#f1d487,#c99c50);
+  transition:width .9s ease;
+  position:relative;
+  overflow:hidden;
+}
+.progress-fill:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent,#fff9,transparent);
+  transform:translateX(-100%);
+  animation:barShine 4s infinite;
+}
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:#838b97;
+  gap:10px;
+}
+.progress-label strong{color:#a77c31}
+.transfer-summary{
+  background:#faf8f2;
+  border:1px solid #f1e8d4;
+  border-radius:14px;
+  padding:15px;
+  margin-top:15px;
+}
+.transfer-row{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+  padding:7px 0;
+  font-size:13px;
+}
+.transfer-row span{color:#818995}
+.transfer-row strong{color:#a67b32}
+.transfer-row.available{
+  border-top:1px solid #e9ddc5;
+  padding-top:13px;
+  margin-top:7px;
+}
+.transfer-row.available strong{font-size:20px}
+
+/* ── 履歴 ── */
+.history{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.history li{
+  border-top:1px solid #efeff2;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px 0;
+  font-size:13px;
+}
+.history li:first-child{border-top:0}
+.history-details{min-width:0;flex:1}
+.history-title{font-weight:800;line-height:1.5}
+.history small{
+  display:block;
+  color:#9aa0aa;
+  font-size:11px;
+  line-height:1.6;
+  margin-top:5px;
+  overflow-wrap:anywhere;
+}
+.history-amount{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:7px;
+  white-space:nowrap;
+}
+.history-amount strong{color:#a57a2d}
+.history-amount strong.minus{color:#57616e}
+.history-amount strong.cancelled{
+  color:#a5aab2;
+  text-decoration:line-through;
+}
+.correction-button{
+  border:1px solid #e8d9b9;
+  border-radius:8px;
+  background:#fffaf0;
+  color:#a17a35;
+  padding:6px 9px;
+  font-size:11px;
+  font-weight:800;
+}
+.corrected-tag{
+  background:#f0f1f3;
+  color:#89909b;
+  border-radius:7px;
+  padding:4px 7px;
+  font-size:10px;
+}
+.correction-entry{
+  background:#fcfbf8;
+  border-radius:10px;
+  padding-left:9px!important;
+  padding-right:9px!important;
+}
+.empty{
+  padding:24px 0;
+  text-align:center;
+  color:#9299a3;
+  font-size:13px;
+}
+.status{
+  font-size:12px;
+  color:#8b929e;
+  line-height:1.7;
+}
 
 /* ── 下部メニュー ── */
-
-.bottom-nav {
+.bottom-nav{
   position:fixed;
   bottom:0;
   left:0;
@@ -646,127 +550,98 @@ main {
   display:flex;
   justify-content:center;
   background:#fffffff0;
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
   border-top:1px solid #e8e9ed;
   padding:10px 10px max(10px,env(safe-area-inset-bottom));
-  z-index:8;
+  z-index:10;
 }
-
-.nav-inner {
+.nav-inner{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   width:min(100%,520px);
   gap:5px;
 }
-
-.nav-btn {
+.nav-btn{
   border:0;
   background:transparent;
   padding:5px 2px;
+  display:grid;
+  justify-items:center;
+  gap:5px;
   color:#a1a6af;
   font-size:11px;
-  display:grid;
-  gap:5px;
-  justify-items:center;
-  transition:color .2s,transform .2s;
 }
-
-.nav-btn .symbol {
-  font-size:22px;
-  transition:transform .2s;
-}
-
-.nav-btn.active {
+.nav-btn .symbol{font-size:22px}
+.nav-btn.active{
   color:#b88c3d;
   font-weight:800;
 }
-
-.nav-btn.active .symbol {
-  transform:translateY(-2px);
-}
-
-.nav-btn:active { transform:scale(.93); }
+.nav-btn:active{transform:scale(.95)}
 
 /* ── モーダル ── */
-
-.modal {
+.modal{
   display:none;
   position:fixed;
   inset:0;
-  background:#17202d88;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#151d327b;
   backdrop-filter:blur(5px);
   -webkit-backdrop-filter:blur(5px);
-  z-index:20;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
 }
-
-.modal.show { display:flex; }
-
-.dialog {
-  background:white;
-  border-radius:22px;
-  padding:24px;
+.modal.show{display:flex}
+.dialog{
   width:min(100%,400px);
   max-height:90vh;
   overflow:auto;
-  box-shadow:0 20px 65px #151e3038;
-  animation:dialogEnter .28s cubic-bezier(.2,.8,.2,1);
+  background:white;
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 20px 65px #121a3030;
+  animation:dialogIn .27s ease-out;
 }
-
-.dialog h2 {
+.dialog h2{
   font-size:19px;
   margin:0 0 14px;
 }
-
-.dialog p {
+.dialog p{
   font-size:13px;
   color:#707986;
   line-height:1.7;
 }
-
-.dialog label {
+.dialog label{
   font-size:13px;
-  font-weight:750;
+  font-weight:800;
 }
-
-.dialog input,
-.dialog textarea {
+.dialog input,.dialog textarea{
   width:100%;
   border:1px solid #dce0e6;
   border-radius:12px;
   padding:13px;
   font-size:16px;
   margin:10px 0;
-  background:white;
 }
-
-.dialog textarea {
+.dialog textarea{
   resize:vertical;
   min-height:85px;
 }
-
-.dialog button {
+.dialog button{
   width:100%;
   border:0;
   border-radius:12px;
   padding:13px;
   margin-top:9px;
   background:#f1f3f6;
-  transition:transform .16s;
 }
-
-.dialog button:active { transform:scale(.98); }
-
-.dialog .confirm {
-  background:linear-gradient(135deg,#fcebc9,#f2d799);
+.dialog .confirm{
+  background:linear-gradient(135deg,#fbe9c3,#efd18d);
   color:#886121;
   font-weight:850;
 }
-
-.dialog .warning {
+.dialog .warning{
   background:#fff9ed;
   border-radius:12px;
   padding:13px;
@@ -778,23 +653,19 @@ main {
 }
 
 /* ── ログイン ── */
-
-.auth h1 { font-size:21px;margin-top:0; }
-
-.auth p {
-  font-size:13px;
+.auth h1{font-size:21px;margin-top:0}
+.auth p{
   color:#7c8592;
+  font-size:13px;
   line-height:1.7;
 }
-
-.auth label {
-  font-size:13px;
-  font-weight:700;
+.auth label{
   display:block;
+  font-size:13px;
+  font-weight:800;
   margin-top:15px;
 }
-
-.auth input {
+.auth input{
   display:block;
   width:100%;
   margin-top:7px;
@@ -803,15 +674,13 @@ main {
   border-radius:12px;
   font-size:16px;
 }
-
-.auth-buttons {
+.auth-buttons{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
   margin-top:18px;
 }
-
-.auth-buttons button {
+.auth-buttons button{
   border:0;
   border-radius:12px;
   padding:13px;
@@ -819,152 +688,93 @@ main {
   color:#956d28;
   font-weight:800;
 }
-
-.auth-buttons button+button {
+.auth-buttons button+button{
   background:#f1f3f6;
   color:#55606e;
 }
 
-/* ── 成功通知 ── */
-
-.toast {
+/* ── 成功演出 ── */
+.toast{
   position:fixed;
   left:50%;
-  bottom:calc(88px + env(safe-area-inset-bottom));
-  transform:translate(-50%,18px);
+  bottom:calc(92px + env(safe-area-inset-bottom));
+  transform:translate(-50%,20px);
+  max-width:calc(100vw - 36px);
   width:max-content;
-  max-width:calc(100vw - 34px);
-  padding:13px 19px;
-  background:#444d5e;
+  padding:15px 21px;
+  border-radius:18px;
+  background:#353e55;
   color:white;
-  border-radius:17px;
-  box-shadow:0 10px 35px #26304735;
-  font-size:13px;
-  font-weight:750;
-  line-height:1.6;
+  font-size:14px;
+  font-weight:850;
   text-align:center;
+  line-height:1.6;
+  box-shadow:0 12px 32px #17203745;
   opacity:0;
   pointer-events:none;
-  z-index:30;
   transition:opacity .25s,transform .25s;
+  z-index:30;
 }
-
-.toast.visible {
+.toast.visible{
   opacity:1;
   transform:translate(-50%,0);
 }
-
-/* ── 星粒アニメーション ── */
-
-.spark-layer {
+.fx-layer{
   position:fixed;
   inset:0;
   pointer-events:none;
-  overflow:hidden;
   z-index:35;
+  overflow:hidden;
 }
-
-.spark {
+.fx-star{
+  position:absolute;
+  display:block;
+  font-family:Georgia,serif;
+  font-weight:bold;
+  line-height:1;
+  text-shadow:
+    0 0 9px #fff7d0,
+    0 0 22px #fbd993;
+  will-change:transform,opacity;
+}
+.fx-flash{
   position:absolute;
   left:50%;
-  top:48%;
-  font-size:20px;
-  color:#e0b867;
-  opacity:0;
-  text-shadow:0 0 12px #fff0c8;
-  animation:sparkBurst 1.15s ease-out forwards;
+  top:42%;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff4cbab,transparent 70%);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.balance-glow{
+  animation:balanceFlash .8s ease-out;
 }
 
-.transfer-spark {
-  position:absolute;
-  left:28%;
-  top:48%;
-  font-size:19px;
-  color:#c9b5e6;
-  opacity:0;
-  animation:transferFly 1.1s ease-in-out forwards;
+/* ── アニメーション ── */
+@keyframes twinkle{
+  0%,100%{opacity:.25;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.2)}
 }
-
-.number-glow {
-  animation:numberGlow .8s ease-out;
+@keyframes duoFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
 }
-
-/* ── アニメーション定義 ── */
-
-@keyframes brandTwinkle {
-  0%,100% { opacity:.8;transform:scale(1); }
-  50% { opacity:1;transform:scale(1.16); }
+@keyframes barShine{
+  0%,50%{transform:translateX(-110%)}
+  90%,100%{transform:translateX(110%)}
 }
-
-@keyframes gentleFloat {
-  0%,100% { transform:translateY(0); }
-  50% { transform:translateY(-4px); }
+@keyframes dialogIn{
+  from{opacity:0;transform:translateY(18px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
-
-@keyframes floatStar {
-  0%,100% { transform:translateY(0);opacity:.35; }
-  50% { transform:translateY(-9px);opacity:.85; }
+@keyframes balanceFlash{
+  0%{filter:brightness(1.35);transform:scale(1.045)}
+  100%{filter:none;transform:scale(1)}
 }
-
-@keyframes progressShine {
-  0%,50% { transform:translateX(-110%); }
-  85%,100% { transform:translateX(110%); }
-}
-
-@keyframes historyAppear {
-  from { opacity:0;transform:translateY(5px); }
-  to { opacity:1;transform:translateY(0); }
-}
-
-@keyframes dialogEnter {
-  from {
-    opacity:0;
-    transform:translateY(15px) scale(.97);
-  }
-  to {
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
-
-@keyframes numberGlow {
-  0% { color:#d5ad62; }
-  100% { color:inherit; }
-}
-
-@keyframes sparkBurst {
-  0% {
-    opacity:0;
-    transform:translate(0,0) scale(.4) rotate(0deg);
-  }
-  20% { opacity:1; }
-  100% {
-    opacity:0;
-    transform:
-      translate(var(--dx),var(--dy))
-      scale(1.1) rotate(var(--rot));
-  }
-}
-
-@keyframes transferFly {
-  0% {
-    opacity:0;
-    transform:translate(0,25px) scale(.45);
-  }
-  20% { opacity:1; }
-  65% { opacity:1; }
-  100% {
-    opacity:0;
-    transform:translate(44vw,-65px) scale(1.1);
-  }
-}
-
-/* ── 動きを減らす設定 ── */
-
-@media (prefers-reduced-motion:reduce) {
-  *,
-  *:before,
-  *:after {
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
     animation-duration:.01ms!important;
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
@@ -974,38 +784,99 @@ main {
 </style>
 </head>
 
-<body>
+<body data-theme="home">
+
+<div class="sky"></div>
+<div class="sky-stars" aria-hidden="true">
+  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span>
+</div>
+
+<!-- シルエットを再利用するための定義 -->
+<svg width="0" height="0" style="position:absolute"
+  aria-hidden="true">
+  <defs>
+    <symbol id="duoArtwork" viewBox="0 0 145 108">
+      <path class="groundline"
+        d="M10 104 Q72 107 135 104"/>
+
+      <!-- ほぼ坊主頭の男の子 -->
+      <path class="person"
+        d="M20 104 L20 77
+        Q20 65 33 61
+        L66 61
+        Q78 65 78 77
+        L78 104 Z"/>
+      <circle class="person"
+        cx="49" cy="39" r="24"/>
+
+      <!-- 前髪はほんの数本 -->
+      <path class="hairline"
+        d="M38 17 Q36 12 32 13
+           M47 15 Q47 9 43 8
+           M55 16 Q58 11 61 13"/>
+
+      <!-- 服のジグザグ -->
+      <path class="zigzag"
+        d="M29 75 L38 69 L47 75
+           L56 69 L65 75"/>
+
+      <!-- 黒猫 -->
+      <path class="cat"
+        d="M93 104
+        L93 74 Q93 64 101 60
+        L99 45 L107 51
+        Q115 49 123 51
+        L131 45 L130 60
+        Q138 68 137 78
+        L137 104 Z"/>
+      <path class="cat"
+        d="M132 99
+        Q148 95 137 79
+        Q134 74 138 72
+        Q150 75 149 90
+        Q148 105 132 106 Z"/>
+    </symbol>
+  </defs>
+</svg>
 
 <header>
   <div class="brand">
     <span class="brand-star">✦</span> 星粒銀行
   </div>
-  <div id="accountInfo" class="account-info">STAR BANK</div>
+  <div id="accountInfo" class="account-info">
+    STAR BANK
+  </div>
 </header>
 
 <main>
 
+<!-- ログイン -->
 <section id="authPanel" class="card auth">
   <h1>星粒銀行へようこそ ✦</h1>
   <p>メールアドレスとパスワードでログインしてね。</p>
 
   <form id="authForm">
-    <label>
-      メールアドレス
+    <label>メールアドレス
       <input id="email" type="email"
         autocomplete="email" required>
     </label>
 
-    <label>
-      パスワード
+    <label>パスワード
       <input id="password" type="password"
         minlength="6"
         autocomplete="current-password" required>
     </label>
 
     <div class="auth-buttons">
-      <button id="signIn" type="submit">ログイン</button>
-      <button id="signUp" type="button">新規登録</button>
+      <button id="signIn" type="submit">
+        ログイン
+      </button>
+      <button id="signUp" type="button">
+        新規登録
+      </button>
     </div>
   </form>
 
@@ -1015,70 +886,55 @@ main {
 <div id="bankApp" hidden>
 
 <!-- ── ホーム ── -->
-
 <section id="homePage">
 
   <div class="card hero">
-    <div class="stars">✦ ☾ ✧</div>
+    <div class="hero-stars">✦ ☾ ✧</div>
 
-    <div class="illustration" aria-hidden="true">
-      <div class="boy">
-        <div class="hair"></div>
-        <div class="head"></div>
-        <div class="body"></div>
-        <div class="zig">⌁⌁</div>
-      </div>
+    <svg class="duo" aria-hidden="true"
+      viewBox="0 0 145 108">
+      <use href="#duoArtwork"></use>
+    </svg>
 
-      <svg class="cat-svg" viewBox="0 0 58 67"
-        xmlns="http://www.w3.org/2000/svg">
-        <g fill="#353a43">
-          <path d="M42 48 C54 45 54 32 50 25 C47 19 51 17 54 21 C63 34 57 54 43 57 Z"/>
-          <path d="M14 42 C14 32 21 28 29 28 C39 28 45 35 45 47 L45 65 L13 65 Z"/>
-          <path d="M9 23 L11 3 Q12 0 15 4 L23 12 Q29 10 35 12 L43 4 Q46 0 47 4 L49 23 Q49 42 29 42 Q9 42 9 23 Z"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="ground"></div>
     <h1>星粒銀行へようこそ</h1>
     <p>ふたりの星粒を、大切に。</p>
   </div>
 
-  <div class="section-title">✦ あなたの口座</div>
+  <div class="section-title">
+    ✦ あなたの口座
+  </div>
 
   <button class="account-card"
     id="homeLaLa" type="button">
-
     <div class="top">
       <span class="name">✦ LaLa預金</span>
       <span class="arrow">›</span>
     </div>
-
     <div class="amount">
       <span id="homeLaLaBalance">—</span>
       <span class="unit">粒</span>
     </div>
-
     <div class="hint">現在の預金残高</div>
   </button>
 
   <button class="account-card repayment"
     id="homeYamanashi" type="button">
-
     <div class="top">
       <span class="name">☾ 月見里返済</span>
       <span class="arrow">›</span>
     </div>
-
     <div class="amount">
       <span id="homeYamanashiBalance">—</span>
       <span class="unit">粒</span>
     </div>
-
-    <div class="hint">月見里から返済された星粒の累計</div>
+    <div class="hint">
+      月見里から返済された星粒の累計
+    </div>
   </button>
 
-  <div class="section-title">☾ 返済のあゆみ</div>
+  <div class="section-title">
+    ☾ 返済のあゆみ
+  </div>
 
   <section class="card progress-card">
     <h2>月見里返済の進捗</h2>
@@ -1124,10 +980,10 @@ main {
 </section>
 
 <!-- ── 口座 ── -->
-
 <section id="accountsPage" hidden>
 
-  <button class="back" id="backHome" type="button">
+  <button class="back"
+    id="backHome" type="button">
     ‹ ホームに戻る
   </button>
 
@@ -1143,14 +999,23 @@ main {
     </button>
   </div>
 
-  <section class="card balance-card" id="balanceCard">
+  <section class="card balance-card"
+    id="balanceCard">
 
-    <div class="balance-label" id="balanceTitle">
+    <svg class="corner-duo" aria-hidden="true"
+      viewBox="0 0 145 108">
+      <use href="#duoArtwork"></use>
+    </svg>
+
+    <div class="balance-label"
+      id="balanceTitle">
       LaLa預金
     </div>
 
-    <div class="balance-number" id="balanceWrapper">
-      <span class="coin" id="accountCoin">★</span>
+    <div class="balance-number"
+      id="balanceWrapper">
+      <span class="coin"
+        id="accountCoin">★</span>
       <span id="balance">—</span>
       <span style="font-size:17px">粒</span>
     </div>
@@ -1159,8 +1024,8 @@ main {
       現在の預金残高
     </div>
 
-    <div id="accountTransferSummary"
-      class="transfer-summary" hidden>
+    <div class="transfer-summary"
+      id="accountTransferSummary" hidden>
 
       <div class="transfer-row">
         <span>振替済み</span>
@@ -1195,7 +1060,8 @@ main {
     </div>
   </section>
 
-  <div class="section-title" id="historyTitle">
+  <div class="section-title"
+    id="historyTitle">
     LaLa預金の履歴
   </div>
 
@@ -1207,16 +1073,18 @@ main {
 
     <ul id="history" class="history"></ul>
 
-    <div id="empty" class="empty">
+    <div class="empty" id="empty">
       まだ取引履歴はないよ ✦
     </div>
   </section>
 </section>
 
 <!-- ── グラフ ── -->
-
 <section id="graphPage" hidden>
-  <div class="section-title">✧ グラフ</div>
+
+  <div class="section-title">
+    ✧ グラフ
+  </div>
 
   <section class="card progress-card">
     <h2>☾ 月見里返済</h2>
@@ -1246,14 +1114,18 @@ main {
 </section>
 
 <!-- ── 設定 ── -->
-
 <section id="settingsPage" hidden>
-  <div class="section-title">⚙ 設定</div>
+
+  <div class="section-title">
+    ⚙ 設定
+  </div>
 
   <section class="card">
     <p style="font-weight:800">星粒銀行</p>
     <p class="muted">返済目標：18,000粒</p>
-    <p class="muted">口座：LaLa預金・月見里返済</p>
+    <p class="muted">
+      口座：LaLa預金・月見里返済
+    </p>
     <p class="muted">
       取引の訂正記録は削除せず保存されるよ。
     </p>
@@ -1263,16 +1135,18 @@ main {
 <p id="storageStatus" class="status"
   role="status"></p>
 
-<div class="footer">✦ Star Bank ✦</div>
+<div class="footer">
+  ✦ Star Bank ✦
+</div>
 
 </div>
 </main>
 
 <!-- ── 下部メニュー ── -->
+<nav id="bottomNav"
+  class="bottom-nav" hidden>
 
-<nav id="bottomNav" class="bottom-nav" hidden>
   <div class="nav-inner">
-
     <button class="nav-btn active"
       data-page="home" type="button">
       <span class="symbol">⌂</span>
@@ -1296,19 +1170,19 @@ main {
       <span class="symbol">⚙</span>
       設定
     </button>
-
   </div>
 </nav>
 
-<!-- ── 通常取引モーダル ── -->
-
+<!-- ── 取引モーダル ── -->
 <div class="modal" id="transactionModal"
   role="dialog"
   aria-modal="true"
   aria-labelledby="transactionTitle">
 
   <div class="dialog">
-    <h2 id="transactionTitle">星粒をチャージ</h2>
+    <h2 id="transactionTitle">
+      星粒をチャージ
+    </h2>
 
     <form id="transactionForm">
       <label id="amountLabel"
@@ -1325,14 +1199,16 @@ main {
         required
         placeholder="例：10">
 
-      <p id="transactionStatus" role="status"></p>
+      <p id="transactionStatus"
+        role="status"></p>
 
       <button id="transactionConfirm"
         class="confirm" type="submit">
         チャージする
       </button>
 
-      <button id="transactionCancel" type="button">
+      <button id="transactionCancel"
+        type="button">
         キャンセル
       </button>
     </form>
@@ -1340,19 +1216,20 @@ main {
 </div>
 
 <!-- ── 訂正モーダル ── -->
-
 <div class="modal" id="correctionModal"
   role="dialog"
   aria-modal="true"
   aria-labelledby="correctionTitle">
 
   <div class="dialog">
-    <h2 id="correctionTitle">✧ 取引を訂正</h2>
+    <h2 id="correctionTitle">
+      ✧ 取引を訂正
+    </h2>
 
-    <div id="correctionSummary" class="warning"></div>
+    <div id="correctionSummary"
+      class="warning"></div>
 
     <form id="correctionForm">
-
       <label for="correctionReason">
         訂正理由（任意）
       </label>
@@ -1373,19 +1250,18 @@ main {
         この取引を訂正する
       </button>
 
-      <button id="correctionCancel" type="button">
+      <button id="correctionCancel"
+        type="button">
         やめる
       </button>
     </form>
   </div>
 </div>
 
-<!-- ── 演出用 ── -->
-
 <div id="toast" class="toast"
   role="status" aria-live="polite"></div>
 
-<div id="sparkLayer" class="spark-layer"
+<div id="fxLayer" class="fx-layer"
   aria-hidden="true"></div>
 
 <script type="module">
@@ -1415,9 +1291,7 @@ import {
 } from
 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
-/* ───────────────────────────
-   Firebase設定
-   ─────────────────────────── */
+/* ── Firebase ── */
 
 const firebaseConfig={
   apiKey:'AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s',
@@ -1433,7 +1307,7 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 
 const el=id=>document.getElementById(id);
-const format=n=>n.toLocaleString('ja-JP');
+const format=n=>n.toLocaleString('ja-J');
 
 const accounts={
   LaLa:{name:'LaLa預金'},
@@ -1459,7 +1333,6 @@ let currentTransferred=0;
 let balanceReady=false;
 
 let transactionType='charge';
-
 let transacting=false;
 let correcting=false;
 let authBusy=false;
@@ -1468,23 +1341,24 @@ let accountVersion=0;
 let stopSelectedBank=null;
 let stopHistory=null;
 let stopHomeBanks=[];
-
 let pendingCorrection=null;
 
-/* ───────────────────────────
-   共通
-   ─────────────────────────── */
+/* ── 共通関数 ── */
 
 function bankRef(id){
   return doc(db,'StarBank',id);
 }
 
 function historyRef(id){
-  return collection(db,'StarBank',id,'history');
+  return collection(
+    db,'StarBank',id,'history'
+  );
 }
 
 function entryRef(id,entryId){
-  return doc(db,'StarBank',id,'history',entryId);
+  return doc(
+    db,'StarBank',id,'history',entryId
+  );
 }
 
 function correctionId(originalId){
@@ -1496,21 +1370,30 @@ function validAmount(n){
 }
 
 function validTransactionAmount(n){
-  return Number.isSafeInteger(n)&&n>=1&&n<=1000000;
+  return Number.isSafeInteger(n)
+    &&n>=1&&n<=1000000;
 }
 
 const reduceMotion=window.matchMedia(
   '(prefers-reduced-motion: reduce)'
 );
 
-/* ───────────────────────────
-   演出
-   ─────────────────────────── */
+/* ── 数字のアニメーション ── */
 
 const animatedNumbers=new Map();
 const numberFrames=new Map();
 
-function setNumber(id,value,animate=true){
+function resetNumber(id){
+  if(numberFrames.has(id)){
+    cancelAnimationFrame(numberFrames.get(id));
+    numberFrames.delete(id);
+  }
+
+  animatedNumbers.delete(id);
+  el(id).textContent='—';
+}
+
+function setNumber(id,value){
   const node=el(id);
   const previous=animatedNumbers.get(id);
 
@@ -1520,17 +1403,14 @@ function setNumber(id,value,animate=true){
   }
 
   if(!validAmount(value)){
-    animatedNumbers.delete(id);
-    node.textContent='—';
+    resetNumber(id);
     return;
   }
 
   animatedNumbers.set(id,value);
 
-  // 初回読み込み時は、そのまま数字を表示。
   if(
-    !animate
-    ||reduceMotion.matches
+    reduceMotion.matches
     ||!validAmount(previous)
     ||previous===value
   ){
@@ -1539,22 +1419,19 @@ function setNumber(id,value,animate=true){
   }
 
   const start=performance.now();
-  const duration=650;
   const difference=value-previous;
 
-  function frame(now){
-    const progress=Math.min(1,(now-start)/duration);
-    const eased=1-Math.pow(1-progress,3);
+  function step(now){
+    const p=Math.min(1,(now-start)/750);
+    const ease=1-Math.pow(1-p,3);
 
-    const current=Math.round(
-      previous+difference*eased
+    node.textContent=format(
+      Math.round(previous+difference*ease)
     );
 
-    node.textContent=format(current);
-
-    if(progress<1){
+    if(p<1){
       numberFrames.set(
-        id,requestAnimationFrame(frame)
+        id,requestAnimationFrame(step)
       );
     }else{
       node.textContent=format(value);
@@ -1563,11 +1440,11 @@ function setNumber(id,value,animate=true){
   }
 
   numberFrames.set(
-    id,requestAnimationFrame(frame)
+    id,requestAnimationFrame(step)
   );
 }
 
-function resetAnimatedNumbers(){
+function resetAllNumbers(){
   for(const frame of numberFrames.values()){
     cancelAnimationFrame(frame);
   }
@@ -1576,90 +1453,239 @@ function resetAnimatedNumbers(){
   animatedNumbers.clear();
 }
 
-function glowNumber(id){
-  const node=el(id);
-
-  node.classList.remove('number-glow');
+function glowBalance(){
+  const node=el('balanceWrapper');
+  node.classList.remove('balance-glow');
   void node.offsetWidth;
-  node.classList.add('number-glow');
+  node.classList.add('balance-glow');
 }
+
+/* ── 目立つ成功演出 ── */
 
 let toastTimer=null;
 
 function showToast(message){
-  const toast=el('toast');
+  const node=el('toast');
 
   clearTimeout(toastTimer);
-
-  toast.textContent=message;
-  toast.classList.add('visible');
+  node.textContent=message;
+  node.classList.add('visible');
 
   toastTimer=setTimeout(()=>{
-    toast.classList.remove('visible');
-  },3100);
+    node.classList.remove('visible');
+  },3500);
+}
+
+function makeStar(x,y,symbol,color,size){
+  const node=document.createElement('span');
+
+  node.className='fx-star';
+  node.textContent=symbol;
+  node.style.left=x+'px';
+  node.style.top=y+'px';
+  node.style.fontSize=size+'px';
+  node.style.color=color;
+
+  el('fxLayer').append(node);
+
+  return node;
+}
+
+function animateAndRemove(node,frames,duration,delay=0){
+  const animation=node.animate(frames,{
+    duration,
+    delay,
+    easing:'cubic-bezier(.2,.7,.2,1)',
+    fill:'both'
+  });
+
+  animation.finished.then(()=>{
+    node.remove();
+  }).catch(()=>{
+    node.remove();
+  });
+}
+
+function playEffect(kind){
+  if(reduceMotion.matches)return;
+
+  const w=window.innerWidth;
+  const h=window.innerHeight;
+
+  const centerX=w/2;
+  const centerY=h*.42;
+
+  const night=selectedAccount==='yamanashi';
+
+  const gold=['#e5b24e','#f4d879','#fff0b6'];
+  const blue=['#d6ddff','#a9bcec','#f5efff'];
+
+  const colors=night?blue:gold;
+
+  const layer=el('fxLayer');
+  layer.replaceChildren();
+
+  // 最初に、画面中央がパッと光る。
+  const flash=document.createElement('div');
+  flash.className='fx-flash';
+
+  layer.append(flash);
+
+  animateAndRemove(flash,[
+    {opacity:0,transform:'translate(-50%,-50%) scale(.4)'},
+    {opacity:.9,transform:'translate(-50%,-50%) scale(1.8)',offset:.35},
+    {opacity:0,transform:'translate(-50%,-50%) scale(2.7)'}
+  ],950);
+
+  if(kind==='transfer'){
+    // 月見里からLaLaへ、星が横切る。
+    for(let i=0;i<8;i++){
+      const x=w*.16;
+      const y=h*(.34+i*.025);
+
+      const star=makeStar(
+        x,y,'✦',
+        gold[i%gold.length],
+        23+(i%3)*9
+      );
+
+      animateAndRemove(star,[
+        {
+          opacity:0,
+          transform:'translate(0,25px) scale(.35) rotate(-30deg)'
+        },
+        {
+          opacity:1,
+          transform:'translate(30px,-12px) scale(1.3) rotate(0deg)',
+          offset:.25
+        },
+        {
+          opacity:1,
+          transform:`translate(${w*.52}px,-55px) scale(1.2) rotate(35deg)`,
+          offset:.75
+        },
+        {
+          opacity:0,
+          transform:`translate(${w*.69}px,-85px) scale(.4) rotate(90deg)`
+        }
+      ],1800,i*120);
+    }
+    return;
+  }
+
+  for(let i=0;i<10;i++){
+    const angle=Math.PI*2*i/10;
+    const distance=105+(i%3)*27;
+
+    const star=makeStar(
+      centerX,centerY,
+      i%3===0?'★':'✦',
+      colors[i%colors.length],
+      26+(i%3)*8
+    );
+
+    let frames;
+
+    if(kind==='withdraw'){
+      // 出金：星が上へ舞い上がる。
+      const dx=Math.cos(angle)*distance*.7;
+      const dy=-130-(i%3)*50;
+
+      frames=[
+        {opacity:0,transform:'translate(-50%,-50%) scale(.35)'},
+        {
+          opacity:1,
+          transform:`translate(calc(-50% + ${dx*.35}px),-75px) scale(1.25)`,
+          offset:.3
+        },
+        {
+          opacity:0,
+          transform:`translate(calc(-50% + ${dx}px),${dy}px) scale(.65)`
+        }
+      ];
+    }else if(kind==='correction'){
+      // 訂正：くるっと巻き戻る。
+      const dx=Math.cos(angle)*distance;
+      const dy=Math.sin(angle)*distance;
+
+      frames=[
+        {
+          opacity:0,
+          transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) rotate(0deg) scale(1.2)`
+        },
+        {
+          opacity:1,
+          transform:`translate(calc(-50% + ${dx*.55}px),calc(-50% + ${dy*.55}px)) rotate(-180deg) scale(1.25)`,
+          offset:.55
+        },
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) rotate(-360deg) scale(.2)'
+        }
+      ];
+    }else if(kind==='repayment'){
+      // 返済：流れ星が夜空に広がる。
+      const dx=75+i*14;
+      const dy=-95-i*13;
+
+      frames=[
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) scale(.3) rotate(-30deg)'
+        },
+        {
+          opacity:1,
+          transform:'translate(-30px,20px) scale(1.4) rotate(0deg)',
+          offset:.3
+        },
+        {
+          opacity:0,
+          transform:`translate(${dx}px,${dy}px) scale(.75) rotate(45deg)`
+        }
+      ];
+    }else{
+      // チャージ：大きな星が四方へ広がる。
+      const dx=Math.cos(angle)*distance;
+      const dy=Math.sin(angle)*distance;
+
+      frames=[
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) scale(.25) rotate(-40deg)'
+        },
+        {
+          opacity:1,
+          transform:'translate(-50%,-50%) scale(1.6) rotate(0deg)',
+          offset:.25
+        },
+        {
+          opacity:1,
+          transform:`translate(calc(-50% + ${dx*.8}px),calc(-50% + ${dy*.8}px)) scale(1.25) rotate(35deg)`,
+          offset:.72
+        },
+        {
+          opacity:0,
+          transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(.65) rotate(55deg)`
+        }
+      ];
+    }
+
+    animateAndRemove(star,frames,1700,i*60);
+  }
+}
+
+function celebrate(message,kind='charge'){
+  showToast(message);
+  playEffect(kind);
 }
 
 function clearEffects(){
   clearTimeout(toastTimer);
   el('toast').classList.remove('visible');
-  el('sparkLayer').replaceChildren();
+  el('fxLayer').replaceChildren();
 }
 
-function sparkle(kind='normal'){
-  if(reduceMotion.matches)return;
-
-  const layer=el('sparkLayer');
-  const transfer=kind==='transfer';
-  const count=transfer?7:12;
-
-  for(let i=0;i<count;i++){
-    const star=document.createElement('span');
-
-    star.textContent=i%3===0?'✧':'✦';
-
-    if(transfer){
-      star.className='transfer-spark';
-      star.style.top=(40+i*2.5)+'%';
-      star.style.left=(15+i*2)+'%';
-      star.style.animationDelay=(i*75)+'ms';
-    }else{
-      star.className='spark';
-
-      const angle=(Math.PI*2*i/count);
-      const distance=65+Math.random()*95;
-
-      star.style.setProperty(
-        '--dx',Math.cos(angle)*distance+'px'
-      );
-
-      star.style.setProperty(
-        '--dy',Math.sin(angle)*distance+'px'
-      );
-
-      star.style.setProperty(
-        '--rot',(Math.random()*180-90)+'deg'
-      );
-
-      star.style.animationDelay=(i*40)+'ms';
-      star.style.fontSize=(13+Math.random()*14)+'px';
-    }
-
-    layer.append(star);
-
-    star.addEventListener('animationend',()=>{
-      star.remove();
-    },{once:true});
-  }
-}
-
-function celebrate(message,kind='normal'){
-  showToast(message);
-  sparkle(kind);
-}
-
-/* ───────────────────────────
-   ホーム・進捗
-   ─────────────────────────── */
+/* ── ホームの数値 ── */
 
 function updateProgress(){
   const paid=balances.yamanashi;
@@ -1679,10 +1705,8 @@ function updateProgress(){
 
   setNumber('homeLaLaBalance',balances.LaLa);
   setNumber('homeYamanashiBalance',paid);
-
-  for(const id of ['progressPaid','graphPaid']){
-    setNumber(id,paid);
-  }
+  setNumber('progressPaid',paid);
+  setNumber('graphPaid',paid);
 
   for(const id of [
     'progressPercent','graphPercent'
@@ -1718,9 +1742,7 @@ function updateProgress(){
   );
 }
 
-/* ───────────────────────────
-   ページ切替
-   ─────────────────────────── */
+/* ── 画面切り替え ── */
 
 function showPage(page){
   if(transacting||correcting)return;
@@ -1739,7 +1761,23 @@ function showPage(page){
     );
   });
 
-  window.scrollTo({top:0,behavior:'instant'});
+  // 口座画面だけ昼と夜を切り替える。
+  if(page==='accounts'){
+    document.body.dataset.theme=
+      selectedAccount==='yamanashi'
+        ?'moon'
+        :'lala';
+  }else{
+    document.body.dataset.theme='home';
+  }
+
+  el('historyTitle').classList.toggle(
+    'moon-heading',
+    page==='accounts'
+      &&selectedAccount==='yamanashi'
+  );
+
+  window.scrollTo(0,0);
 }
 
 document.querySelectorAll(
@@ -1781,9 +1819,7 @@ el('tabYamanashi').addEventListener('click',()=>{
   openAccount('yamanashi');
 });
 
-/* ───────────────────────────
-   履歴表示
-   ─────────────────────────── */
+/* ── 履歴 ── */
 
 const labels={
   charge:'✦ チャージ',
@@ -1793,7 +1829,10 @@ const labels={
 };
 
 function transactionLabel(type,accountId){
-  if(type==='charge'&&accountId==='yamanashi'){
+  if(
+    type==='charge'
+    &&accountId==='yamanashi'
+  ){
     return '☾ 返済を記録';
   }
 
@@ -1959,9 +1998,7 @@ function renderHistory(snapshot){
   el('empty').hidden=list.children.length>0;
 }
 
-/* ───────────────────────────
-   口座データ監視
-   ─────────────────────────── */
+/* ── 口座データ監視 ── */
 
 function stopAccountListeners(){
   accountVersion++;
@@ -2009,16 +2046,10 @@ function watchSelectedAccount(){
   balanceReady=false;
   currentTransferred=0;
 
-  // 別口座の数字が混ざらないようにリセット。
-  for(const key of [
-    'balance',
-    'accountTransferred',
-    'accountAvailable'
-  ]){
-    animatedNumbers.delete(key);
-  }
+  resetNumber('balance');
+  resetNumber('accountTransferred');
+  resetNumber('accountAvailable');
 
-  el('balance').textContent='—';
   el('history').replaceChildren();
   el('empty').hidden=false;
 
@@ -2079,7 +2110,7 @@ function watchSelectedAccount(){
       const value=data?.balance;
 
       if(validAmount(value)){
-        const oldBalance=balanceReady
+        const previous=balanceReady
           ?currentBalance
           :null;
 
@@ -2093,10 +2124,10 @@ function watchSelectedAccount(){
         setNumber('balance',value);
 
         if(
-          oldBalance!==null
-          &&oldBalance!==value
+          previous!==null
+          &&previous!==value
         ){
-          glowNumber('balanceWrapper');
+          glowBalance();
         }
 
         if(
@@ -2109,7 +2140,7 @@ function watchSelectedAccount(){
         }
       }else{
         balanceReady=false;
-        setNumber('balance',null);
+        resetNumber('balance');
 
         el('storageStatus').textContent=
           '口座データを確認できないよ。';
@@ -2205,9 +2236,7 @@ function watchHomeBalances(){
   }
 }
 
-/* ───────────────────────────
-   取引画面
-   ─────────────────────────── */
+/* ── 取引モーダル ── */
 
 function closeTransaction(){
   el('transactionModal').classList.remove('show');
@@ -2300,9 +2329,7 @@ el('transactionCancel').addEventListener('click',()=>{
   }
 });
 
-/* ───────────────────────────
-   通常取引保存
-   ─────────────────────────── */
+/* ── 通常取引保存 ── */
 
 async function ordinaryTransaction(
   user,id,type,amount
@@ -2363,9 +2390,7 @@ async function ordinaryTransaction(
   });
 }
 
-/* ───────────────────────────
-   振替保存
-   ─────────────────────────── */
+/* ── 振替保存 ── */
 
 async function transferTransaction(user,amount){
   const lalaBank=bankRef('LaLa');
@@ -2468,9 +2493,7 @@ async function transferTransaction(user,amount){
   });
 }
 
-/* ───────────────────────────
-   取引フォーム
-   ─────────────────────────── */
+/* ── 取引フォーム ── */
 
 el('transactionForm').addEventListener(
   'submit',async e=>{
@@ -2554,10 +2577,13 @@ el('transactionForm').addEventListener(
 
       el('storageStatus').textContent=text;
 
-      celebrate(
-        text,
-        type==='transfer'?'transfer':'normal'
-      );
+      const effect=
+        type==='transfer'?'transfer':
+        type==='withdraw'?'withdraw':
+        id==='yamanashi'?'repayment':
+        'charge';
+
+      celebrate(text,effect);
 
     }catch(error){
       console.error(error);
@@ -2576,9 +2602,7 @@ el('transactionForm').addEventListener(
   }
 );
 
-/* ───────────────────────────
-   訂正画面
-   ─────────────────────────── */
+/* ── 訂正画面 ── */
 
 function openCorrection(item){
   if(transacting||correcting)return;
@@ -2657,9 +2681,7 @@ el('correctionCancel').addEventListener(
   }
 );
 
-/* ───────────────────────────
-   通常取引の訂正
-   ─────────────────────────── */
+/* ── 通常取引の訂正 ── */
 
 async function correctOrdinary(
   user,target,reason
@@ -2775,9 +2797,7 @@ async function correctOrdinary(
   });
 }
 
-/* ───────────────────────────
-   振替の訂正
-   ─────────────────────────── */
+/* ── 振替の訂正 ── */
 
 async function correctTransfer(
   user,target,reason
@@ -2809,7 +2829,6 @@ async function correctTransfer(
   );
 
   await runTransaction(db,async tx=>{
-    // 読み取りをすべて先に済ませる。
     const lalaSnap=await tx.get(lalaBank);
     const repaymentSnap=await tx.get(repaymentBank);
 
@@ -2937,9 +2956,7 @@ async function correctTransfer(
   });
 }
 
-/* ───────────────────────────
-   訂正フォーム
-   ─────────────────────────── */
+/* ── 訂正フォーム ── */
 
 el('correctionForm').addEventListener(
   'submit',async e=>{
@@ -2991,7 +3008,7 @@ el('correctionForm').addEventListener(
 
       el('storageStatus').textContent=text;
 
-      celebrate(text);
+      celebrate(text,'correction');
 
     }catch(error){
       console.error(error);
@@ -3011,9 +3028,7 @@ el('correctionForm').addEventListener(
   }
 );
 
-/* ───────────────────────────
-   ログイン・ログアウト
-   ─────────────────────────── */
+/* ── ログイン処理 ── */
 
 async function runAuth(register){
   if(authBusy)return;
@@ -3076,9 +3091,7 @@ el('signUp').addEventListener('click',()=>{
   runAuth(true);
 });
 
-/* ───────────────────────────
-   ログイン状態の監視
-   ─────────────────────────── */
+/* ── ログイン状態 ── */
 
 onAuthStateChanged(auth,user=>{
   stopAccountListeners();
@@ -3086,7 +3099,7 @@ onAuthStateChanged(auth,user=>{
   stopHomeBanks.forEach(stop=>stop());
   stopHomeBanks=[];
 
-  resetAnimatedNumbers();
+  resetAllNumbers();
   clearEffects();
 
   balanceReady=false;
@@ -3101,6 +3114,7 @@ onAuthStateChanged(auth,user=>{
   el('bottomNav').hidden=!user;
 
   if(!user){
+    document.body.dataset.theme='home';
     el('accountInfo').textContent='STAR BANK';
 
     el('authStatus').textContent=
@@ -3115,7 +3129,6 @@ onAuthStateChanged(auth,user=>{
   label.textContent=user.email;
 
   const logout=document.createElement('button');
-
   logout.textContent='ログアウト';
 
   logout.addEventListener('click',()=>{
