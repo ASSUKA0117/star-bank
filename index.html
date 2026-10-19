@@ -24,7 +24,10 @@ header{
 }
 .brand{font-weight:800;font-size:20px}
 .gold{color:#c69a46}
-.account-info{font-size:11px;color:#818995;text-align:right;max-width:200px;overflow-wrap:anywhere}
+.account-info{
+  font-size:11px;color:#818995;text-align:right;
+  max-width:200px;overflow-wrap:anywhere
+}
 .account-info button{
   display:block;margin:6px 0 0 auto;
   border:0;background:#f0f1f4;border-radius:9px;
@@ -115,7 +118,10 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
   color:#9a732e;font-size:14px;font-weight:800;
   padding:7px 0 15px
 }
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:15px}
+.tabs{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:9px;margin-bottom:15px
+}
 .tab{
   padding:13px 7px;border:1px solid #e7e9ed;
   border-radius:13px;background:white;
@@ -134,13 +140,32 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
   border:3px solid #f9e8c2;color:white;
   font-size:21px;vertical-align:4px
 }
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.actions{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:22px
+}
 .action{
   border:0;border-radius:13px;padding:14px 5px;
-  font-size:14px;font-weight:800;
+  font-size:13px;font-weight:800;
   background:#fff4dd;color:#946b26
 }
 .action.secondary{background:#f1f3f6;color:#515b69}
+.transfer-summary{
+  background:#faf8f2;border:1px solid #f1e8d4;
+  border-radius:14px;padding:15px;margin-top:15px
+}
+.transfer-row{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;
+  font-size:13px;padding:7px 0
+}
+.transfer-row span{color:#818995}
+.transfer-row strong{color:#a67b32}
+.transfer-row.available{
+  border-top:1px solid #e9ddc5;
+  margin-top:7px;padding-top:13px
+}
+.transfer-row.available strong{font-size:20px}
 .history{padding:0;margin:0;list-style:none}
 .history li{
   display:flex;justify-content:space-between;
@@ -149,11 +174,14 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
 }
 .history small{
   display:block;color:#9aa0aa;
-  margin-top:5px;font-size:11px
+  margin-top:5px;font-size:11px;line-height:1.5
 }
 .history strong{white-space:nowrap;color:#a57a2d}
 .history strong.minus{color:#57616e}
-.empty{text-align:center;padding:24px 0;color:#9299a3;font-size:13px}
+.empty{
+  text-align:center;padding:24px 0;
+  color:#9299a3;font-size:13px
+}
 .status{font-size:12px;color:#8b929e;line-height:1.7}
 .footer{text-align:center;font-size:11px;color:#a3a9b2;margin-top:24px}
 .bottom-nav{
@@ -164,7 +192,7 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
   z-index:5
 }
 .nav-inner{
-  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;
+  display:grid;grid-template-columns:repeat(4,1fr);
   width:min(100%,520px);gap:5px
 }
 .nav-btn{
@@ -202,18 +230,26 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
 }
 .auth h1{font-size:21px;margin-top:0}
 .auth p{font-size:13px;color:#7c8592;line-height:1.7}
-.auth label{font-size:13px;font-weight:700;display:block;margin-top:15px}
+.auth label{
+  font-size:13px;font-weight:700;
+  display:block;margin-top:15px
+}
 .auth input{
   display:block;width:100%;margin-top:7px;
   padding:12px;border:1px solid #dce0e6;
   border-radius:12px;font-size:16px
 }
-.auth-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.auth-buttons{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:18px
+}
 .auth-buttons button{
   border:0;border-radius:12px;padding:13px;
   background:#fff3da;color:#956d28;font-weight:800
 }
-.auth-buttons button+button{background:#f1f3f6;color:#55606e}
+.auth-buttons button+button{
+  background:#f1f3f6;color:#55606e
+}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -277,7 +313,8 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
       <span class="name">✦ LaLa預金</span>
       <span class="arrow">›</span>
     </div>
-    <div class="amount"><span id="homeLaLaBalance">—</span>
+    <div class="amount">
+      <span id="homeLaLaBalance">—</span>
       <span class="unit">粒</span>
     </div>
     <div class="hint">現在の預金残高</div>
@@ -288,10 +325,11 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
       <span class="name">☾ 月見里返済</span>
       <span class="arrow">›</span>
     </div>
-    <div class="amount"><span id="homeYamanashiBalance">—</span>
+    <div class="amount">
+      <span id="homeYamanashiBalance">—</span>
       <span class="unit">粒</span>
     </div>
-    <div class="hint">これまでに返済した星粒</div>
+    <div class="hint">月見里から返済された星粒の累計</div>
   </button>
 
   <div class="section-title">☾ 返済のあゆみ</div>
@@ -301,7 +339,7 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
       <span id="progressPaid">—</span>
       <span> / 18,000粒</span>
     </div>
-    <div class="progress-sub">これまでに返済した星粒</div>
+    <div class="progress-sub">これまでに返済された星粒</div>
     <div class="progress-track">
       <div id="progressFill" class="progress-fill"></div>
     </div>
@@ -309,15 +347,31 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
       <span>達成率 <strong id="progressPercent">—</strong></span>
       <span>残り <strong id="progressRemaining">—</strong>粒</span>
     </div>
+    <div class="transfer-summary">
+      <div class="transfer-row">
+        <span>LaLa預金へ振替済み</span>
+        <strong><span id="homeTransferred">—</span>粒</strong>
+      </div>
+      <div class="transfer-row available">
+        <span>振替可能</span>
+        <strong><span id="homeAvailable">—</span>粒</strong>
+      </div>
+    </div>
   </section>
 </section>
 
 <section id="accountsPage" hidden>
-  <button class="back" id="backHome" type="button">‹ ホームに戻る</button>
+  <button class="back" id="backHome" type="button">
+    ‹ ホームに戻る
+  </button>
 
   <div class="tabs">
-    <button class="tab active" id="tabLaLa" type="button">✦ LaLa預金</button>
-    <button class="tab" id="tabYamanashi" type="button">☾ 月見里返済</button>
+    <button class="tab active" id="tabLaLa" type="button">
+      ✦ LaLa預金
+    </button>
+    <button class="tab" id="tabYamanashi" type="button">
+      ☾ 月見里返済
+    </button>
   </div>
 
   <section class="card">
@@ -327,17 +381,39 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
       <span id="balance">—</span>
       <span style="font-size:17px">粒</span>
     </div>
-    <div class="muted" id="balanceHint">現在の星粒残高</div>
+    <div class="muted" id="balanceHint">現在の預金残高</div>
+
+    <div id="accountTransferSummary" class="transfer-summary" hidden>
+      <div class="transfer-row">
+        <span>振替済み</span>
+        <strong><span id="accountTransferred">—</span>粒</strong>
+      </div>
+      <div class="transfer-row available">
+        <span>振替可能</span>
+        <strong><span id="accountAvailable">—</span>粒</strong>
+      </div>
+    </div>
+
     <div class="actions">
-      <button class="action" id="chargeButton" type="button">＋ チャージ</button>
-      <button class="action secondary" id="withdrawButton" type="button">✧ 星粒を使う</button>
+      <button class="action" id="chargeButton" type="button">
+        ＋ チャージ
+      </button>
+      <button class="action secondary" id="withdrawButton" type="button">
+        ✧ 星粒を使う
+      </button>
+      <button class="action secondary" id="transferButton"
+        type="button" hidden>
+        ✦ LaLaへ振替
+      </button>
     </div>
   </section>
 
   <div class="section-title" id="historyTitle">LaLa預金の履歴</div>
   <section class="card">
     <ul id="history" class="history"></ul>
-    <div id="empty" class="empty">まだ取引履歴はないよ ✦</div>
+    <div id="empty" class="empty">
+      まだ取引履歴はないよ ✦
+    </div>
   </section>
 </section>
 
@@ -366,7 +442,9 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
     <p style="font-weight:800">星粒銀行</p>
     <p class="muted">返済目標：18,000粒</p>
     <p class="muted">口座：LaLa預金・月見里返済</p>
-    <p class="muted">アカウントの追加や設定機能は今後対応予定だよ。</p>
+    <p class="muted">
+      アカウントの追加や設定機能は今後対応予定だよ。
+    </p>
   </section>
 </section>
 
@@ -407,7 +485,9 @@ main{max-width:520px;margin:auto;padding:20px 16px 100px}
       <p id="transactionStatus" role="status"></p>
       <button id="transactionConfirm" class="confirm"
         type="submit">チャージする</button>
-      <button id="transactionCancel" type="button">キャンセル</button>
+      <button id="transactionCancel" type="button">
+        キャンセル
+      </button>
     </form>
   </div>
 </div>
@@ -456,9 +536,10 @@ const names={
 
 const GOAL=18000;
 let selectedAccount='LaLa';
-let currentPage='home';
 let balances={LaLa:null,yamanashi:null};
+let transferred=null;
 let currentBalance=0;
+let currentTransferred=0;
 let balanceReady=false;
 let transactionType='charge';
 let transacting=false;
@@ -471,19 +552,28 @@ let stopHomeBanks=[];
 function bankRef(id){
   return doc(db,'StarBank',id);
 }
+
 function historyRef(id){
   return collection(db,'StarBank',id,'history');
 }
 
+function validAmount(n){
+  return Number.isSafeInteger(n)&&n>=0;
+}
+
 function updateProgress(){
   const paid=balances.yamanashi;
-  const ready=Number.isSafeInteger(paid)&&paid>=0;
+  const ready=validAmount(paid);
   const percent=ready?Math.min(100,paid/GOAL*100):0;
-  const percentText=ready?(paid/GOAL*100).toFixed(2)+'%':'—';
-  const remaining=ready?format(Math.max(0,GOAL-paid)):'—';
+  const percentText=ready
+    ?(paid/GOAL*100).toFixed(2)+'%':'—';
+  const remaining=ready
+    ?format(Math.max(0,GOAL-paid)):'—';
 
   el('homeLaLaBalance').textContent=
-    balances.LaLa===null?'—':format(balances.LaLa);
+    validAmount(balances.LaLa)
+    ?format(balances.LaLa):'—';
+
   el('homeYamanashiBalance').textContent=
     ready?format(paid):'—';
 
@@ -499,17 +589,28 @@ function updateProgress(){
   for(const id of ['progressFill','graphFill']){
     el(id).style.width=percent+'%';
   }
+
+  const transferReady=
+    ready&&validAmount(transferred)&&transferred<=paid;
+
+  el('homeTransferred').textContent=
+    transferReady?format(transferred):'—';
+
+  el('homeAvailable').textContent=
+    transferReady?format(paid-transferred):'—';
 }
 
 function showPage(page){
   if(transacting)return;
-  currentPage=page;
+
   for(const name of ['home','accounts','graph','settings']){
     el(name+'Page').hidden=name!==page;
   }
+
   document.querySelectorAll('.nav-btn').forEach(btn=>{
     btn.classList.toggle('active',btn.dataset.page===page);
   });
+
   window.scrollTo(0,0);
 }
 
@@ -521,6 +622,7 @@ el('backHome').addEventListener('click',()=>showPage('home'));
 
 function openAccount(id){
   if(transacting)return;
+
   if(selectedAccount!==id){
     selectedAccount=id;
     watchSelectedAccount();
@@ -539,16 +641,29 @@ function renderHistory(snapshot){
 
   snapshot.forEach(item=>{
     const data=item.data();
-    if(!['charge','withdraw'].includes(data.type))return;
+    const type=data.type;
 
-    const charge=data.type==='charge';
+    if(![
+      'charge','withdraw','transfer_in','transfer_out'
+    ].includes(type))return;
+
     const li=document.createElement('li');
     const details=document.createElement('div');
     const title=document.createElement('div');
     const small=document.createElement('small');
     const amount=document.createElement('strong');
 
-    title.textContent=charge?'✦ チャージ':'✧ 星粒を使用';
+    const labels={
+      charge:'✦ チャージ',
+      withdraw:'✧ 星粒を使用',
+      transfer_in:'✦ 月見里返済から振替',
+      transfer_out:'☾ LaLa預金へ振替'
+    };
+
+    title.textContent=
+      type==='charge'&&selectedAccount==='yamanashi'
+      ?'☾ 返済を記録'
+      :labels[type];
 
     const date=data.createdAt?.toDate?.();
     const dateText=date
@@ -558,13 +673,23 @@ function renderHistory(snapshot){
       })
       :'日時を確認中';
 
-    small.textContent=dateText+' ・ '+(data.actorName||'不明');
+    small.textContent=
+      dateText+' ・ '+(data.actorName||'不明');
+
     details.append(title,small);
 
-    amount.textContent=
-      (charge?'+':'−')+format(Number(data.amount))+'粒';
+    const negative=type==='withdraw';
+    const sign=negative?'−':'+';
 
-    if(!charge)amount.classList.add('minus');
+    if(type==='transfer_out'){
+      amount.textContent=format(Number(data.amount))+'粒';
+    }else{
+      amount.textContent=
+        sign+format(Number(data.amount))+'粒';
+    }
+
+    if(negative)amount.classList.add('minus');
+
     li.append(details,amount);
     list.append(li);
   });
@@ -574,6 +699,7 @@ function renderHistory(snapshot){
 
 function stopAccountListeners(){
   accountVersion++;
+
   if(stopSelectedBank){
     stopSelectedBank();
     stopSelectedBank=null;
@@ -584,40 +710,84 @@ function stopAccountListeners(){
   }
 }
 
+function updateAccountTransferView(){
+  const ready=
+    balanceReady&&selectedAccount==='yamanashi'
+    &&validAmount(currentTransferred)
+    &&currentTransferred<=currentBalance;
+
+  el('accountTransferred').textContent=
+    ready?format(currentTransferred):'—';
+
+  el('accountAvailable').textContent=
+    ready?format(currentBalance-currentTransferred):'—';
+
+  el('transferButton').disabled=!ready
+    ||currentBalance-currentTransferred===0;
+}
+
 function watchSelectedAccount(){
   stopAccountListeners();
   const version=accountVersion;
   const id=selectedAccount;
+  const isRepayment=id==='yamanashi';
 
   balanceReady=false;
+  currentTransferred=0;
+
   el('balance').textContent='—';
   el('history').replaceChildren();
   el('empty').hidden=false;
 
-  el('tabLaLa').classList.toggle('active',id==='LaLa');
-  el('tabYamanashi').classList.toggle('active',id==='yamanashi');
+  el('tabLaLa').classList.toggle('active',!isRepayment);
+  el('tabYamanashi').classList.toggle('active',isRepayment);
+
   el('balanceTitle').textContent=accounts[id].name;
   el('historyTitle').textContent=accounts[id].name+'の履歴';
-  el('balanceHint').textContent=
-    id==='yamanashi'?'これまでに返済した星粒':'現在の預金残高';
+
+  el('balanceHint').textContent=isRepayment
+    ?'月見里から返済された星粒の累計'
+    :'現在の預金残高';
+
+  el('chargeButton').textContent=isRepayment
+    ?'＋ 返済を記録':'＋ チャージ';
+
+  el('withdrawButton').hidden=isRepayment;
+  el('transferButton').hidden=!isRepayment;
+  el('accountTransferSummary').hidden=!isRepayment;
+
+  updateAccountTransferView();
 
   stopSelectedBank=onSnapshot(bankRef(id),snapshot=>{
     if(version!==accountVersion)return;
-    const value=snapshot.exists()?snapshot.data().balance:null;
 
-    if(Number.isSafeInteger(value)&&value>=0){
+    const data=snapshot.exists()?snapshot.data():null;
+    const value=data?.balance;
+
+    if(validAmount(value)){
       balanceReady=true;
       currentBalance=value;
+      currentTransferred=isRepayment?data.transferred:0;
       el('balance').textContent=format(value);
+
+      if(isRepayment&&!validAmount(currentTransferred)){
+        balanceReady=false;
+        el('storageStatus').textContent=
+          '振替済み額のデータを確認できないよ。';
+      }
     }else{
       balanceReady=false;
       el('balance').textContent='—';
-      el('storageStatus').textContent='口座データを確認できないよ。';
+      el('storageStatus').textContent=
+        '口座データを確認できないよ。';
     }
+
+    updateAccountTransferView();
   },error=>{
     if(version!==accountVersion)return;
     balanceReady=false;
-    el('storageStatus').textContent='口座を読み込めなかったよ。';
+    el('storageStatus').textContent=
+      '口座を読み込めなかったよ。';
     console.error(error);
   });
 
@@ -628,7 +798,8 @@ function watchSelectedAccount(){
     },
     error=>{
       if(version!==accountVersion)return;
-      el('storageStatus').textContent='履歴を読み込めなかったよ。';
+      el('storageStatus').textContent=
+        '履歴を読み込めなかったよ。';
       console.error(error);
     }
   );
@@ -637,20 +808,34 @@ function watchSelectedAccount(){
 function watchHomeBalances(){
   stopHomeBanks.forEach(stop=>stop());
   stopHomeBanks=[];
+
   balances={LaLa:null,yamanashi:null};
+  transferred=null;
   updateProgress();
 
   for(const id of ['LaLa','yamanashi']){
     const stop=onSnapshot(bankRef(id),snapshot=>{
-      const value=snapshot.exists()?snapshot.data().balance:null;
-      balances[id]=Number.isSafeInteger(value)&&value>=0?value:null;
+      const data=snapshot.exists()?snapshot.data():null;
+      const value=data?.balance;
+
+      balances[id]=validAmount(value)?value:null;
+
+      if(id==='yamanashi'){
+        transferred=validAmount(data?.transferred)
+          ?data.transferred:null;
+      }
+
       updateProgress();
     },error=>{
       balances[id]=null;
+      if(id==='yamanashi')transferred=null;
       updateProgress();
-      el('storageStatus').textContent='残高を読み込めなかったよ。';
+
+      el('storageStatus').textContent=
+        '残高を読み込めなかったよ。';
       console.error(error);
     });
+
     stopHomeBanks.push(stop);
   }
 }
@@ -663,40 +848,200 @@ function openTransaction(type){
   if(!balanceReady||transacting)return;
 
   transactionType=type;
-  const charge=type==='charge';
+
+  const repayment=selectedAccount==='yamanashi';
+
+  if(type==='withdraw'&&repayment)return;
+
+  if(type==='transfer'){
+    if(!repayment||!validAmount(currentTransferred)
+      ||currentTransferred>currentBalance)return;
+  }
+
+  const title={
+    charge:repayment?'☾ 返済を記録':'✦ チャージ',
+    withdraw:'✧ 星粒を使う',
+    transfer:'✦ LaLa預金へ振替'
+  };
+
+  const label={
+    charge:repayment?'返済された星粒数':'チャージする星粒数',
+    withdraw:'使用する星粒数',
+    transfer:'振り替える星粒数'
+  };
+
+  const confirm={
+    charge:repayment?'返済を記録する':'チャージする',
+    withdraw:'星粒を使う',
+    transfer:'振り替える'
+  };
 
   el('transactionTitle').textContent=
-    (charge?'✦ チャージ':'✧ 星粒を使う')+
-    '｜'+accounts[selectedAccount].name;
+    title[type]+'｜'+accounts[selectedAccount].name;
 
-  el('amountLabel').textContent=
-    charge?'チャージする星粒数':'使用する星粒数';
-
-  el('transactionConfirm').textContent=
-    charge?'チャージする':'星粒を使う';
-
+  el('amountLabel').textContent=label[type];
+  el('transactionConfirm').textContent=confirm[type];
   el('transactionAmount').value='';
-  el('transactionStatus').textContent=
-    '現在：'+format(currentBalance)+'粒';
+
+  if(type==='transfer'){
+    el('transactionStatus').textContent=
+      '振替可能：'+
+      format(currentBalance-currentTransferred)+
+      '粒。返済実績は減らないよ。';
+  }else{
+    el('transactionStatus').textContent=
+      '現在：'+format(currentBalance)+'粒';
+  }
 
   el('transactionModal').classList.add('show');
 }
 
-el('chargeButton').addEventListener('click',()=>openTransaction('charge'));
-el('withdrawButton').addEventListener('click',()=>openTransaction('withdraw'));
+el('chargeButton').addEventListener('click',()=>{
+  openTransaction('charge');
+});
+
+el('withdrawButton').addEventListener('click',()=>{
+  openTransaction('withdraw');
+});
+
+el('transferButton').addEventListener('click',()=>{
+  openTransaction('transfer');
+});
+
 el('transactionCancel').addEventListener('click',()=>{
   if(!transacting)closeTransaction();
 });
 
+async function ordinaryTransaction(user,id,type,amount){
+  const targetBank=bankRef(id);
+  const entry=doc(historyRef(id));
+
+  await runTransaction(db,async tx=>{
+    const snapshot=await tx.get(targetBank);
+
+    if(!snapshot.exists()){
+      throw new Error('口座が見つからないよ。');
+    }
+
+    const old=snapshot.data().balance;
+
+    if(!validAmount(old)){
+      throw new Error('残高データを確認できないよ。');
+    }
+
+    if(type==='withdraw'){
+      if(id==='yamanashi'){
+        throw new Error('月見里返済から直接は使えないよ。');
+      }
+      if(amount>old){
+        throw new Error('残高より多くは使えないよ。');
+      }
+    }
+
+    const next=type==='charge'?old+amount:old-amount;
+
+    if(!validAmount(next)){
+      throw new Error('残高の上限を超えるよ。');
+    }
+
+    tx.update(targetBank,{balance:next});
+
+    tx.set(entry,{
+      type,amount,
+      actorUid:user.uid,
+      actorName:names[user.uid]||'未登録ユーザー',
+      createdAt:serverTimestamp()
+    });
+  });
+}
+
+async function transferTransaction(user,amount){
+  const lalaBank=bankRef('LaLa');
+  const repaymentBank=bankRef('yamanashi');
+
+  // 両口座で同じIDの振替履歴を使う。
+  const transferId=doc(historyRef('LaLa')).id;
+  const lalaEntry=doc(historyRef('LaLa'),transferId);
+  const repaymentEntry=doc(historyRef('yamanashi'),transferId);
+
+  await runTransaction(db,async tx=>{
+    // Firestoreトランザクションでは読み取りを先に完了する。
+    const lalaSnapshot=await tx.get(lalaBank);
+    const repaymentSnapshot=await tx.get(repaymentBank);
+
+    if(!lalaSnapshot.exists()||!repaymentSnapshot.exists()){
+      throw new Error('口座が見つからないよ。');
+    }
+
+    const lalaBalance=lalaSnapshot.data().balance;
+    const repaid=repaymentSnapshot.data().balance;
+    const alreadyTransferred=repaymentSnapshot.data().transferred;
+
+    if(!validAmount(lalaBalance)
+      ||!validAmount(repaid)
+      ||!validAmount(alreadyTransferred)
+      ||alreadyTransferred>repaid){
+      throw new Error('口座データを確認できないよ。');
+    }
+
+    const available=repaid-alreadyTransferred;
+
+    if(amount>available){
+      throw new Error(
+        '振替可能額を超えているよ。現在の振替可能額：'+
+        format(available)+'粒'
+      );
+    }
+
+    const nextLaLa=lalaBalance+amount;
+    const nextTransferred=alreadyTransferred+amount;
+
+    if(!validAmount(nextLaLa)
+      ||!validAmount(nextTransferred)){
+      throw new Error('数値の上限を超えるよ。');
+    }
+
+    tx.update(lalaBank,{
+      balance:nextLaLa,
+      lastTransferId:transferId
+    });
+
+    tx.update(repaymentBank,{
+      transferred:nextTransferred,
+      lastTransferId:transferId
+    });
+
+    const common={
+      amount,
+      actorUid:user.uid,
+      actorName:names[user.uid]||'未登録ユーザー',
+      createdAt:serverTimestamp()
+    };
+
+    tx.set(lalaEntry,{
+      ...common,
+      type:'transfer_in'
+    });
+
+    tx.set(repaymentEntry,{
+      ...common,
+      type:'transfer_out'
+    });
+  });
+}
+
 el('transactionForm').addEventListener('submit',async e=>{
   e.preventDefault();
+
   if(transacting||!balanceReady)return;
 
   const user=auth.currentUser;
   if(!user)return;
 
   const amount=Number(el('transactionAmount').value);
-  if(!Number.isSafeInteger(amount)||amount<1||amount>1000000){
+
+  if(!Number.isSafeInteger(amount)
+    ||amount<1||amount>1000000){
     el('transactionStatus').textContent=
       '1〜1,000,000粒の整数を入力してね。';
     return;
@@ -706,12 +1051,20 @@ el('transactionForm').addEventListener('submit',async e=>{
   const id=selectedAccount;
 
   if(type==='withdraw'&&amount>currentBalance){
-    el('transactionStatus').textContent='残高より多くは使えないよ。';
+    el('transactionStatus').textContent=
+      '残高より多くは使えないよ。';
     return;
   }
 
-  const targetBank=bankRef(id);
-  const entry=doc(historyRef(id));
+  if(type==='transfer'){
+    if(id!=='yamanashi')return;
+
+    if(amount>currentBalance-currentTransferred){
+      el('transactionStatus').textContent=
+        '振替可能額を超えているよ。';
+      return;
+    }
+  }
 
   transacting=true;
   el('transactionConfirm').disabled=true;
@@ -719,36 +1072,21 @@ el('transactionForm').addEventListener('submit',async e=>{
   el('transactionStatus').textContent='保存しています…';
 
   try{
-    await runTransaction(db,async tx=>{
-      const snapshot=await tx.get(targetBank);
-      if(!snapshot.exists()){
-        throw new Error('口座が見つからないよ。');
-      }
+    if(type==='transfer'){
+      await transferTransaction(user,amount);
+    }else{
+      await ordinaryTransaction(user,id,type,amount);
+    }
 
-      const old=snapshot.data().balance;
-      if(!Number.isSafeInteger(old)||old<0){
-        throw new Error('残高データを確認できないよ。');
-      }
-      if(type==='withdraw'&&amount>old){
-        throw new Error('残高より多くは使えないよ。');
-      }
-
-      const next=type==='charge'?old+amount:old-amount;
-      if(!Number.isSafeInteger(next)){
-        throw new Error('残高の上限を超えるよ。');
-      }
-
-      tx.update(targetBank,{balance:next});
-      tx.set(entry,{
-        type,amount,
-        actorUid:user.uid,
-        actorName:names[user.uid]||'未登録ユーザー',
-        createdAt:serverTimestamp()
-      });
-    });
     closeTransaction();
+    el('storageStatus').textContent=
+      type==='transfer'
+      ?format(amount)+'粒をLaLa預金へ振り替えたよ ✦'
+      :'取引を保存したよ ✦';
+
   }catch(error){
     console.error(error);
+
     el('transactionStatus').textContent=
       error.code==='permission-denied'
       ?'保存権限がないよ。Firestoreルールを確認してね。'
@@ -781,11 +1119,16 @@ async function runAuth(register){
     el('password').value='';
   }catch(error){
     const messages={
-      'auth/email-already-in-use':'登録済みのメールアドレスだよ。',
-      'auth/invalid-credential':'メールアドレスかパスワードを確認してね。',
-      'auth/weak-password':'パスワードは6文字以上にしてね。',
-      'auth/invalid-email':'メールアドレスを確認してね。'
+      'auth/email-already-in-use':
+        '登録済みのメールアドレスだよ。',
+      'auth/invalid-credential':
+        'メールアドレスかパスワードを確認してね。',
+      'auth/weak-password':
+        'パスワードは6文字以上にしてね。',
+      'auth/invalid-email':
+        'メールアドレスを確認してね。'
     };
+
     el('authStatus').textContent=
       messages[error.code]||'ログインできなかったよ。';
   }finally{
@@ -799,12 +1142,14 @@ el('authForm').addEventListener('submit',e=>{
   e.preventDefault();
   runAuth(false);
 });
+
 el('signUp').addEventListener('click',()=>runAuth(true));
 
 onAuthStateChanged(auth,user=>{
   stopAccountListeners();
   stopHomeBanks.forEach(stop=>stop());
   stopHomeBanks=[];
+
   balanceReady=false;
   closeTransaction();
 
@@ -831,6 +1176,7 @@ onAuthStateChanged(auth,user=>{
   el('accountInfo').append(label,logout);
 
   el('storageStatus').textContent='';
+
   watchHomeBalances();
   watchSelectedAccount();
   showPage('home');
