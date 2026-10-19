@@ -47,7 +47,11 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
 const db = getFirestore(app);
+console.log('Firebase接続先', app.options.projectId, db._databaseId?.database);
+document.title = '星粒銀行 | ' + app.options.projectId + ' / ' + (db._databaseId?.database ?? '不明');
+
 const el = id => document.getElementById(id);
 const setStatus = (message, error = false) => { el('authStatus').textContent = message; el('authStatus').classList.toggle('error', error); };
 const errors = {
