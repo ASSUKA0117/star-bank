@@ -288,7 +288,7 @@ onAuthStateChanged(auth,user=>{
 
   status.append(intro,uid,copy,note,connectionInfo,serverResult);
 
-  const bankRef = doc(db,'starBank','main');
+  const bankRef = doc(db,'StarBank','main');
 
   getDocFromServer(bankRef).then(snapshot=>{
 
