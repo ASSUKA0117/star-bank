@@ -41,6 +41,7 @@ main{max-width:520px;margin:auto;padding:24px 17px 50px}
 .history li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #eff0f2;padding:14px 0;font-size:14px}
 .history small{display:block;color:#969ca5;margin-top:4px}
 .history strong{white-space:nowrap;color:#956a1e}
+.history strong.withdraw{color:#455160}
 .foot{text-align:center;font-size:12px;color:#a0a6ae;margin-top:25px}
 .modal{position:fixed;inset:0;background:#17202d70;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
 .modal.show{display:flex}
@@ -67,311 +68,53 @@ button:disabled{opacity:.5;cursor:wait}
 .charge-field{display:block;font-size:13px;font-weight:700;margin:16px 0}
 .charge-field input{display:block;width:100%;margin-top:8px;padding:13px;border:1px solid #dce0e6;border-radius:12px;font-size:18px}
 .charge-confirm{background:#fff5df!important;color:#956a1e;font-weight:800}
-.charge-error{color:#b3261e!important}
+.withdraw-confirm{background:#f1f3f6!important;color:#455160;font-weight:800}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand"><span class="star">✦</span> 星粒銀行</div>
-  <div id="account" class="account"><span class="tag">STAR BANK</span></div>
-</header>
+<header><div class="brand"><span class="star">✦</span> 星粒銀行</div><div id="account" class="account"><span class="tag">STAR BANK</span></div></header>
 <main>
 <section id="authPanel" class="card auth-card">
-  <h1>星粒銀行へようこそ ✦</h1>
-  <p>LaLaと晩餐館、それぞれのメールアドレスでログインできるよ。初めてなら「新規登録」を選んでね。</p>
-  <form id="authForm">
-    <label class="auth-field">メールアドレス<input id="email" type="email" autocomplete="email" required></label>
-    <label class="auth-field">パスワード<input id="password" type="password" minlength="6" autocomplete="current-password" required></label>
-    <div class="auth-buttons">
-      <button id="signIn" type="submit">ログイン</button>
-      <button class="secondary" id="signUp" type="button">新規登録</button>
-    </div>
-  </form>
-  <div id="authStatus" class="auth-status" role="status" aria-live="polite">接続しています…</div>
+<h1>星粒銀行へようこそ ✦</h1>
+<p>LaLaと晩餐館、それぞれのメールアドレスでログインできるよ。初めてなら「新規登録」を選んでね。</p>
+<form id="authForm">
+<label class="auth-field">メールアドレス<input id="email" type="email" autocomplete="email" required></label>
+<label class="auth-field">パスワード<input id="password" type="password" minlength="6" autocomplete="current-password" required></label>
+<div class="auth-buttons"><button id="signIn" type="submit">ログイン</button><button class="secondary" id="signUp" type="button">新規登録</button></div>
+</form><div id="authStatus" class="auth-status" role="status" aria-live="polite">接続しています…</div>
 </section>
-
 <div id="bankApp" hidden>
-<section class="card">
-  <div class="eyebrow">保有星粒</div>
-  <div class="balance"><span class="coin">★</span> <span id="balance">—</span> <span style="font-size:18px">粒</span></div>
-  <div class="sub">あなたの星粒残高</div>
-  <div class="actions">
-    <button id="chargeButton" class="action">＋ チャージ</button>
-    <button class="action secondary" onclick="info('使用')">✧ 星粒を使う</button>
-  </div>
-</section>
-
+<section class="card"><div class="eyebrow">保有星粒</div><div class="balance"><span class="coin">★</span> <span id="balance">—</span> <span style="font-size:18px">粒</span></div><div class="sub">あなたの星粒残高</div><div class="actions"><button id="chargeButton" class="action">＋ チャージ</button><button id="withdrawButton" class="action secondary">✧ 星粒を使う</button></div></section>
 <div class="section"><h2>星粒の履歴</h2><span>最近の取引</span></div>
-<section class="card">
-  <ul id="history" class="history"></ul>
-  <div id="empty" class="empty">
-    <div class="illustration" aria-hidden="true">
-      <span class="tiny-star">✦</span>
-      <div class="boy"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="zig">⌁⌁</div></div>
-      <svg class="cat-svg" viewBox="0 0 58 67" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g fill="#343a42">
-          <path d="M42 48 C54 45 54 32 50 25 C47 19 51 17 54 21 C63 34 57 54 43 57 Z"/>
-          <path d="M14 42 C14 32 21 28 29 28 C39 28 45 35 45 47 L45 65 L13 65 Z"/>
-          <path d="M9 23 L11 3 Q12 0 15 4 L23 12 Q29 10 35 12 L43 4 Q46 0 47 4 L49 23 Q49 42 29 42 Q9 42 9 23 Z"/>
-        </g>
-      </svg>
-    </div>
-    <div class="ground"></div>
-    <p>まだ取引履歴はないよ。<br>星粒が動いたら、ここに表示されるよ ✨</p>
-  </div>
-</section>
+<section class="card"><ul id="history" class="history"></ul><div id="empty" class="empty"><div class="illustration" aria-hidden="true"><span class="tiny-star">✦</span><div class="boy"><div class="hair"></div><div class="head"></div><div class="body"></div><div class="zig">⌁⌁</div></div><svg class="cat-svg" viewBox="0 0 58 67" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#343a42"><path d="M42 48 C54 45 54 32 50 25 C47 19 51 17 54 21 C63 34 57 54 43 57 Z"/><path d="M14 42 C14 32 21 28 29 28 C39 28 45 35 45 47 L45 65 L13 65 Z"/><path d="M9 23 L11 3 Q12 0 15 4 L23 12 Q29 10 35 12 L43 4 Q46 0 47 4 L49 23 Q49 42 29 42 Q9 42 9 23 Z"/></g></svg></div><div class="ground"></div><p>まだ取引履歴はないよ。<br>星粒が動いたら、ここに表示されるよ ✨</p></div></section>
 <p id="storageStatus" class="storage-status">データを確認しています…</p>
-<p class="notice">✦ 星粒銀行はただいま準備中です。<br>チャージ機能を設定中だよ。</p>
-<div class="foot">Star Bank</div>
+<p class="notice">✦ LaLaと晩餐館の共通の星粒口座です。</p><div class="foot">Star Bank</div>
 </div>
 </main>
-
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="dialog">
-    <h2 id="modalTitle"></h2>
-    <p>この機能は準備中だよ。</p>
-    <button onclick="document.getElementById('modal').classList.remove('show')">閉じる</button>
-  </div>
-</div>
-
-<div class="modal" id="chargeModal" role="dialog" aria-modal="true" aria-labelledby="chargeTitle">
-  <div class="dialog">
-    <h2 id="chargeTitle">✦ 星粒をチャージ</h2>
-    <form id="chargeForm">
-      <label class="charge-field">チャージする星粒数
-        <input id="chargeAmount" type="number" min="1" max="1000000" step="1" inputmode="numeric" required placeholder="例：10">
-      </label>
-      <p id="chargeStatus" role="status"></p>
-      <button id="chargeConfirm" class="charge-confirm" type="submit">チャージする</button>
-      <button id="chargeCancel" type="button">キャンセル</button>
-    </form>
-  </div>
-</div>
-
-<script>
-function info(name){
-  document.getElementById('modalTitle').textContent=name+'（準備中）';
-  document.getElementById('modal').classList.add('show');
-}
-</script>
-
+<div class="modal" id="transactionModal" role="dialog" aria-modal="true" aria-labelledby="transactionTitle"><div class="dialog"><h2 id="transactionTitle">✦ 星粒をチャージ</h2><form id="transactionForm"><label class="charge-field"><span id="amountLabel">チャージする星粒数</span><input id="transactionAmount" type="number" min="1" max="1000000" step="1" inputmode="numeric" required placeholder="例：10"></label><p id="transactionStatus" role="status"></p><button id="transactionConfirm" class="charge-confirm" type="submit">チャージする</button><button id="transactionCancel" type="button">キャンセル</button></form></div></div>
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
-import { getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-import { getFirestore,doc,collection,query,orderBy,limit,onSnapshot,runTransaction,serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
-
-const firebaseConfig={
-  apiKey:'AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s',
-  authDomain:'star-bank-f4d5a.firebaseapp.com',
-  projectId:'star-bank-f4d5a',
-  storageBucket:'star-bank-f4d5a.firebasestorage.app',
-  messagingSenderId:'484567746900',
-  appId:'1:484567746900:web:dc6e0c69765c1c851920c1'
-};
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+import {getFirestore,doc,collection,query,orderBy,limit,onSnapshot,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+const firebaseConfig={apiKey:'AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s',authDomain:'star-bank-f4d5a.firebaseapp.com',projectId:'star-bank-f4d5a',storageBucket:'star-bank-f4d5a.firebasestorage.app',messagingSenderId:'484567746900',appId:'1:484567746900:web:dc6e0c69765c1c851920c1'};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const el=id=>document.getElementById(id);
-const bankRef=doc(db,'StarBank','main');
-const historyRef=collection(db,'StarBank','main','history');
-
-const names={
-  'BIR5n29dcHPytcnfDftUwDB4XGG2':'LaLa'
-};
-let unsubscribeBank=null;
-let unsubscribeHistory=null;
-let busy=false;
-let charging=false;
-let balanceReady=false;
-
-const errors={
-  'auth/email-already-in-use':'そのメールアドレスは登録済みだよ。ログインしてね。',
-  'auth/invalid-email':'メールアドレスを確認してね。',
-  'auth/weak-password':'パスワードは6文字以上にしてね。',
-  'auth/invalid-credential':'メールアドレスかパスワードを確認してね。',
-  'auth/too-many-requests':'試行回数が多いため、一度時間をおいてね。',
-  'auth/network-request-failed':'ネットワーク接続を確認してね。',
-  'auth/operation-not-allowed':'Firebaseでメール／パスワード認証を有効にしてね。',
-  'auth/unauthorized-domain':'Firebaseの認可済みドメインに assuka0117.github.io を追加してね。'
-};
-
-const setStatus=(message,error=false)=>{
-  el('authStatus').textContent=message;
-  el('authStatus').classList.toggle('error',error);
-};
-
-const runAuth=async(register)=>{
-  if(busy)return;
-  const email=el('email').value.trim();
-  const password=el('password').value;
-  if(!el('authForm').reportValidity())return;
-  busy=true;
-  el('signIn').disabled=el('signUp').disabled=true;
-  setStatus(register?'アカウントを作成しています…':'ログインしています…');
-  try{
-    if(register)await createUserWithEmailAndPassword(auth,email,password);
-    else await signInWithEmailAndPassword(auth,email,password);
-    el('password').value='';
-  }catch(e){
-    setStatus(errors[e.code]||'認証できなかったよ。少し待ってからやり直してね。',true);
-  }finally{
-    busy=false;
-    el('signIn').disabled=el('signUp').disabled=false;
-  }
-};
-el('authForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  runAuth(false);
-});
+const bankRef=doc(db,'StarBank','main'),historyRef=collection(db,'StarBank','main','history');
+const names={'BIR5n29dcHPytcnfDftUwDB4XGG2':'LaLa'};
+let unsubscribeBank=null,unsubscribeHistory=null,busy=false,transacting=false,balanceReady=false,currentBalance=0,transactionType='charge';
+const errors={'auth/email-already-in-use':'そのメールアドレスは登録済みだよ。ログインしてね。','auth/invalid-email':'メールアドレスを確認してね。','auth/weak-password':'パスワードは6文字以上にしてね。','auth/invalid-credential':'メールアドレスかパスワードを確認してね。','auth/too-many-requests':'試行回数が多いため、一度時間をおいてね。','auth/network-request-failed':'ネットワーク接続を確認してね。','auth/operation-not-allowed':'Firebaseでメール／パスワード認証を有効にしてね。','auth/unauthorized-domain':'Firebaseの認可済みドメインに assuka0117.github.io を追加してね。'};
+function setStatus(message,error=false){el('authStatus').textContent=message;el('authStatus').classList.toggle('error',error)}
+async function runAuth(register){if(busy)return;const email=el('email').value.trim(),password=el('password').value;if(!el('authForm').reportValidity())return;busy=true;el('signIn').disabled=el('signUp').disabled=true;setStatus(register?'アカウントを作成しています…':'ログインしています…');try{if(register)await createUserWithEmailAndPassword(auth,email,password);else await signInWithEmailAndPassword(auth,email,password);el('password').value=''}catch(e){setStatus(errors[e.code]||'認証できなかったよ。少し待ってからやり直してね。',true)}finally{busy=false;el('signIn').disabled=el('signUp').disabled=false}}
+el('authForm').addEventListener('submit',e=>{e.preventDefault();runAuth(false)});
 el('signUp').addEventListener('click',()=>runAuth(true));
-
-const closeCharge=()=>el('chargeModal').classList.remove('show');
-el('chargeButton').addEventListener('click',()=>{
-  el('chargeAmount').value='';
-  el('chargeStatus').textContent='';
-  el('chargeModal').classList.add('show');
-});
-el('chargeCancel').addEventListener('click',()=>{
-  if(!charging)closeCharge();
-});
-
-el('chargeForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  if(charging||!balanceReady)return;
-  const user=auth.currentUser;
-  if(!user){
-    el('chargeStatus').textContent='ログインし直してね。';
-    return;
-  }
-  const amount=Number(el('chargeAmount').value);
-  if(!Number.isSafeInteger(amount)||amount<1||amount>1000000){
-    el('chargeStatus').textContent='1〜1,000,000粒の整数を入力してね。';
-    return;
-  }
-
-  charging=true;
-  el('chargeConfirm').disabled=true;
-  el('chargeCancel').disabled=true;
-  el('chargeStatus').textContent='チャージしています…';
-
-  const entryRef=doc(historyRef);
-  try{
-    await runTransaction(db,async transaction=>{
-      const bankSnap=await transaction.get(bankRef);
-      if(!bankSnap.exists())throw new Error('残高データが見つからないよ。');
-      const oldBalance=bankSnap.data().balance;
-      if(!Number.isSafeInteger(oldBalance)||oldBalance<0)throw new Error('残高データを確認できないよ。');
-      const newBalance=oldBalance+amount;
-      if(!Number.isSafeInteger(newBalance))throw new Error('残高の上限を超えるよ。');
-      transaction.update(bankRef,{balance:newBalance});
-      transaction.set(entryRef,{
-        type:'charge',
-        amount,
-        actorUid:user.uid,
-        actorName:names[user.uid]||'未登録ユーザー',
-        createdAt:serverTimestamp()
-      });
-    });
-    closeCharge();
-  }catch(error){
-    console.error('Charge:',error);
-    el('chargeStatus').textContent=error.code==='permission-denied'
-      ? '保存の権限がないよ。Firestoreルールを確認してね。'
-      : error.message||'チャージできなかったよ。';
-  }finally{
-    charging=false;
-    el('chargeConfirm').disabled=false;
-    el('chargeCancel').disabled=false;
-  }
-});
-
-const renderHistory=snapshot=>{
-  const list=el('history');
-  list.replaceChildren();
-  snapshot.forEach(item=>{
-    const data=item.data();
-    if(data.type!=='charge')return;
-    const li=document.createElement('li');
-    const details=document.createElement('div');
-    const title=document.createElement('div');
-    title.textContent='✦ チャージ';
-    const small=document.createElement('small');
-    const date=data.createdAt?.toDate?.();
-    const dateText=date
-      ? date.toLocaleString('ja-JP',{year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})
-      : '日時を確認中';
-    small.textContent=dateText+' ・ '+(data.actorName||'不明');
-    details.append(title,small);
-    const amount=document.createElement('strong');
-    amount.textContent='+'+Number(data.amount).toLocaleString('ja-JP')+'粒';
-    li.append(details,amount);
-    list.append(li);
-  });
-  el('empty').style.display=list.children.length?'none':'';
-};
-
-onAuthStateChanged(auth,user=>{
-  if(unsubscribeBank){unsubscribeBank();unsubscribeBank=null;}
-  if(unsubscribeHistory){unsubscribeHistory();unsubscribeHistory=null;}
-  balanceReady=false;
-  el('authPanel').hidden=!!user;
-  el('bankApp').hidden=!user;
-  closeCharge();
-
-  if(!user){
-    el('account').innerHTML='<span class="tag">STAR BANK</span>';
-    setStatus('メールアドレスとパスワードを入力してね。');
-    return;
-  }
-
-  el('balance').textContent='—';
-  el('history').replaceChildren();
-  el('empty').style.display='';
-  el('account').replaceChildren();
-
-  const label=document.createElement('span');
-  label.textContent=user.email+' ';
-  const logout=document.createElement('button');
-  logout.textContent='ログアウト';
-  logout.addEventListener('click',()=>signOut(auth));
-  el('account').append(label,logout);
-
-  const status=el('storageStatus');
-  status.textContent='残高を読み込んでいます…';
-
-  unsubscribeBank=onSnapshot(bankRef,snapshot=>{
-    if(!snapshot.exists()){
-      balanceReady=false;
-      el('balance').textContent='—';
-      status.textContent='残高データが見つかりません。';
-      return;
-    }
-    const balance=snapshot.data().balance;
-    if(Number.isSafeInteger(balance)){
-      balanceReady=true;
-      el('balance').textContent=balance.toLocaleString('ja-JP');
-      status.textContent='';
-    }else{
-      balanceReady=false;
-      el('balance').textContent='—';
-      status.textContent='残高データを確認できませんでした。';
-    }
-  },error=>{
-    balanceReady=false;
-    el('balance').textContent='—';
-    status.textContent='残高を読み込めませんでした。';
-    console.error('Firestore:',error);
-  });
-
-  unsubscribeHistory=onSnapshot(
-    query(historyRef,orderBy('createdAt','desc'),limit(50)),
-    renderHistory,
-    error=>{
-      console.error('History:',error);
-      el('storageStatus').textContent='履歴を読み込めませんでした。Firestoreルールを確認してね。';
-    }
-  );
-});
+function closeTransaction(){el('transactionModal').classList.remove('show')}
+function openTransaction(type){if(!balanceReady)return;transactionType=type;const isCharge=type==='charge';el('transactionTitle').textContent=isCharge?'✦ 星粒をチャージ':'✧ 星粒を使う';el('amountLabel').textContent=isCharge?'チャージする星粒数':'使用する星粒数';el('transactionConfirm').textContent=isCharge?'チャージする':'星粒を使う';el('transactionConfirm').className=isCharge?'charge-confirm':'withdraw-confirm';el('transactionAmount').value='';el('transactionStatus').textContent=isCharge?'':'現在の残高：'+currentBalance.toLocaleString('ja-JP')+'粒';el('transactionModal').classList.add('show')}
+el('chargeButton').addEventListener('click',()=>openTransaction('charge'));
+el('withdrawButton').addEventListener('click',()=>openTransaction('withdraw'));
+el('transactionCancel').addEventListener('click',()=>{if(!transacting)closeTransaction()});
+el('transactionForm').addEventListener('submit',async e=>{e.preventDefault();if(transacting||!balanceReady)return;const user=auth.currentUser;if(!user){el('transactionStatus').textContent='ログインし直してね。';return}const amount=Number(el('transactionAmount').value);if(!Number.isSafeInteger(amount)||amount<1||amount>1000000){el('transactionStatus').textContent='1〜1,000,000粒の整数を入力してね。';return}const type=transactionType;if(type==='withdraw'&&amount>currentBalance){el('transactionStatus').textContent='残高より多くは使えないよ。';return}transacting=true;el('transactionConfirm').disabled=true;el('transactionCancel').disabled=true;el('transactionStatus').textContent='保存しています…';const entryRef=doc(historyRef);try{await runTransaction(db,async transaction=>{const bankSnap=await transaction.get(bankRef);if(!bankSnap.exists())throw new Error('残高データが見つからないよ。');const oldBalance=bankSnap.data().balance;if(!Number.isSafeInteger(oldBalance)||oldBalance<0)throw new Error('残高データを確認できないよ。');if(type==='withdraw'&&amount>oldBalance)throw new Error('残高より多くは使えないよ。');const newBalance=type==='charge'?oldBalance+amount:oldBalance-amount;if(!Number.isSafeInteger(newBalance))throw new Error('残高の上限を超えるよ。');transaction.update(bankRef,{balance:newBalance});transaction.set(entryRef,{type,amount,actorUid:user.uid,actorName:names[user.uid]||'未登録ユーザー',createdAt:serverTimestamp()})});closeTransaction()}catch(error){console.error('Transaction:',error);el('transactionStatus').textContent=error.code==='permission-denied'?'保存の権限がないよ。Firestoreルールを確認してね。':error.message||'保存できなかったよ。'}finally{transacting=false;el('transactionConfirm').disabled=false;el('transactionCancel').disabled=false}});
+function renderHistory(snapshot){const list=el('history');list.replaceChildren();snapshot.forEach(item=>{const data=item.data();if(data.type!=='charge'&&data.type!=='withdraw')return;const isCharge=data.type==='charge',li=document.createElement('li'),details=document.createElement('div'),title=document.createElement('div'),small=document.createElement('small'),amount=document.createElement('strong');title.textContent=isCharge?'✦ チャージ':'✧ 星粒を使用';const date=data.createdAt?.toDate?.();const dateText=date?date.toLocaleString('ja-JP',{year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'日時を確認中';small.textContent=dateText+' ・ '+(data.actorName||'不明');details.append(title,small);amount.textContent=(isCharge?'+':'−')+Number(data.amount).toLocaleString('ja-JP')+'粒';if(!isCharge)amount.classList.add('withdraw');li.append(details,amount);list.append(li)});el('empty').style.display=list.children.length?'none':''}
+onAuthStateChanged(auth,user=>{if(unsubscribeBank){unsubscribeBank();unsubscribeBank=null}if(unsubscribeHistory){unsubscribeHistory();unsubscribeHistory=null}balanceReady=false;el('authPanel').hidden=!!user;el('bankApp').hidden=!user;closeTransaction();if(!user){el('account').innerHTML='<span class="tag">STAR BANK</span>';setStatus('メールアドレスとパスワードを入力してね。');return}el('balance').textContent='—';el('history').replaceChildren();el('empty').style.display='';el('account').replaceChildren();const label=document.createElement('span');label.textContent=user.email+' ';const logout=document.createElement('button');logout.textContent='ログアウト';logout.addEventListener('click',()=>signOut(auth));el('account').append(label,logout);const status=el('storageStatus');status.textContent='残高を読み込んでいます…';unsubscribeBank=onSnapshot(bankRef,snapshot=>{if(!snapshot.exists()){balanceReady=false;el('balance').textContent='—';status.textContent='残高データが見つかりません。';return}const balance=snapshot.data().balance;if(Number.isSafeInteger(balance)&&balance>=0){balanceReady=true;currentBalance=balance;el('balance').textContent=balance.toLocaleString('ja-JP');status.textContent=''}else{balanceReady=false;el('balance').textContent='—';status.textContent='残高データを確認できませんでした。'}},error=>{balanceReady=false;el('balance').textContent='—';status.textContent='残高を読み込めませんでした。';console.error('Firestore:',error)});unsubscribeHistory=onSnapshot(query(historyRef,orderBy('createdAt','desc'),limit(50)),renderHistory,error=>{console.error('History:',error);el('storageStatus').textContent='履歴を読み込めませんでした。Firestoreルールを確認してね。'})});
 </script>
 </body>
 </html>
