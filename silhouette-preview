@@ -1,0 +1,452 @@
+
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>星粒銀行 シルエット試着室</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",sans-serif;
+  color:#374052;
+  background:#f7f4ee;
+}
+main{
+  max-width:650px;
+  margin:auto;
+  padding:24px 16px 50px;
+}
+h1{font-size:22px;margin:0 0 10px}
+p{font-size:13px;line-height:1.8;color:#777f8d}
+.panel{
+  background:#fff;
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 5px 22px #27304713;
+  margin:18px 0;
+}
+.controls{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+button{
+  border:1px solid #dddde5;
+  border-radius:12px;
+  padding:12px 15px;
+  background:white;
+  color:#667083;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button.active{
+  background:#fff0ca;
+  color:#956e30;
+  border-color:#d6b77b;
+}
+.stage{
+  height:300px;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  display:grid;
+  place-items:center;
+  transition:background .5s;
+}
+.stage.day{
+  background:linear-gradient(160deg,#ffe8ad,#fff9e8);
+}
+.stage.night{
+  background:linear-gradient(160deg,#17213c,#40547e);
+}
+.stage svg{
+  width:95%;
+  max-width:460px;
+  height:auto;
+  overflow:visible;
+}
+.scene{display:none}
+.scene.active{display:block}
+.figure{fill:#363b48}
+.cat{fill:#252a35}
+.hair{
+  stroke:#363b48;
+  stroke-width:5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  fill:none;
+}
+.zig{
+  fill:none;
+  stroke:#f1d18d;
+  stroke-width:5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.floor{
+  fill:none;
+  stroke:#ab997c;
+  stroke-width:2.5;
+  stroke-linecap:round;
+}
+.night .floor{stroke:#9eaed3}
+.sky-star{fill:#e1b45d}
+.night .sky-star{fill:#ebedff}
+.caption{
+  font-size:12px;
+  text-align:center;
+  color:#808a9a;
+  margin-top:13px;
+}
+.small-note{
+  padding:13px;
+  background:#faf7f0;
+  border-radius:12px;
+  font-size:12px;
+  line-height:1.8;
+  color:#717888;
+}
+</style>
+</head>
+
+<body>
+<main>
+<h1>✦ 星粒銀行・シルエット試着室</h1>
+<p>
+ここはデザイン確認専用。
+星粒銀行の残高や履歴には一切触れないよ。
+</p>
+
+<section class="panel">
+  <strong>見たいポーズ</strong>
+  <div class="controls">
+    <button class="pose active" data-pose="flat">
+      ぺしょっと寝そべる
+    </button>
+    <button class="pose" data-pose="sit">
+      並んで座る
+    </button>
+    <button class="pose" data-pose="close">
+      くっついて座る
+    </button>
+  </div>
+
+  <strong>背景</strong>
+  <div class="controls">
+    <button class="color active" data-color="day">
+      ✦ 黄色の昼空
+    </button>
+    <button class="color" data-color="night">
+      ☾ 紺色の夜空
+    </button>
+  </div>
+
+  <div id="stage" class="stage day">
+
+    <!-- A：床すれすれの目線。二人でぺしょ -->
+    <svg class="scene active" id="flat"
+      viewBox="0 0 460 250"
+      xmlns="http://www.w3.org/2000/svg">
+      <path class="floor"
+        d="M25 205 Q230 210 435 205"/>
+
+      <!-- 男の子：小さな胴と短い足 -->
+      <path class="figure"
+        d="M143 152
+        C164 137 197 141 220 154
+        C236 163 241 183 232 195
+        C221 207 164 207 142 194
+        Z"/>
+      <path class="figure"
+        d="M220 169
+        C246 173 256 188 276 185
+        Q289 185 289 196
+        Q289 204 272 202
+        L219 199 Z"/>
+      <path class="figure"
+        d="M209 190
+        Q234 197 259 197
+        Q269 197 269 207
+        L218 207 Z"/>
+
+      <!-- 丸く大きな頭。床と同じ高さ -->
+      <path class="figure"
+        d="M65 146
+        C64 99 98 71 139 76
+        C179 79 202 113 197 150
+        C193 185 164 204 125 202
+        C86 200 67 182 65 146 Z"/>
+
+      <!-- 小さな鼻 -->
+      <path class="figure"
+        d="M194 146
+        Q208 148 205 156
+        Q202 162 193 159 Z"/>
+
+      <!-- くるんと巻いた前髪 -->
+      <path class="hair"
+        d="M112 81
+        Q100 62 89 71
+        Q80 79 91 87
+        Q99 92 101 81"/>
+      <path class="hair"
+        d="M131 76
+        Q128 59 115 62
+        Q107 65 111 73"/>
+      <path class="hair"
+        d="M152 81
+        Q163 66 172 78
+        Q176 84 170 90"/>
+
+      <!-- 前方へ伸ばした手 -->
+      <path class="figure"
+        d="M156 180
+        C177 176 195 192 215 193
+        L238 190
+        Q250 190 250 199
+        Q248 208 234 207
+        L188 204
+        Q164 204 153 192 Z"/>
+
+      <!-- 猫：大きめの顔と耳 -->
+      <path class="cat"
+        d="M273 167
+        L272 124
+        L291 138
+        Q305 131 321 138
+        L340 124
+        L340 167
+        Q337 195 307 198
+        Q275 199 273 167 Z"/>
+
+      <!-- 猫：長く伸びたしなやかな身体 -->
+      <path class="cat"
+        d="M325 173
+        C342 157 371 155 396 168
+        Q412 176 408 192
+        Q403 204 367 204
+        L326 200 Z"/>
+
+      <!-- 猫の伸びた足 -->
+      <path class="cat"
+        d="M334 190 L352 197
+        L360 208 L340 210 L323 202 Z"/>
+      <path class="cat"
+        d="M387 189 L416 199
+        Q426 208 413 210
+        L383 203 Z"/>
+
+      <!-- 長い尾 -->
+      <path class="cat"
+        d="M391 167
+        C410 156 416 138 406 125
+        Q400 117 407 113
+        Q415 110 422 121
+        C437 148 421 173 400 183 Z"/>
+
+      <path class="sky-star"
+        d="M235 58 L240 71 L253 76
+        L240 81 L235 94 L230 81
+        L217 76 L230 71 Z"/>
+      <circle class="sky-star" cx="361" cy="67" r="4"/>
+    </svg>
+
+    <!-- B：二人で並んで座る後ろ姿 -->
+    <svg class="scene" id="sit"
+      viewBox="0 0 460 250"
+      xmlns="http://www.w3.org/2000/svg">
+      <path class="floor"
+        d="M35 215 Q230 220 425 215"/>
+
+      <path class="figure"
+        d="M122 151
+        Q102 156 99 193
+        Q99 216 137 218
+        L198 218
+        Q224 211 209 184
+        Q200 157 185 151 Z"/>
+
+      <path class="figure"
+        d="M109 198 Q89 203 83 216
+        Q103 224 137 215 Z"/>
+      <path class="figure"
+        d="M187 198 Q207 199 225 214
+        Q210 224 179 216 Z"/>
+
+      <circle class="figure" cx="159" cy="112" r="56"/>
+
+      <path class="hair"
+        d="M141 58 Q129 41 119 54
+        Q115 64 124 65"/>
+      <path class="hair"
+        d="M158 56 Q154 40 144 46
+        Q138 51 142 57"/>
+      <path class="hair"
+        d="M177 60 Q189 46 194 59
+        Q195 66 188 68"/>
+
+      <path class="zig"
+        d="M117 177 L130 168 L146 178
+        L162 168 L178 178 L192 169"/>
+
+      <path class="cat"
+        d="M255 159
+        L255 122 L270 138
+        Q284 133 296 138
+        L311 122 L311 160
+        Q310 178 297 181
+        L271 181 Q256 178 255 159 Z"/>
+
+      <path class="cat"
+        d="M263 174
+        Q249 187 251 210
+        Q267 221 295 219
+        Q315 217 318 204
+        Q319 180 299 174 Z"/>
+
+      <path class="cat"
+        d="M306 206
+        Q340 205 343 184
+        Q344 170 336 165
+        Q329 158 335 153
+        Q342 149 349 161
+        Q361 182 350 202
+        Q339 223 306 219 Z"/>
+
+      <path class="sky-star"
+        d="M356 69 L361 83 L375 88
+        L361 93 L356 107 L351 93
+        L337 88 L351 83 Z"/>
+    </svg>
+
+    <!-- C：ちょっと寄り添って座る -->
+    <svg class="scene" id="close"
+      viewBox="0 0 460 250"
+      xmlns="http://www.w3.org/2000/svg">
+      <path class="floor"
+        d="M40 217 Q230 222 420 217"/>
+
+      <path class="figure"
+        d="M145 150
+        C125 157 118 184 122 211
+        Q148 226 207 219
+        Q224 210 214 185
+        Q206 155 187 151 Z"/>
+
+      <path class="figure"
+        d="M141 200 Q114 201 111 217
+        Q134 226 161 215 Z"/>
+      <path class="figure"
+        d="M192 199 Q220 201 229 215
+        Q210 225 186 215 Z"/>
+
+      <g transform="rotate(9 168 111)">
+        <circle class="figure"
+          cx="168" cy="112" r="56"/>
+        <path class="hair"
+          d="M149 59 Q137 41 127 53
+          Q121 62 132 67 Q140 69 140 60"/>
+        <path class="hair"
+          d="M165 56 Q164 39 153 44
+          Q146 47 150 55"/>
+        <path class="hair"
+          d="M184 61 Q194 48 202 60
+          Q205 67 198 71"/>
+      </g>
+
+      <path class="figure"
+        d="M202 174
+        Q227 176 241 193
+        Q247 199 243 207
+        Q234 211 226 203
+        L200 193 Z"/>
+
+      <path class="cat"
+        d="M236 164
+        L236 121 L251 137
+        Q268 130 282 137
+        L299 121 L299 165
+        Q296 181 281 184
+        L252 184 Q237 180 236 164 Z"/>
+
+      <path class="cat"
+        d="M244 177
+        Q229 189 233 212
+        Q249 222 277 220
+        Q300 219 304 203
+        Q304 185 285 179 Z"/>
+
+      <path class="cat"
+        d="M293 208
+        C325 209 334 188 324 174
+        Q318 165 325 161
+        Q334 158 340 170
+        Q355 195 336 214
+        Q322 228 296 220 Z"/>
+
+      <!-- 小さな三日月 -->
+      <path class="sky-star"
+        d="M365 66
+        A17 17 0 1 0 383 89
+        A14 14 0 0 1 365 66 Z"/>
+    </svg>
+
+  </div>
+
+  <div id="caption" class="caption">
+    床にぺしょっと寝そべるふたり・試作1号
+  </div>
+</section>
+
+<div class="small-note">
+  ✦ これは実際のWeb用SVGを表示しているよ。
+  まだキャラクターの形は試作段階。
+  気になるところを教えてもらったら、ここを修正していくよ。
+</div>
+</main>
+
+<script>
+const stage=document.getElementById('stage');
+const caption=document.getElementById('caption');
+
+const captions={
+  flat:'床にぺしょっと寝そべるふたり・試作1号',
+  sit:'並んで座るふたり・試作1号',
+  close:'寄り添うふたり・試作1号'
+};
+
+document.querySelectorAll('.pose').forEach(button=>{
+  button.addEventListener('click',()=>{
+    const pose=button.dataset.pose;
+
+    document.querySelectorAll('.pose').forEach(b=>{
+      b.classList.toggle('active',b===button);
+    });
+
+    document.querySelectorAll('.scene').forEach(svg=>{
+      svg.classList.toggle('active',svg.id===pose);
+    });
+
+    caption.textContent=captions[pose];
+  });
+});
+
+document.querySelectorAll('.color').forEach(button=>{
+  button.addEventListener('click',()=>{
+    const color=button.dataset.color;
+
+    document.querySelectorAll('.color').forEach(b=>{
+      b.classList.toggle('active',b===button);
+    });
+
+    stage.className='stage '+color;
+  });
+});
+</script>
+</body>
+</html>
