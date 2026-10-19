@@ -50,7 +50,11 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 console.log('Firebase接続先', app.options.projectId, db._databaseId?.database);
-document.title = '星粒銀行 | ' + app.options.projectId + ' / ' + (db._databaseId?.database ?? '不明');
+
+document.title = '星粒銀行 | ' + app.options.projectId;
+document.getElementById('storageStatus').dataset.connection =
+  app.options.projectId + ' / ' + (db._databaseId?.database ?? '不明');
+
 
 const el = id => document.getElementById(id);
 const setStatus = (message, error = false) => { el('authStatus').textContent = message; el('authStatus').classList.toggle('error', error); };
@@ -101,6 +105,8 @@ onAuthStateChanged(auth,user=>{
   const note=document.createElement('div');note.textContent='※ 2人分のIDを確認して、Firestoreのルールで許可するまでは残高を表示できないよ。';
   status.append(intro,uid,copy,note);
   
+  note.insertAdjacentText('afterend','接続先：'+status.dataset.connection);
+
   
 unsubscribeBank=onSnapshot(doc(db,'starBank','main'),{includeMetadataChanges:true},snapshot=>{
 
