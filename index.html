@@ -6,572 +6,472 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>星粒銀行</title>
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    padding: 24px;
-    background: #fff8e9;
-    color: #353a45;
-    font-family: -apple-system, BlinkMacSystemFont,
-      "Hiragino Kaku Gothic ProN", sans-serif;
-  }
-  main { max-width: 440px; margin: 24px auto; }
-  h1 { font-size: 26px; }
-  h2 { font-size: 20px; margin-top: 30px; }
-  .card {
-    background: white;
-    border: 1px solid #e8dfcd;
-    border-radius: 16px;
-    padding: 20px;
-    margin: 16px 0;
-  }
-  .amount {
-    font-size: 30px;
-    font-weight: bold;
-    margin: 12px 0;
-  }
-  input, button {
-    width: 100%;
-    padding: 13px;
-    margin: 7px 0;
-    font: inherit;
-    border-radius: 10px;
-  }
-  input { border: 1px solid #ccd1d9; }
-  button {
-    border: 0;
-    background: #f2dfb5;
-    color: #624818;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  button:disabled { opacity: .5; }
-  .secondary { background: #eceef2; color: #444; }
-  .actions { display: flex; gap: 10px; }
-  .actions button { flex: 1; }
-  #app { display: none; }
-  #status, #transactionStatus, .error,
-  #historyStatus {
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .error { color: #b3261e; }
-  .muted { color: #7b8491; font-size: 13px; }
-  #transactionPanel { display: none; }
-  .history-item {
-    padding: 13px 0;
-    border-bottom: 1px solid #e8dfcd;
-  }
-  .history-item:last-child { border-bottom: none; }
-  .history-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:#fff8e9;color:#353a45;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif}
+main{max-width:440px;margin:24px auto}
+h1{font-size:26px}
+h2{font-size:20px;margin-top:30px}
+.card{background:#fff;border:1px solid #e8dfcd;border-radius:16px;padding:20px;margin:16px 0}
+.amount{font-size:30px;font-weight:bold;margin:12px 0}
+input,button{width:100%;padding:13px;margin:7px 0;font:inherit;border-radius:10px}
+input{border:1px solid #ccd1d9}
+button{border:0;background:#f2dfb5;color:#624818;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5}
+.secondary{background:#eceef2;color:#444}
+.actions{display:flex;gap:10px}
+.actions button{flex:1}
+#app,#transactionPanel{display:none}
+#status,#transactionStatus,.error,#historyStatus{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.7}
+.error{color:#b3261e}
+.muted{color:#7b8491;font-size:13px}
+.history-item{padding:13px 0;border-bottom:1px solid #e8dfcd}
+.history-item:last-child{border-bottom:none}
+.history-title{font-weight:bold;margin-bottom:5px}
 </style>
 </head>
 <body>
 <main>
-  <h1>✦ 星粒銀行 ✦</h1>
+<h1>✦ 星粒銀行 ✦</h1>
 
-  <section id="login">
-    <form id="loginForm">
-      <input id="email" type="email"
-        placeholder="メールアドレス" required>
-      <input id="password" type="password"
-        placeholder="パスワード" required>
-      <button type="submit">ログイン</button>
-    </form>
-  </section>
+<section id="login">
+<form id="loginForm">
+<input id="email" type="email" placeholder="メールアドレス" required>
+<input id="password" type="password" placeholder="パスワード" required>
+<button type="submit">ログイン</button>
+</form>
+</section>
 
-  <section id="app">
-    <p class="muted">
-      ログイン中：<span id="userEmail"></span>
-    </p>
-    <button id="logout" class="secondary" type="button">
-      ログアウト
-    </button>
+<section id="app">
+<p class="muted">ログイン中：<span id="userEmail"></span></p>
+<button id="logout" class="secondary" type="button">ログアウト</button>
 
-    <h2>口座残高</h2>
+<h2>口座残高</h2>
 
-    <div class="card">
-      <strong>✦ LaLa預金</strong>
-      <div class="amount" id="lalaBalance">読込中…</div>
-      <div class="error" id="lalaError"></div>
+<div class="card">
+<strong>✦ LaLa預金</strong>
+<div class="amount" id="lalaBalance">読込中…</div>
+<div class="error" id="lalaError"></div>
+<div class="actions">
+<button id="chargeButton" type="button" disabled>＋ チャージ</button>
+<button id="withdrawButton" class="secondary" type="button" disabled>− 星粒を使う</button>
+</div>
+</div>
 
-      <div class="actions">
-        <button id="chargeButton" type="button" disabled>
-          ＋ チャージ
-        </button>
-        <button id="withdrawButton" class="secondary"
-          type="button" disabled>
-          − 星粒を使う
-        </button>
-      </div>
-    </div>
+<div class="card">
+<strong>☾ 月見里返済</strong>
+<div class="amount" id="moonBalance">読込中…</div>
+<div class="error" id="moonError"></div>
+<button id="repaymentButton" type="button" disabled>＋ 返済を記録</button>
+<p class="muted">LaLa預金への振替は次の段階で追加するよ。</p>
+</div>
 
-    <div class="card">
-      <strong>☾ 月見里返済</strong>
-      <div class="amount" id="moonBalance">読込中…</div>
-      <div class="error" id="moonError"></div>
-      <p class="muted">返済機能は次の段階で追加するよ。</p>
-    </div>
+<section class="card">
+<h2>✦ LaLa預金の取引履歴</h2>
+<p class="muted">新しい順に表示します。</p>
+<div id="historyStatus">読込待機中…</div>
+<div id="historyList"></div>
+</section>
 
-    <section class="card">
-      <h2>✦ LaLa預金の取引履歴</h2>
-      <p class="muted">新しい順に表示します。</p>
-      <div id="historyStatus">読込待機中…</div>
-      <div id="historyList"></div>
-    </section>
+<section id="transactionPanel" class="card">
+<h2 id="transactionTitle">チャージ</h2>
+<form id="transactionForm">
+<label for="transactionAmount">星粒数</label>
+<input id="transactionAmount" type="number" min="1" max="1000000" step="1" inputmode="numeric" required>
+<p id="transactionStatus"></p>
+<button id="transactionConfirm" type="submit">確定する</button>
+<button id="transactionCancel" class="secondary" type="button">キャンセル</button>
+</form>
+</section>
+</section>
 
-    <section id="transactionPanel" class="card">
-      <h2 id="transactionTitle">チャージ</h2>
-      <form id="transactionForm">
-        <label for="transactionAmount">星粒数</label>
-        <input id="transactionAmount" type="number"
-          min="1" max="1000000" step="1"
-          inputmode="numeric" required>
-        <p id="transactionStatus"></p>
-        <button id="transactionConfirm" type="submit">
-          確定する
-        </button>
-        <button id="transactionCancel"
-          class="secondary" type="button">
-          キャンセル
-        </button>
-      </form>
-    </section>
-  </section>
-
-  <p id="status">Firebaseに接続しています…</p>
+<p id="status">Firebaseに接続しています…</p>
 </main>
 
 <script type="module">
-import { initializeApp } from
-  "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,doc,collection,onSnapshot,runTransaction,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-import {
-  getAuth, onAuthStateChanged,
-  signInWithEmailAndPassword, signOut
-} from
-  "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-
-import {
-  getFirestore, doc, collection,
-  onSnapshot, runTransaction, serverTimestamp
-} from
-  "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s",
-  authDomain: "star-bank-f4d5a.firebaseapp.com",
-  projectId: "star-bank-f4d5a",
-  storageBucket: "star-bank-f4d5a.firebasestorage.app",
-  messagingSenderId: "484567746900",
-  appId: "1:484567746900:web:dc6e0c69765c1c851920c1"
+const firebaseConfig={
+  apiKey:"AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s",
+  authDomain:"star-bank-f4d5a.firebaseapp.com",
+  projectId:"star-bank-f4d5a",
+  storageBucket:"star-bank-f4d5a.firebasestorage.app",
+  messagingSenderId:"484567746900",
+  appId:"1:484567746900:web:dc6e0c69765c1c851920c1"
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
-const db = getFirestore(firebaseApp);
-const el = id => document.getElementById(id);
+const firebaseApp=initializeApp(firebaseConfig);
+const auth=getAuth(firebaseApp);
+const db=getFirestore(firebaseApp);
+const el=id=>document.getElementById(id);
 
-let stopListeners = [];
-let authVersion = 0;
-let lalaBalance = null;
-let transactionType = "charge";
-let transactionBusy = false;
+let stopListeners=[];
+let authVersion=0;
+let lalaBalance=null;
+let moonBalance=null;
+let transactionType="charge";
+let transactionBusy=false;
 
-function stopWatching() {
-  stopListeners.forEach(stop => stop());
-  stopListeners = [];
+function stopWatching(){
+  stopListeners.forEach(stop=>stop());
+  stopListeners=[];
 }
 
-function setTransactionAvailable(available) {
-  el("chargeButton").disabled = !available;
-  el("withdrawButton").disabled = !available;
+function setTransactionAvailable(){
+  el("chargeButton").disabled=transactionBusy||lalaBalance===null;
+  el("withdrawButton").disabled=transactionBusy||lalaBalance===null;
+  el("repaymentButton").disabled=transactionBusy||moonBalance===null;
 }
 
-function watchBalance(accountId, balanceId, errorId, version) {
-  const balanceEl = el(balanceId);
-  const errorEl = el(errorId);
-
-  balanceEl.textContent = "読込中…";
-  errorEl.textContent = "";
+function watchBalance(accountId,balanceId,errorId,version){
+  const balanceEl=el(balanceId);
+  const errorEl=el(errorId);
+  balanceEl.textContent="読込中…";
+  errorEl.textContent="";
 
   return onSnapshot(
-    doc(db, "StarBank", accountId),
-    snapshot => {
-      if (version !== authVersion) return;
+    doc(db,"StarBank",accountId),
+    snapshot=>{
+      if(version!==authVersion)return;
 
-      if (!snapshot.exists()) {
-        balanceEl.textContent = "— 粒";
-        errorEl.textContent =
-          "口座が見つかりません: StarBank/" + accountId;
+      let value=null;
 
-        if (accountId === "LaLa") {
-          lalaBalance = null;
-          setTransactionAvailable(false);
+      if(!snapshot.exists()){
+        balanceEl.textContent="— 粒";
+        errorEl.textContent="口座が見つかりません: StarBank/"+accountId;
+      }else{
+        value=snapshot.data().balance;
+
+        if(!Number.isSafeInteger(value)||value<0){
+          balanceEl.textContent="— 粒";
+          errorEl.textContent="残高データが不正です: "+String(value);
+          value=null;
+        }else{
+          balanceEl.textContent=value.toLocaleString("ja-JP")+" 粒";
+          errorEl.textContent="";
         }
-        return;
       }
 
-      const value = snapshot.data().balance;
+      if(accountId==="LaLa")lalaBalance=value;
+      else moonBalance=value;
 
-      if (!Number.isSafeInteger(value) || value < 0) {
-        balanceEl.textContent = "— 粒";
-        errorEl.textContent =
-          "残高データが不正です: " + String(value);
-
-        if (accountId === "LaLa") {
-          lalaBalance = null;
-          setTransactionAvailable(false);
-        }
-        return;
-      }
-
-      balanceEl.textContent =
-        value.toLocaleString("ja-JP") + " 粒";
-      errorEl.textContent = "";
-
-      if (accountId === "LaLa") {
-        lalaBalance = value;
-        setTransactionAvailable(!transactionBusy);
-      }
+      setTransactionAvailable();
     },
-    error => {
-      if (version !== authVersion) return;
+    error=>{
+      if(version!==authVersion)return;
+      balanceEl.textContent="— 粒";
+      errorEl.textContent="読み込みエラー: "+error.code+"\n"+error.message;
 
-      balanceEl.textContent = "— 粒";
-      errorEl.textContent =
-        "読み込みエラー: " + error.code +
-        "\n" + error.message;
+      if(accountId==="LaLa")lalaBalance=null;
+      else moonBalance=null;
 
-      if (accountId === "LaLa") {
-        lalaBalance = null;
-        setTransactionAvailable(false);
-      }
+      setTransactionAvailable();
     }
   );
 }
 
-function watchHistory(version) {
-  const listEl = el("historyList");
-  const statusEl = el("historyStatus");
-
+function watchHistory(version){
+  const listEl=el("historyList");
+  const statusEl=el("historyStatus");
   listEl.replaceChildren();
-  statusEl.textContent = "履歴を読み込んでいます…";
-
-  const historyCollection = collection(
-    db, "StarBank", "LaLa", "history"
-  );
+  statusEl.textContent="履歴を読み込んでいます…";
 
   return onSnapshot(
-    historyCollection,
-    snapshot => {
-      if (version !== authVersion) return;
+    collection(db,"StarBank","LaLa","history"),
+    snapshot=>{
+      if(version!==authVersion)return;
 
-      const entries = snapshot.docs.map(item => ({
-        id: item.id,
+      const entries=snapshot.docs.map(item=>({
+        id:item.id,
         ...item.data()
       }));
 
-      entries.sort((a, b) => {
-        const aTime = a.createdAt?.toMillis?.() ?? 0;
-        const bTime = b.createdAt?.toMillis?.() ?? 0;
-        return bTime - aTime;
-      });
+      entries.sort((a,b)=>
+        (b.createdAt?.toMillis?.()??0)-
+        (a.createdAt?.toMillis?.()??0)
+      );
 
       listEl.replaceChildren();
 
-      if (entries.length === 0) {
-        statusEl.textContent = "取引履歴はありません。";
+      if(!entries.length){
+        statusEl.textContent="取引履歴はありません。";
         return;
       }
 
-      statusEl.textContent =
-        entries.length + "件の履歴があります。";
+      statusEl.textContent=entries.length+"件の履歴があります。";
 
-      const labels = {
-        charge: "チャージ",
-        withdraw: "出金",
-        transfer_in: "振替入金",
-        transfer_out: "振替出金",
-        correction: "訂正"
+      const labels={
+        charge:"チャージ",
+        withdraw:"出金",
+        transfer_in:"振替入金",
+        transfer_out:"振替出金",
+        correction:"訂正"
       };
 
-      for (const entry of entries) {
-        const item = document.createElement("div");
-        item.className = "history-item";
+      for(const entry of entries){
+        const item=document.createElement("div");
+        item.className="history-item";
 
-        const title = document.createElement("div");
-        title.className = "history-title";
+        const title=document.createElement("div");
+        title.className="history-title";
 
-        const typeLabel =
-          labels[entry.type] || entry.type || "不明";
+        const typeLabel=labels[entry.type]||entry.type||"不明";
+        const amount=Number.isSafeInteger(entry.amount)
+          ?entry.amount.toLocaleString("ja-JP")
+          :"不明";
 
-        const amount =
-          Number.isSafeInteger(entry.amount)
-            ? entry.amount.toLocaleString("ja-JP")
-            : "不明";
+        title.textContent=typeLabel+"："+amount+"粒";
 
-        title.textContent =
-          typeLabel + "：" + amount + "粒";
+        const date=document.createElement("div");
+        date.className="muted";
+        date.textContent=entry.createdAt?.toDate
+          ?entry.createdAt.toDate().toLocaleString("ja-JP")
+          :"日時不明";
 
-        const date = document.createElement("div");
-        date.className = "muted";
+        item.append(title,date);
 
-        if (entry.createdAt?.toDate) {
-          date.textContent =
-            entry.createdAt.toDate().toLocaleString(
-              "ja-JP"
-            );
-        } else {
-          date.textContent = "日時不明";
-        }
-
-        item.append(title, date);
-
-        if (entry.type === "correction") {
-          const detail = document.createElement("div");
-          detail.className = "muted";
-
-          detail.textContent =
-            "訂正対象：" +
-            (labels[entry.originalType] ||
-              entry.originalType || "不明") +
-            (entry.reason
-              ? " ／ 理由：" + entry.reason
-              : "");
-
+        if(entry.type==="correction"){
+          const detail=document.createElement("div");
+          detail.className="muted";
+          detail.textContent="訂正対象："+
+            (labels[entry.originalType]||entry.originalType||"不明")+
+            (entry.reason?" ／ 理由："+entry.reason:"");
           item.append(detail);
         }
 
         listEl.append(item);
       }
     },
-    error => {
-      if (version !== authVersion) return;
-
-      statusEl.textContent =
-        "履歴の読み込みエラー：" +
-        error.code + "\n" + error.message;
+    error=>{
+      if(version!==authVersion)return;
+      statusEl.textContent="履歴の読み込みエラー："+
+        error.code+"\n"+error.message;
     }
   );
 }
 
 onAuthStateChanged(
   auth,
-  user => {
-    const version = ++authVersion;
+  user=>{
+    const version=++authVersion;
     stopWatching();
-    lalaBalance = null;
+    lalaBalance=null;
+    moonBalance=null;
     closeTransaction();
-    setTransactionAvailable(false);
+    transactionBusy=false;
+    setTransactionAvailable();
 
-    el("login").style.display =
-      user ? "none" : "block";
-    el("app").style.display =
-      user ? "block" : "none";
-    el("userEmail").textContent = user?.email || "";
+    el("login").style.display=user?"none":"block";
+    el("app").style.display=user?"block":"none";
+    el("userEmail").textContent=user?.email||"";
 
-    if (user) {
-      el("status").textContent =
-        "Firebase認証：接続成功";
+    if(user){
+      el("status").textContent="Firebase認証：接続成功";
 
       stopListeners.push(
-        watchBalance(
-          "LaLa", "lalaBalance", "lalaError", version
-        )
+        watchBalance("LaLa","lalaBalance","lalaError",version)
       );
-
       stopListeners.push(
-        watchBalance(
-          "yamanashi", "moonBalance", "moonError", version
-        )
+        watchBalance("yamanashi","moonBalance","moonError",version)
       );
-
-      stopListeners.push(
-        watchHistory(version)
-      );
-    } else {
-      el("status").textContent =
-        "ログインしてください";
+      stopListeners.push(watchHistory(version));
+    }else{
+      el("status").textContent="ログインしてください";
       el("historyList").replaceChildren();
-      el("historyStatus").textContent =
-        "読込待機中…";
+      el("historyStatus").textContent="読込待機中…";
     }
   },
-  error => {
-    el("status").textContent =
-      "認証エラー: " + error.code;
+  error=>{
+    el("status").textContent="認証エラー: "+error.code;
   }
 );
 
-el("loginForm").addEventListener("submit", async event => {
+el("loginForm").addEventListener("submit",async event=>{
   event.preventDefault();
-  el("status").textContent = "ログイン中…";
+  el("status").textContent="ログイン中…";
 
-  try {
+  try{
     await signInWithEmailAndPassword(
-      auth, el("email").value, el("password").value
+      auth,
+      el("email").value,
+      el("password").value
     );
-  } catch (error) {
-    el("status").textContent =
-      "ログイン失敗: " + error.code;
+  }catch(error){
+    el("status").textContent="ログイン失敗: "+error.code;
   }
 });
 
-el("logout").addEventListener("click", async () => {
-  try {
+el("logout").addEventListener("click",async()=>{
+  try{
     await signOut(auth);
-  } catch (error) {
-    el("status").textContent =
-      "ログアウト失敗: " + error.code;
+  }catch(error){
+    el("status").textContent="ログアウト失敗: "+error.code;
   }
 });
 
-function openTransaction(type) {
-  if (transactionBusy || lalaBalance === null) return;
+function openTransaction(type){
+  if(transactionBusy)return;
 
-  transactionType = type;
-  el("transactionTitle").textContent =
-    type === "charge"
-      ? "✦ 星粒をチャージ"
-      : "✧ 星粒を使う";
+  if(type==="repayment"
+    ?moonBalance===null
+    :lalaBalance===null
+  )return;
 
-  el("transactionAmount").value = "";
-  el("transactionStatus").textContent =
-    "現在の残高：" +
-    lalaBalance.toLocaleString("ja-JP") + " 粒";
+  transactionType=type;
 
-  el("transactionPanel").style.display = "block";
+  el("transactionTitle").textContent=
+    type==="charge"
+      ?"✦ 星粒をチャージ"
+      :type==="withdraw"
+        ?"✧ 星粒を使う"
+        :"☾ 月見里からの返済を記録";
+
+  el("transactionAmount").value="";
+
+  const current=type==="repayment"
+    ?moonBalance
+    :lalaBalance;
+
+  el("transactionStatus").textContent=
+    "現在の残高："+current.toLocaleString("ja-JP")+" 粒";
+
+  el("transactionPanel").style.display="block";
   el("transactionAmount").focus();
+  el("transactionPanel").scrollIntoView({
+    behavior:"smooth",
+    block:"nearest"
+  });
 }
 
-function closeTransaction() {
-  el("transactionPanel").style.display = "none";
+function closeTransaction(){
+  el("transactionPanel").style.display="none";
 }
 
-el("chargeButton").addEventListener("click", () => {
+el("chargeButton").addEventListener("click",()=>{
   openTransaction("charge");
 });
 
-el("withdrawButton").addEventListener("click", () => {
+el("withdrawButton").addEventListener("click",()=>{
   openTransaction("withdraw");
 });
 
-el("transactionCancel").addEventListener("click", () => {
-  if (!transactionBusy) closeTransaction();
+el("repaymentButton").addEventListener("click",()=>{
+  openTransaction("repayment");
 });
 
-el("transactionForm").addEventListener(
-  "submit",
-  async event => {
-    event.preventDefault();
+el("transactionCancel").addEventListener("click",()=>{
+  if(!transactionBusy)closeTransaction();
+});
 
-    if (transactionBusy) return;
+el("transactionForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(transactionBusy)return;
 
-    const user = auth.currentUser;
-    const amount = Number(el("transactionAmount").value);
+  const user=auth.currentUser;
+  const amount=Number(el("transactionAmount").value);
 
-    if (!user) {
-      el("transactionStatus").textContent =
-        "ログインが必要です。";
-      return;
-    }
-
-    if (
-      !Number.isSafeInteger(amount) ||
-      amount < 1 ||
-      amount > 1000000
-    ) {
-      el("transactionStatus").textContent =
-        "1〜1,000,000の整数を入力してください。";
-      return;
-    }
-
-    const type = transactionType;
-    const label =
-      type === "charge" ? "チャージ" : "出金";
-
-    if (!confirm(
-      amount.toLocaleString("ja-JP") +
-      "粒を" + label + "しますか？"
-    )) return;
-
-    transactionBusy = true;
-    setTransactionAvailable(false);
-    el("transactionConfirm").disabled = true;
-    el("transactionCancel").disabled = true;
-    el("transactionStatus").textContent = "処理中…";
-
-    try {
-      const bank = doc(db, "StarBank", "LaLa");
-      const historyEntry = doc(
-        collection(db, "StarBank", "LaLa", "history")
-      );
-
-      await runTransaction(db, async tx => {
-        const snapshot = await tx.get(bank);
-
-        if (!snapshot.exists()) {
-          throw new Error("LaLa口座が見つかりません。");
-        }
-
-        const current = snapshot.data().balance;
-
-        if (
-          !Number.isSafeInteger(current) ||
-          current < 0
-        ) {
-          throw new Error("残高データが不正です。");
-        }
-
-        if (type === "withdraw" && amount > current) {
-          throw new Error("残高が足りません。");
-        }
-
-        const next =
-          type === "charge"
-            ? current + amount
-            : current - amount;
-
-        if (
-          !Number.isSafeInteger(next) ||
-          next < 0
-        ) {
-          throw new Error("残高の上限を超えています。");
-        }
-
-        tx.update(bank, { balance: next });
-
-        tx.set(historyEntry, {
-          type,
-          amount,
-          actorUid: user.uid,
-          actorName: "LaLa",
-          createdAt: serverTimestamp()
-        });
-      });
-
-      el("status").textContent =
-        label + "が完了しました。";
-      closeTransaction();
-    } catch (error) {
-      el("transactionStatus").textContent =
-        "取引エラー: " +
-        (error.code || "unknown") +
-        "\n" + error.message;
-    } finally {
-      transactionBusy = false;
-      el("transactionConfirm").disabled = false;
-      el("transactionCancel").disabled = false;
-      setTransactionAvailable(lalaBalance !== null);
-    }
+  if(!user){
+    el("transactionStatus").textContent="ログインが必要です。";
+    return;
   }
-);
+
+  if(
+    !Number.isSafeInteger(amount)||
+    amount<1||
+    amount>1000000
+  ){
+    el("transactionStatus").textContent=
+      "1〜1,000,000の整数を入力してください。";
+    return;
+  }
+
+  const type=transactionType;
+  const label=type==="charge"
+    ?"チャージ"
+    :type==="withdraw"
+      ?"出金"
+      :"返済の記録";
+
+  if(!confirm(
+    amount.toLocaleString("ja-JP")+"粒を"+
+    label+"しますか？"
+  ))return;
+
+  transactionBusy=true;
+  setTransactionAvailable();
+  el("transactionConfirm").disabled=true;
+  el("transactionCancel").disabled=true;
+  el("transactionStatus").textContent="処理中…";
+
+  try{
+    const accountId=type==="repayment"?"yamanashi":"LaLa";
+    const bank=doc(db,"StarBank",accountId);
+    const historyEntry=doc(
+      collection(db,"StarBank",accountId,"history")
+    );
+
+    await runTransaction(db,async tx=>{
+      const snapshot=await tx.get(bank);
+
+      if(!snapshot.exists()){
+        throw new Error("口座が見つかりません。");
+      }
+
+      const data=snapshot.data();
+      const current=data.balance;
+
+      if(!Number.isSafeInteger(current)||current<0){
+        throw new Error("残高データが不正です。");
+      }
+
+      if(type==="withdraw"&&amount>current){
+        throw new Error("残高が足りません。");
+      }
+
+      const next=type==="withdraw"
+        ?current-amount
+        :current+amount;
+
+      if(!Number.isSafeInteger(next)||next<0){
+        throw new Error("残高の上限を超えています。");
+      }
+
+      if(
+        type==="repayment"&&
+        (
+          !Number.isSafeInteger(data.transferred)||
+          next<data.transferred
+        )
+      ){
+        throw new Error("返済データを確認してください。");
+      }
+
+      tx.update(bank,{balance:next});
+
+      tx.set(historyEntry,{
+        type:type==="repayment"?"charge":type,
+        amount,
+        actorUid:user.uid,
+        actorName:"LaLa",
+        createdAt:serverTimestamp()
+      });
+    });
+
+    el("status").textContent=label+"が完了しました。";
+    closeTransaction();
+  }catch(error){
+    el("transactionStatus").textContent=
+      "取引エラー: "+
+      (error.code||"unknown")+
+      "\n"+error.message;
+  }finally{
+    transactionBusy=false;
+    el("transactionConfirm").disabled=false;
+    el("transactionCancel").disabled=false;
+    setTransactionAvailable();
+  }
+});
 </script>
 </body>
 </html>
