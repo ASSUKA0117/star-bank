@@ -50,7 +50,8 @@
   .actions { display: flex; gap: 10px; }
   .actions button { flex: 1; }
   #app { display: none; }
-  #status, #transactionStatus, .error {
+  #status, #transactionStatus, .error,
+  #historyStatus {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     font-size: 14px;
@@ -59,6 +60,15 @@
   .error { color: #b3261e; }
   .muted { color: #7b8491; font-size: 13px; }
   #transactionPanel { display: none; }
+  .history-item {
+    padding: 13px 0;
+    border-bottom: 1px solid #e8dfcd;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
 </style>
 </head>
 <body>
@@ -107,6 +117,13 @@
       <div class="error" id="moonError"></div>
       <p class="muted">返済機能は次の段階で追加するよ。</p>
     </div>
+
+    <section class="card">
+      <h2>✦ LaLa預金の取引履歴</h2>
+      <p class="muted">新しい順に表示します。</p>
+      <div id="historyStatus">読込待機中…</div>
+      <div id="historyList"></div>
+    </section>
 
     <section id="transactionPanel" class="card">
       <h2 id="transactionTitle">チャージ</h2>
@@ -192,6 +209,7 @@ function watchBalance(accountId, balanceId, errorId, version) {
         balanceEl.textContent = "— 粒";
         errorEl.textContent =
           "口座が見つかりません: StarBank/" + accountId;
+
         if (accountId === "LaLa") {
           lalaBalance = null;
           setTransactionAvailable(false);
@@ -205,6 +223,7 @@ function watchBalance(accountId, balanceId, errorId, version) {
         balanceEl.textContent = "— 粒";
         errorEl.textContent =
           "残高データが不正です: " + String(value);
+
         if (accountId === "LaLa") {
           lalaBalance = null;
           setTransactionAvailable(false);
@@ -223,6 +242,7 @@ function watchBalance(accountId, balanceId, errorId, version) {
     },
     error => {
       if (version !== authVersion) return;
+
       balanceEl.textContent = "— 粒";
       errorEl.textContent =
         "読み込みエラー: " + error.code +
@@ -232,6 +252,111 @@ function watchBalance(accountId, balanceId, errorId, version) {
         lalaBalance = null;
         setTransactionAvailable(false);
       }
+    }
+  );
+}
+
+function watchHistory(version) {
+  const listEl = el("historyList");
+  const statusEl = el("historyStatus");
+
+  listEl.replaceChildren();
+  statusEl.textContent = "履歴を読み込んでいます…";
+
+  const historyCollection = collection(
+    db, "StarBank", "LaLa", "history"
+  );
+
+  return onSnapshot(
+    historyCollection,
+    snapshot => {
+      if (version !== authVersion) return;
+
+      const entries = snapshot.docs.map(item => ({
+        id: item.id,
+        ...item.data()
+      }));
+
+      entries.sort((a, b) => {
+        const aTime = a.createdAt?.toMillis?.() ?? 0;
+        const bTime = b.createdAt?.toMillis?.() ?? 0;
+        return bTime - aTime;
+      });
+
+      listEl.replaceChildren();
+
+      if (entries.length === 0) {
+        statusEl.textContent = "取引履歴はありません。";
+        return;
+      }
+
+      statusEl.textContent =
+        entries.length + "件の履歴があります。";
+
+      const labels = {
+        charge: "チャージ",
+        withdraw: "出金",
+        transfer_in: "振替入金",
+        transfer_out: "振替出金",
+        correction: "訂正"
+      };
+
+      for (const entry of entries) {
+        const item = document.createElement("div");
+        item.className = "history-item";
+
+        const title = document.createElement("div");
+        title.className = "history-title";
+
+        const typeLabel =
+          labels[entry.type] || entry.type || "不明";
+
+        const amount =
+          Number.isSafeInteger(entry.amount)
+            ? entry.amount.toLocaleString("ja-JP")
+            : "不明";
+
+        title.textContent =
+          typeLabel + "：" + amount + "粒";
+
+        const date = document.createElement("div");
+        date.className = "muted";
+
+        if (entry.createdAt?.toDate) {
+          date.textContent =
+            entry.createdAt.toDate().toLocaleString(
+              "ja-JP"
+            );
+        } else {
+          date.textContent = "日時不明";
+        }
+
+        item.append(title, date);
+
+        if (entry.type === "correction") {
+          const detail = document.createElement("div");
+          detail.className = "muted";
+
+          detail.textContent =
+            "訂正対象：" +
+            (labels[entry.originalType] ||
+              entry.originalType || "不明") +
+            (entry.reason
+              ? " ／ 理由：" + entry.reason
+              : "");
+
+          item.append(detail);
+        }
+
+        listEl.append(item);
+      }
+    },
+    error => {
+      if (version !== authVersion) return;
+
+      statusEl.textContent =
+        "履歴の読み込みエラー：" +
+        error.code + "\n" + error.message;
     }
   );
 }
@@ -260,14 +385,22 @@ onAuthStateChanged(
           "LaLa", "lalaBalance", "lalaError", version
         )
       );
+
       stopListeners.push(
         watchBalance(
           "yamanashi", "moonBalance", "moonError", version
         )
       );
+
+      stopListeners.push(
+        watchHistory(version)
+      );
     } else {
       el("status").textContent =
         "ログインしてください";
+      el("historyList").replaceChildren();
+      el("historyStatus").textContent =
+        "読込待機中…";
     }
   },
   error => {
