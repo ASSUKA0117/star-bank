@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,21 +7,93 @@
   <title>星粒銀行</title>
   <style>
     body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
+      font-family: sans-serif;
       background: #fff8e9;
       color: #353a45;
-      font-family: sans-serif;
-      text-align: center;
+      padding: 24px;
     }
+    main { max-width: 440px; margin: 50px auto; }
+    input, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      font-size: 16px;
+    }
+    button { cursor: pointer; }
+    #app, #logout { display: none; }
+    #status { white-space: pre-wrap; }
   </style>
 </head>
 <body>
   <main>
     <h1>✦ 星粒銀行 ✦</h1>
-    <p>ただいまリニューアル準備中です。</p>
+    <section id="login">
+      <form id="loginForm">
+        <input id="email" type="email" placeholder="メールアドレス" required>
+        <input id="password" type="password" placeholder="パスワード" required>
+        <button type="submit">ログイン</button>
+      </form>
+    </section>
+    <section id="app">
+      <p>ログイン成功！</p>
+      <p id="userEmail"></p>
+      <button id="logout">ログアウト</button>
+    </section>
+    <p id="status">Firebaseに接続しています…</p>
   </main>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged,
+      signInWithEmailAndPassword, signOut
+    } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s",
+      authDomain: "star-bank-f4d5a.firebaseapp.com",
+      projectId: "star-bank-f4d5a",
+      storageBucket: "star-bank-f4d5a.firebasestorage.app",
+      messagingSenderId: "484567746900",
+      appId: "1:484567746900:web:dc6e0c69765c1c851920c1"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const auth = getAuth(firebaseApp);
+    const el = id => document.getElementById(id);
+
+    onAuthStateChanged(auth, user => {
+      el("login").style.display = user ? "none" : "block";
+      el("app").style.display = user ? "block" : "none";
+      el("logout").style.display = user ? "block" : "none";
+      el("userEmail").textContent = user?.email || "";
+      el("status").textContent = user
+        ? "Firebase認証：接続成功"
+        : "ログインしてください";
+    });
+
+    el("loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      el("status").textContent = "ログイン中…";
+      try {
+        await signInWithEmailAndPassword(
+          auth, el("email").value, el("password").value
+        );
+      } catch (error) {
+        el("status").textContent = "ログイン失敗：" + error.code;
+      }
+    });
+
+    el("logout").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        el("status").textContent = "ログアウト失敗：" + error.code;
+      }
+    });
+  </script>
 </body>
 </html>
