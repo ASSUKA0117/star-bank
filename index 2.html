@@ -1,0 +1,2991 @@
+
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff7df">
+<title>星粒銀行 | Star Bank</title>
+<style>
+:root{
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+  color:#353a45;
+  --gold:#c99b48;
+  --gold-dark:#9a702b;
+  --navy:#263455;
+  --muted:#88919e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:#fff8e9;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:disabled{opacity:.5;cursor:wait}
+[hidden]{display:none!important}
+button:focus-visible,input:focus-visible,
+textarea:focus-visible{
+  outline:3px solid #d3ad69;
+  outline-offset:3px;
+}
+
+/* ── 昼と夜 ── */
+.sky-day,.sky-night{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-3;
+  transition:opacity 1s ease;
+}
+.sky-day{
+  background:
+    radial-gradient(ellipse at 12% 9%,#ffe9a9,transparent 48%),
+    radial-gradient(ellipse at 92% 84%,#f9e9c5,transparent 48%),
+    linear-gradient(160deg,#fff4d8,#fffdf8 65%,#fff0d0);
+  opacity:1;
+}
+.sky-night{
+  background:
+    radial-gradient(ellipse at 80% 5%,#52618b,transparent 40%),
+    radial-gradient(ellipse at 7% 95%,#202a50,transparent 48%),
+    linear-gradient(165deg,#18233f,#35466e 58%,#202b4b);
+  opacity:0;
+}
+body[data-theme="moon"] .sky-day{opacity:0}
+body[data-theme="moon"] .sky-night{opacity:1}
+.sky-stars{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+  overflow:hidden;
+}
+.sky-stars span{
+  position:absolute;
+  color:#d4ad68;
+  animation:twinkle 5s ease-in-out infinite;
+  transition:color .7s;
+}
+body[data-theme="moon"] .sky-stars span{
+  color:#e2e8ff;
+}
+.sky-stars span:nth-child(1){left:8%;top:13%;font-size:19px}
+.sky-stars span:nth-child(2){right:9%;top:22%;font-size:13px;animation-delay:1s}
+.sky-stars span:nth-child(3){left:4%;top:42%;font-size:11px;animation-delay:2s}
+.sky-stars span:nth-child(4){right:5%;top:53%;font-size:20px;animation-delay:.8s}
+.sky-stars span:nth-child(5){left:13%;top:75%;font-size:15px;animation-delay:3s}
+.sky-stars span:nth-child(6){right:17%;top:87%;font-size:10px;animation-delay:1.7s}
+.sky-stars span:nth-child(7){right:31%;top:11%;font-size:9px;animation-delay:2.5s}
+.sky-stars span:nth-child(8){left:26%;top:61%;font-size:9px;animation-delay:3.6s}
+
+/* ── 共通画面 ── */
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#ffffffed;
+  border-bottom:1px solid #eae6df;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  padding:16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.brand{font-size:20px;font-weight:850;white-space:nowrap}
+.brand-star{color:var(--gold)}
+.account-info{
+  font-size:11px;
+  color:#818995;
+  text-align:right;
+  max-width:190px;
+  overflow-wrap:anywhere;
+}
+.account-info button{
+  display:block;
+  margin:6px 0 0 auto;
+  padding:7px;
+  border:0;
+  border-radius:9px;
+  background:#f1f2f5;
+  color:#596272;
+  font-size:11px;
+}
+main{
+  max-width:520px;
+  margin:auto;
+  padding:19px 16px 112px;
+}
+.card{
+  background:#fffffff4;
+  border:1px solid #eae7e1;
+  border-radius:23px;
+  padding:21px;
+  box-shadow:0 7px 26px #1d27360d;
+  margin-bottom:15px;
+}
+.muted{
+  font-size:12px;
+  color:#8b939f;
+  line-height:1.8;
+}
+.section-title{
+  font-size:17px;
+  font-weight:850;
+  margin:25px 2px 13px;
+}
+body[data-theme="moon"] .section-title,
+body[data-theme="moon"] .back{
+  color:#f2f0ff;
+}
+.footer{
+  margin-top:24px;
+  text-align:center;
+  font-size:11px;
+  letter-spacing:.16em;
+  color:#a3a9b2;
+}
+body[data-theme="moon"] .footer,
+body[data-theme="moon"] #storageStatus{
+  color:#e0e6f8;
+}
+
+/* ── シルエットの舞台 ── */
+.scene{
+  position:relative;
+  width:100%;
+  border-radius:18px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.scene svg{
+  display:block;
+  width:100%;
+  max-width:295px;
+  height:auto;
+  overflow:visible;
+  filter:drop-shadow(0 4px 3px #202b3c0b);
+}
+.hero-scene{
+  height:175px;
+  background:
+    radial-gradient(ellipse at 50% 90%,#f7dfaa,transparent 58%);
+}
+.lala-scene{
+  height:132px;
+  background:
+    radial-gradient(ellipse at 55% 90%,#fff0c6,transparent 65%);
+}
+.moon-scene{
+  height:132px;
+  background:
+    radial-gradient(ellipse at 55% 90%,#e5e9f9,transparent 65%);
+}
+.scene .figure{
+  fill:#353b47;
+}
+.scene .cat-shape{
+  fill:#292e39;
+}
+.scene .hair-curl{
+  fill:none;
+  stroke:#353b47;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.scene .clothes-mark{
+  fill:none;
+  stroke:#edcd82;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.scene .floor-line{
+  fill:none;
+  stroke:#c7b697;
+  stroke-width:2;
+  stroke-linecap:round;
+  opacity:.75;
+}
+.moon-scene .floor-line{stroke:#a8b2d4}
+.scene .star-detail{fill:#d3a554}
+.scene .moon-detail{fill:#b9c6e9}
+.hero{
+  text-align:center;
+  padding:18px 18px 26px;
+  background:
+    radial-gradient(circle at 50% 10%,#fff5df,transparent 75%),
+    #fff;
+}
+.hero-stars{
+  font-size:16px;
+  color:#cfa45e;
+  letter-spacing:9px;
+}
+.hero h1{
+  font-size:23px;
+  margin:7px 0;
+}
+.hero p{
+  margin:0;
+  color:#89919d;
+  font-size:12px;
+  line-height:1.8;
+}
+.account-scene-wrap{
+  margin:-5px -5px 15px;
+}
+.account-scene-caption{
+  text-align:center;
+  color:#a29b91;
+  font-size:11px;
+  margin-top:-5px;
+}
+.moon-mode .account-scene-caption{
+  color:#818da9;
+}
+
+/* ── ホーム口座カード ── */
+.account-card{
+  display:block;
+  width:100%;
+  text-align:left;
+  padding:20px;
+  border-radius:20px;
+  border:1px solid #ead8b5;
+  background:
+    radial-gradient(circle at 100% 0,#fff0c0,transparent 60%),
+    white;
+  margin-bottom:12px;
+  box-shadow:0 5px 18px #50422a0a;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.account-card:active{transform:scale(.98)}
+.account-card.repayment{
+  border-color:#dce2f0;
+  background:
+    radial-gradient(circle at 100% 0,#e3e9fb,transparent 60%),
+    white;
+}
+.account-card:after{
+  content:"✦";
+  position:absolute;
+  right:18px;
+  bottom:-10px;
+  color:#d7b36c;
+  opacity:.23;
+  font-size:77px;
+}
+.account-card.repayment:after{
+  content:"☾";
+  color:#8999c7;
+}
+.account-card .top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.account-card .name{font-size:15px;font-weight:850}
+.account-card .arrow{font-size:21px;color:#a2a7b0}
+.account-card .amount{
+  margin:11px 0 4px;
+  font-size:32px;
+  font-weight:850;
+  font-variant-numeric:tabular-nums;
+}
+.account-card .unit{font-size:15px}
+.account-card .hint{font-size:12px;color:#939aa4}
+
+/* ── 口座 ── */
+.back{
+  border:0;
+  background:none;
+  padding:8px 0 16px;
+  color:#9c7738;
+  font-weight:800;
+}
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:15px;
+}
+.tab{
+  border:1px solid #e7e8ed;
+  border-radius:13px;
+  padding:13px 6px;
+  background:#ffffffed;
+  font-weight:800;
+  font-size:13px;
+  color:#89919e;
+}
+.tab.active{
+  background:#fff1cb;
+  border-color:#d9b16d;
+  color:#946b2c;
+}
+.tab.active.moon-tab{
+  background:#dfe7fc;
+  border-color:#b9c5e4;
+  color:#40537c;
+}
+.balance-card{
+  position:relative;
+  overflow:hidden;
+}
+.balance-label{
+  font-size:13px;
+  font-weight:800;
+  color:#818b99;
+}
+.balance-number{
+  font-size:39px;
+  font-weight:850;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-1px;
+  margin:15px 0;
+}
+.coin{
+  display:inline-grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  border:3px solid #fae9c6;
+  border-radius:50%;
+  color:white;
+  background:linear-gradient(135deg,#f7df9f,#c39139);
+  font-size:21px;
+  vertical-align:4px;
+}
+.moon-mode .coin{
+  border-color:#dce4f8;
+  background:linear-gradient(135deg,#aebce0,#596d98);
+}
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:22px;
+}
+.action{
+  border:0;
+  border-radius:13px;
+  padding:14px 5px;
+  background:linear-gradient(135deg,#fff4d8,#f3dda9);
+  color:#926b26;
+  font-size:13px;
+  font-weight:800;
+  transition:transform .15s;
+}
+.action.secondary{
+  background:#f0f2f6;
+  color:#566071;
+}
+.action.moon-action{
+  background:linear-gradient(135deg,#edf1ff,#cdd9f7);
+  color:#4b5c84;
+}
+.action:active{transform:scale(.95)}
+
+/* ── 返済進捗 ── */
+.progress-card h2{
+  margin:0 0 13px;
+  font-size:16px;
+}
+.progress-number{
+  font-size:29px;
+  font-weight:850;
+  font-variant-numeric:tabular-nums;
+}
+.progress-number span{font-size:14px}
+.progress-sub{
+  margin-top:5px;
+  color:#9299a3;
+  font-size:12px;
+}
+.progress-track{
+  height:12px;
+  overflow:hidden;
+  margin:16px 0 10px;
+  background:#eeedf1;
+  border-radius:20px;
+}
+.progress-fill{
+  position:relative;
+  width:0;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#c99b4f,#f4d78b,#c99b4f);
+  transition:width .9s ease;
+  overflow:hidden;
+}
+.progress-fill:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent,#ffffff9c,transparent);
+  animation:barShine 4s infinite;
+}
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:#838b97;
+  font-size:12px;
+}
+.progress-label strong{color:#a77c31}
+.transfer-summary{
+  margin-top:15px;
+  padding:15px;
+  border:1px solid #f1e8d4;
+  border-radius:14px;
+  background:#faf8f2;
+}
+.transfer-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  padding:7px 0;
+  font-size:13px;
+}
+.transfer-row span{color:#818995}
+.transfer-row strong{color:#a67b32}
+.transfer-row.available{
+  border-top:1px solid #e9ddc5;
+  padding-top:13px;
+  margin-top:7px;
+}
+.transfer-row.available strong{font-size:20px}
+
+/* ── 履歴 ── */
+.history{
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.history li{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  border-top:1px solid #f0f0f2;
+  padding:15px 0;
+  font-size:13px;
+}
+.history li:first-child{border-top:0}
+.history-details{min-width:0;flex:1}
+.history-title{font-weight:800;line-height:1.55}
+.history small{
+  display:block;
+  font-size:11px;
+  color:#9aa0aa;
+  margin-top:5px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+.history-amount{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:7px;
+  white-space:nowrap;
+}
+.history-amount strong{color:#a57a2d}
+.history-amount strong.minus{color:#57616e}
+.history-amount strong.cancelled{
+  color:#a5aab2;
+  text-decoration:line-through;
+}
+.correction-button{
+  border:1px solid #e8d9b9;
+  border-radius:8px;
+  background:#fffaf0;
+  color:#a17a35;
+  padding:6px 9px;
+  font-size:11px;
+  font-weight:800;
+}
+.corrected-tag{
+  padding:4px 7px;
+  border-radius:7px;
+  background:#f0f1f3;
+  color:#89909b;
+  font-size:10px;
+}
+.correction-entry{
+  padding-left:9px!important;
+  padding-right:9px!important;
+  border-radius:10px;
+  background:#fcfbf8;
+}
+.empty{
+  padding:24px 0;
+  text-align:center;
+  color:#9299a3;
+  font-size:13px;
+}
+.status{
+  font-size:12px;
+  color:#8b929e;
+  line-height:1.7;
+}
+
+/* ── 下部ナビ ── */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:10;
+  display:flex;
+  justify-content:center;
+  background:#fffffff0;
+  border-top:1px solid #e8e9ed;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  padding:10px 10px max(10px,env(safe-area-inset-bottom));
+}
+.nav-inner{
+  width:min(100%,520px);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+}
+.nav-btn{
+  border:0;
+  background:transparent;
+  padding:5px 2px;
+  display:grid;
+  justify-items:center;
+  gap:5px;
+  color:#a1a6af;
+  font-size:11px;
+}
+.nav-btn .symbol{font-size:22px}
+.nav-btn.active{color:#b88c3d;font-weight:800}
+
+/* ── モーダル ── */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#17203a85;
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.modal.show{display:flex}
+.dialog{
+  width:min(100%,400px);
+  max-height:90vh;
+  overflow:auto;
+  padding:24px;
+  background:white;
+  border-radius:22px;
+  box-shadow:0 20px 65px #121a3036;
+  animation:dialogIn .27s ease-out;
+}
+.dialog h2{font-size:19px;margin:0 0 14px}
+.dialog p{
+  color:#707986;
+  font-size:13px;
+  line-height:1.7;
+}
+.dialog label{font-size:13px;font-weight:800}
+.dialog input,.dialog textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #dce0e6;
+  border-radius:12px;
+  font-size:16px;
+  margin:10px 0;
+  background:white;
+}
+.dialog textarea{resize:vertical;min-height:85px}
+.dialog button{
+  width:100%;
+  padding:13px;
+  margin-top:9px;
+  border:0;
+  border-radius:12px;
+  background:#f1f3f6;
+}
+.dialog .confirm{
+  background:linear-gradient(135deg,#fbe9c3,#efd18d);
+  color:#886121;
+  font-weight:850;
+}
+.dialog .warning{
+  padding:13px;
+  margin:12px 0;
+  border-radius:12px;
+  background:#fff9ed;
+  color:#89672d;
+  font-size:12px;
+  line-height:1.8;
+  white-space:pre-line;
+}
+
+/* ── ログイン ── */
+.auth h1{font-size:21px;margin-top:0}
+.auth p{font-size:13px;color:#7c8592;line-height:1.7}
+.auth label{
+  display:block;
+  margin-top:15px;
+  font-size:13px;
+  font-weight:800;
+}
+.auth input{
+  display:block;
+  width:100%;
+  padding:12px;
+  margin-top:7px;
+  border:1px solid #dce0e6;
+  border-radius:12px;
+  font-size:16px;
+}
+.auth-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:18px;
+}
+.auth-buttons button{
+  padding:13px;
+  border:0;
+  border-radius:12px;
+  background:#fff3da;
+  color:#956d28;
+  font-weight:800;
+}
+.auth-buttons button+button{
+  background:#f1f3f6;
+  color:#55606e;
+}
+
+/* ── 成功時の演出 ── */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:calc(94px + env(safe-area-inset-bottom));
+  z-index:30;
+  width:max-content;
+  max-width:calc(100vw - 36px);
+  padding:15px 21px;
+  border-radius:18px;
+  background:#343e57;
+  color:white;
+  text-align:center;
+  font-size:14px;
+  line-height:1.6;
+  font-weight:850;
+  box-shadow:0 12px 35px #14203842;
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,20px);
+  transition:opacity .25s,transform .25s;
+}
+.toast.visible{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+.fx-layer{
+  position:fixed;
+  inset:0;
+  z-index:35;
+  pointer-events:none;
+  overflow:hidden;
+}
+.fx-star{
+  position:absolute;
+  display:block;
+  font-family:Georgia,serif;
+  font-weight:bold;
+  line-height:1;
+  text-shadow:
+    0 0 10px #fff8d9,
+    0 0 25px #f9d58a;
+  will-change:transform,opacity;
+}
+.fx-flash{
+  position:absolute;
+  left:50%;
+  top:43%;
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff2c3b3,transparent 72%);
+}
+.balance-glow{animation:balanceFlash .8s ease-out}
+
+@keyframes twinkle{
+  0%,100%{opacity:.25;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.2)}
+}
+@keyframes barShine{
+  0%,50%{transform:translateX(-110%)}
+  90%,100%{transform:translateX(110%)}
+}
+@keyframes dialogIn{
+  from{opacity:0;transform:translateY(18px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes balanceFlash{
+  from{filter:brightness(1.35);transform:scale(1.045)}
+  to{filter:none;transform:scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body data-theme="home">
+<div class="sky-day"></div>
+<div class="sky-night"></div>
+
+<div class="sky-stars" aria-hidden="true">
+  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span>
+  <span>✦</span><span>✧</span>
+</div>
+
+<header>
+  <div class="brand">
+    <span class="brand-star">✦</span> 星粒銀行
+  </div>
+  <div id="accountInfo" class="account-info">STAR BANK</div>
+</header>
+
+<main>
+
+<!-- ログイン -->
+<section id="authPanel" class="card auth">
+  <h1>星粒銀行へようこそ ✦</h1>
+  <p>メールアドレスとパスワードでログインしてね。</p>
+
+  <form id="authForm">
+    <label>メールアドレス
+      <input id="email" type="email"
+        autocomplete="email" required>
+    </label>
+    <label>パスワード
+      <input id="password" type="password"
+        minlength="6"
+        autocomplete="current-password" required>
+    </label>
+    <div class="auth-buttons">
+      <button id="signIn" type="submit">ログイン</button>
+      <button id="signUp" type="button">新規登録</button>
+    </div>
+  </form>
+  <p id="authStatus">接続しています…</p>
+</section>
+
+<div id="bankApp" hidden>
+
+<!-- ホーム -->
+<section id="homePage">
+  <div class="card hero">
+    <div class="hero-stars">✦ ☾ ✧</div>
+
+    <div class="scene hero-scene">
+      <!-- 横を向いて座る男の子と、寄り添う黒猫 -->
+      <svg viewBox="0 0 300 160" aria-hidden="true">
+        <path class="floor-line"
+          d="M24 146 Q150 151 277 146"/>
+
+        <!-- 男の子：短い足と丸い靴 -->
+        <path class="figure"
+          d="M105 120 Q96 127 90 141
+             Q88 147 101 148
+             L117 147 L129 132 Z"/>
+        <path class="figure"
+          d="M143 121 Q153 127 164 141
+             Q169 147 155 148
+             L139 145 L127 132 Z"/>
+
+        <!-- 小さな身体・斜め向き -->
+        <path class="figure"
+          d="M111 90
+             Q98 98 102 119
+             Q107 137 128 137
+             Q153 137 158 117
+             Q159 100 142 91 Z"/>
+
+        <!-- 片手を少し横へ -->
+        <path class="figure"
+          d="M105 102
+             Q91 107 87 118
+             Q85 126 93 128
+             Q99 129 102 119
+             L113 112 Z"/>
+
+        <!-- 反対の手は床についている -->
+        <path class="figure"
+          d="M146 101
+             Q158 105 161 120
+             L165 138
+             Q168 144 175 140
+             Q180 137 175 131
+             L170 112 Q168 102 157 96 Z"/>
+
+        <!-- 大きな丸い頭、少し右向き -->
+        <path class="figure"
+          d="M91 51
+             C91 22 113 8 139 13
+             C163 17 177 36 176 58
+             C175 78 160 94 137 99
+             C110 104 89 85 91 51 Z"/>
+
+        <!-- ちょこんとした鼻 -->
+        <path class="figure"
+          d="M173 58
+             Q186 61 179 68
+             L171 69 Z"/>
+
+        <!-- くるくる前髪 -->
+        <path class="hair-curl"
+          d="M128 17
+             Q119 7 112 13
+             Q106 18 113 23
+             Q119 25 120 19"/>
+        <path class="hair-curl"
+          d="M143 18
+             Q144 4 134 5
+             Q126 6 131 13"/>
+        <path class="hair-curl"
+          d="M153 22
+             Q163 10 168 19
+             Q170 26 164 28"/>
+
+        <!-- シャツのジグザグ -->
+        <path class="clothes-mark"
+          d="M109 113 L120 107 L130 115
+             L141 108 L152 115"/>
+
+        <!-- 黒猫：大きな耳と小顔 -->
+        <path class="cat-shape"
+          d="M205 100
+             Q198 89 202 73
+             L207 58 L217 68
+             Q226 65 235 68
+             L246 58 L249 75
+             Q254 95 240 103 Z"/>
+
+        <!-- すらっとした細い首 -->
+        <path class="cat-shape"
+          d="M216 96 L239 96
+             Q235 110 242 121
+             L213 124
+             Q222 109 216 96 Z"/>
+
+        <!-- 細身の胴体 -->
+        <path class="cat-shape"
+          d="M215 116
+             Q205 125 207 137
+             Q213 147 231 146
+             Q251 146 255 132
+             Q256 119 243 116 Z"/>
+
+        <!-- 長い脚 -->
+        <path class="cat-shape"
+          d="M211 132 L210 146
+             Q215 151 222 147
+             L225 132 Z"/>
+        <path class="cat-shape"
+          d="M239 132 L241 147
+             Q249 150 253 145
+             L250 130 Z"/>
+
+        <!-- しなやかな尻尾 -->
+        <path class="cat-shape"
+          d="M250 128
+             C267 130 276 116 271 103
+             C267 94 272 90 277 94
+             C291 114 278 144 252 143 Z"/>
+
+        <path class="star-detail"
+          d="M48 51 L52 63 L64 67 L52 71
+             L48 83 L44 71 L32 67 L44 63 Z"/>
+        <circle class="star-detail" cx="261" cy="35" r="3"/>
+      </svg>
+    </div>
+
+    <h1>星粒銀行へようこそ</h1>
+    <p>ふたりの星粒を、大切に。</p>
+  </div>
+
+  <div class="section-title">✦ あなたの口座</div>
+
+  <button class="account-card" id="homeLaLa" type="button">
+    <div class="top">
+      <span class="name">✦ LaLa預金</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="amount">
+      <span id="homeLaLaBalance">—</span>
+      <span class="unit">粒</span>
+    </div>
+    <div class="hint">現在の預金残高</div>
+  </button>
+
+  <button class="account-card repayment"
+    id="homeYamanashi" type="button">
+    <div class="top">
+      <span class="name">☾ 月見里返済</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="amount">
+      <span id="homeYamanashiBalance">—</span>
+      <span class="unit">粒</span>
+    </div>
+    <div class="hint">
+      月見里から返済された星粒の累計
+    </div>
+  </button>
+
+  <div class="section-title">☾ 返済のあゆみ</div>
+  <section class="card progress-card">
+    <h2>月見里返済の進捗</h2>
+    <div class="progress-number">
+      <span id="progressPaid">—</span>
+      <span> / 18,000粒</span>
+    </div>
+    <div class="progress-sub">
+      これまでに返済された星粒
+    </div>
+    <div class="progress-track">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+    <div class="progress-label">
+      <span>達成率 <strong id="progressPercent">—</strong></span>
+      <span>残り <strong id="progressRemaining">—</strong>粒</span>
+    </div>
+    <div class="transfer-summary">
+      <div class="transfer-row">
+        <span>LaLa預金へ振替済み</span>
+        <strong><span id="homeTransferred">—</span>粒</strong>
+      </div>
+      <div class="transfer-row available">
+        <span>振替可能</span>
+        <strong><span id="homeAvailable">—</span>粒</strong>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- 口座画面 -->
+<section id="accountsPage" hidden>
+  <button class="back" id="backHome" type="button">
+    ‹ ホームに戻る
+  </button>
+
+  <div class="tabs">
+    <button class="tab active" id="tabLaLa" type="button">
+      ✦ LaLa預金
+    </button>
+    <button class="tab" id="tabYamanashi" type="button">
+      ☾ 月見里返済
+    </button>
+  </div>
+
+  <section class="card balance-card" id="balanceCard">
+
+    <!-- LaLa：床と同じ目線から見た、ぺしょっとしたふたり -->
+    <div id="lalaArtwork" class="account-scene-wrap">
+      <div class="scene lala-scene">
+        <svg viewBox="0 0 300 130" aria-hidden="true">
+          <path class="floor-line"
+            d="M15 111 Q150 114 287 111"/>
+
+          <!-- 男の子の小さな身体・うつ伏せ -->
+          <path class="figure"
+            d="M109 83
+               Q132 71 160 79
+               Q176 84 184 96
+               L178 107
+               L106 107 Z"/>
+
+          <!-- ぺたっと伸ばした足 -->
+          <path class="figure"
+            d="M168 92 L198 95
+               Q207 97 203 104
+               Q199 110 188 108
+               L167 106 Z"/>
+          <path class="figure"
+            d="M162 103 L193 108
+               Q199 111 195 115
+               Q188 119 178 113 L157 111 Z"/>
+
+          <!-- 大きな頭・床すれすれの横顔 -->
+          <path class="figure"
+            d="M45 77
+               C43 55 56 33 81 29
+               C104 25 126 39 130 61
+               C136 87 120 108 93 110
+               C65 112 47 101 45 77 Z"/>
+
+          <!-- 右側の鼻 -->
+          <path class="figure"
+            d="M128 79
+               Q141 82 136 89
+               L128 91 Z"/>
+
+          <!-- くるんと飛び出す前髪 -->
+          <path class="hair-curl"
+            d="M76 32
+               Q70 19 61 25
+               Q55 30 62 36
+               Q69 39 70 32"/>
+          <path class="hair-curl"
+            d="M91 29
+               Q91 16 82 17
+               Q77 18 80 24"/>
+          <path class="hair-curl"
+            d="M104 33
+               Q115 20 120 28
+               Q123 34 116 37"/>
+
+          <!-- 前へ投げ出した短い腕 -->
+          <path class="figure"
+            d="M98 96
+               Q111 94 124 101
+               Q135 105 149 102
+               Q157 101 160 107
+               Q161 114 150 114
+               L113 112
+               Q99 112 93 104 Z"/>
+
+          <!-- 猫：床に長く伸びた胴体 -->
+          <path class="cat-shape"
+            d="M209 92
+               Q220 80 247 86
+               Q269 90 273 101
+               Q272 109 251 109
+               L220 107 Z"/>
+
+          <!-- 猫の大きめの頭と耳 -->
+          <path class="cat-shape"
+            d="M177 88
+               L179 65 L190 73
+               Q202 68 211 74
+               L221 65 L224 87
+               Q225 105 202 109
+               Q181 112 177 88 Z"/>
+
+          <!-- 猫の前脚がぺしょ -->
+          <path class="cat-shape"
+            d="M213 101 L226 104
+               L229 112
+               Q225 117 216 112
+               L208 108 Z"/>
+
+          <!-- 猫の後脚 -->
+          <path class="cat-shape"
+            d="M257 102 L275 109
+               Q281 115 271 116
+               L253 109 Z"/>
+
+          <!-- 長いしっぽが上にくるん -->
+          <path class="cat-shape"
+            d="M266 91
+               C280 82 280 63 272 53
+               C266 45 269 38 275 41
+               C292 53 293 77 278 96 Z"/>
+
+          <!-- 星は小さめ -->
+          <path class="star-detail"
+            d="M148 27 L152 37 L162 41
+               L152 45 L148 55
+               L144 45 L134 41 L144 37 Z"/>
+          <circle class="star-detail" cx="238" cy="34" r="3"/>
+        </svg>
+      </div>
+      <div class="account-scene-caption">
+        星粒といっしょに、ひとやすみ。
+      </div>
+    </div>
+
+    <!-- 月見里：静かに寄り添うふたり -->
+    <div id="moonArtwork" class="account-scene-wrap" hidden>
+      <div class="scene moon-scene">
+        <svg viewBox="0 0 300 130" aria-hidden="true">
+          <path class="floor-line"
+            d="M20 115 Q150 118 280 115"/>
+
+          <!-- 男の子の身体は少し斜め -->
+          <path class="figure"
+            d="M103 83
+               Q91 89 92 108
+               L95 115
+               L151 115
+               Q159 92 144 84 Z"/>
+
+          <!-- 短い足 -->
+          <path class="figure"
+            d="M104 106
+               Q92 112 86 115
+               Q85 122 98 121
+               L120 115 Z"/>
+          <path class="figure"
+            d="M139 105
+               L159 113
+               Q165 118 155 120
+               L134 116 Z"/>
+
+          <!-- 頭を少し猫側へ傾ける -->
+          <g transform="rotate(9 121 58)">
+            <path class="figure"
+              d="M85 57
+                 C85 32 103 17 125 18
+                 C148 19 162 36 161 58
+                 C160 80 145 97 120 97
+                 C96 97 84 79 85 57 Z"/>
+            <path class="figure"
+              d="M158 61 Q170 64 164 71 L157 72 Z"/>
+            <path class="hair-curl"
+              d="M112 22
+                 Q103 10 96 17
+                 Q90 24 99 28
+                 Q105 30 106 23"/>
+            <path class="hair-curl"
+              d="M126 20
+                 Q125 9 117 10
+                 Q111 11 115 17"/>
+            <path class="hair-curl"
+              d="M140 24
+                 Q149 13 154 20
+                 Q157 26 151 30"/>
+          </g>
+
+          <!-- 腕を猫に向けて置く -->
+          <path class="figure"
+            d="M144 96
+               Q158 96 166 106
+               Q174 111 179 106
+               Q185 103 188 110
+               Q188 120 176 118
+               Q157 116 146 110 Z"/>
+
+          <!-- 猫：細身のお座り -->
+          <path class="cat-shape"
+            d="M195 81
+               L197 52 L208 62
+               Q218 58 228 62
+               L240 52 L242 80
+               Q242 95 226 98
+               L207 98 Q194 94 195 81 Z"/>
+
+          <!-- 細長い首 -->
+          <path class="cat-shape"
+            d="M207 93 L230 93
+               Q227 105 236 111
+               L201 112
+               Q212 104 207 93 Z"/>
+
+          <!-- すらっとした身体 -->
+          <path class="cat-shape"
+            d="M204 104
+               Q193 111 195 117
+               L249 117
+               Q251 105 235 103 Z"/>
+
+          <!-- 長い前脚 -->
+          <path class="cat-shape"
+            d="M205 108 L205 120
+               Q211 123 216 119
+               L219 106 Z"/>
+          <path class="cat-shape"
+            d="M227 108 L229 120
+               Q236 122 241 117
+               L239 106 Z"/>
+
+          <!-- 猫の長い尾 -->
+          <path class="cat-shape"
+            d="M242 110
+               C265 114 277 97 270 80
+               C267 72 272 68 278 74
+               C294 96 274 127 246 121 Z"/>
+
+          <!-- 小さな三日月 -->
+          <path class="moon-detail"
+            d="M245 22
+               A12 12 0 1 0 258 38
+               A10 10 0 0 1 245 22 Z"/>
+
+          <circle class="moon-detail" cx="61" cy="32" r="2.7"/>
+          <circle class="moon-detail" cx="270" cy="52" r="2"/>
+        </svg>
+      </div>
+      <div class="account-scene-caption">
+        月明かりの下で、のんびり。
+      </div>
+    </div>
+
+    <div class="balance-label" id="balanceTitle">
+      LaLa預金
+    </div>
+
+    <div class="balance-number" id="balanceWrapper">
+      <span class="coin" id="accountCoin">★</span>
+      <span id="balance">—</span>
+      <span style="font-size:17px">粒</span>
+    </div>
+
+    <div class="muted" id="balanceHint">
+      現在の預金残高
+    </div>
+
+    <div class="transfer-summary"
+      id="accountTransferSummary" hidden>
+      <div class="transfer-row">
+        <span>振替済み</span>
+        <strong>
+          <span id="accountTransferred">—</span>粒
+        </strong>
+      </div>
+      <div class="transfer-row available">
+        <span>振替可能</span>
+        <strong>
+          <span id="accountAvailable">—</span>粒
+        </strong>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action" id="chargeButton" type="button">
+        ＋ チャージ
+      </button>
+      <button class="action secondary"
+        id="withdrawButton" type="button">
+        ✧ 星粒を使う
+      </button>
+      <button class="action moon-action"
+        id="transferButton" type="button" hidden>
+        ✦ LaLaへ振替
+      </button>
+    </div>
+  </section>
+
+  <div class="section-title" id="historyTitle">
+    LaLa預金の履歴
+  </div>
+  <section class="card">
+    <p class="muted">
+      間違えた取引は「訂正する」から取り消せるよ。
+      元の記録も残るので安心してね。
+    </p>
+    <ul id="history" class="history"></ul>
+    <div class="empty" id="empty">
+      まだ取引履歴はないよ ✦
+    </div>
+  </section>
+</section>
+
+<!-- グラフ -->
+<section id="graphPage" hidden>
+  <div class="section-title">✧ グラフ</div>
+  <section class="card progress-card">
+    <h2>☾ 月見里返済</h2>
+    <div class="progress-number">
+      <span id="graphPaid">—</span>
+      <span> / 18,000粒</span>
+    </div>
+    <div class="progress-track">
+      <div id="graphFill" class="progress-fill"></div>
+    </div>
+    <div class="progress-label">
+      <span>達成率 <strong id="graphPercent">—</strong></span>
+      <span>残り <strong id="graphRemaining">—</strong>粒</span>
+    </div>
+  </section>
+  <p class="muted">
+    取引推移のグラフは今後追加予定だよ。
+  </p>
+</section>
+
+<!-- 設定 -->
+<section id="settingsPage" hidden>
+  <div class="section-title">⚙ 設定</div>
+  <section class="card">
+    <p style="font-weight:800">星粒銀行</p>
+    <p class="muted">返済目標：18,000粒</p>
+    <p class="muted">口座：LaLa預金・月見里返済</p>
+    <p class="muted">
+      取引の訂正記録は削除せず保存されるよ。
+    </p>
+  </section>
+</section>
+
+<p id="storageStatus" class="status" role="status"></p>
+<div class="footer">✦ Star Bank ✦</div>
+</div>
+</main>
+
+<!-- 下部メニュー -->
+<nav id="bottomNav" class="bottom-nav" hidden>
+  <div class="nav-inner">
+    <button class="nav-btn active"
+      data-page="home" type="button">
+      <span class="symbol">⌂</span>ホーム
+    </button>
+    <button class="nav-btn"
+      data-page="accounts" type="button">
+      <span class="symbol">✦</span>口座
+    </button>
+    <button class="nav-btn"
+      data-page="graph" type="button">
+      <span class="symbol">▥</span>グラフ
+    </button>
+    <button class="nav-btn"
+      data-page="settings" type="button">
+      <span class="symbol">⚙</span>設定
+    </button>
+  </div>
+</nav>
+
+<!-- 取引モーダル -->
+<div class="modal" id="transactionModal"
+  role="dialog" aria-modal="true"
+  aria-labelledby="transactionTitle">
+  <div class="dialog">
+    <h2 id="transactionTitle">星粒をチャージ</h2>
+    <form id="transactionForm">
+      <label id="amountLabel" for="transactionAmount">
+        チャージする星粒数
+      </label>
+      <input id="transactionAmount" type="number"
+        min="1" max="1000000" step="1"
+        inputmode="numeric" required
+        placeholder="例：10">
+      <p id="transactionStatus" role="status"></p>
+      <button id="transactionConfirm"
+        class="confirm" type="submit">
+        チャージする
+      </button>
+      <button id="transactionCancel" type="button">
+        キャンセル
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- 訂正モーダル -->
+<div class="modal" id="correctionModal"
+  role="dialog" aria-modal="true"
+  aria-labelledby="correctionTitle">
+  <div class="dialog">
+    <h2 id="correctionTitle">✧ 取引を訂正</h2>
+    <div id="correctionSummary" class="warning"></div>
+    <form id="correctionForm">
+      <label for="correctionReason">
+        訂正理由（任意）
+      </label>
+      <textarea id="correctionReason" maxlength="200"
+        placeholder="例：入力する金額を間違えた"></textarea>
+      <p class="muted">
+        元の履歴は消さず、訂正済みとして残るよ。
+      </p>
+      <p id="correctionStatus"
+        class="status" role="status"></p>
+      <button id="correctionConfirm"
+        class="confirm" type="submit">
+        この取引を訂正する
+      </button>
+      <button id="correctionCancel" type="button">
+        やめる
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- 演出用 -->
+<div id="toast" class="toast"
+  role="status" aria-live="polite"></div>
+<div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+
+<script type="module">
+import {initializeApp} from
+'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+
+import {
+  getAuth,onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,signOut
+} from
+'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+
+import {
+  getFirestore,doc,collection,query,
+  orderBy,limit,onSnapshot,
+  runTransaction,serverTimestamp
+} from
+'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
+/* ── Firebase設定 ── */
+const firebaseConfig={
+  apiKey:'AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s',
+  authDomain:'star-bank-f4d5a.firebaseapp.com',
+  projectId:'star-bank-f4d5a',
+  storageBucket:'star-bank-f4d5a.firebasestorage.app',
+  messagingSenderId:'484567746900',
+  appId:'1:484567746900:web:dc6e0c69765c1c851920c1'
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+const el=id=>document.getElementById(id);
+const format=n=>n.toLocaleString('ja-J');
+
+const accounts={
+  LaLa:{name:'LaLa預金'},
+  yamanashi:{name:'月見里返済'}
+};
+
+const names={
+  'BIR5n29dcHPytcnfDftUwDB4XGG2':'LaLa'
+};
+
+const GOAL=18000;
+
+let selectedAccount='LaLa';
+let balances={LaLa:null,yamanashi:null};
+let transferred=null;
+let currentBalance=0;
+let currentTransferred=0;
+let balanceReady=false;
+let transactionType='charge';
+let transacting=false;
+let correcting=false;
+let authBusy=false;
+let accountVersion=0;
+let stopSelectedBank=null;
+let stopHistory=null;
+let stopHomeBanks=[];
+let pendingCorrection=null;
+
+function bankRef(id){
+  return doc(db,'StarBank',id);
+}
+function historyRef(id){
+  return collection(db,'StarBank',id,'history');
+}
+function entryRef(id,entryId){
+  return doc(db,'StarBank',id,'history',entryId);
+}
+function correctionId(originalId){
+  return 'correction_'+originalId;
+}
+function validAmount(n){
+  return Number.isSafeInteger(n)&&n>=0;
+}
+function validTransactionAmount(n){
+  return Number.isSafeInteger(n)&&n>=1&&n<=1000000;
+}
+
+const reduceMotion=window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+);
+
+/* ── 数字の動き ── */
+const animatedNumbers=new Map();
+const numberFrames=new Map();
+
+function resetNumber(id){
+  if(numberFrames.has(id)){
+    cancelAnimationFrame(numberFrames.get(id));
+    numberFrames.delete(id);
+  }
+  animatedNumbers.delete(id);
+  el(id).textContent='—';
+}
+
+function setNumber(id,value){
+  const node=el(id);
+  const previous=animatedNumbers.get(id);
+
+  if(numberFrames.has(id)){
+    cancelAnimationFrame(numberFrames.get(id));
+    numberFrames.delete(id);
+  }
+
+  if(!validAmount(value)){
+    resetNumber(id);
+    return;
+  }
+
+  animatedNumbers.set(id,value);
+
+  if(reduceMotion.matches
+    ||!validAmount(previous)
+    ||previous===value){
+    node.textContent=format(value);
+    return;
+  }
+
+  const start=performance.now();
+  const difference=value-previous;
+
+  function step(now){
+    const p=Math.min(1,(now-start)/750);
+    const ease=1-Math.pow(1-p,3);
+
+    node.textContent=format(
+      Math.round(previous+difference*ease)
+    );
+
+    if(p<1){
+      numberFrames.set(
+        id,requestAnimationFrame(step)
+      );
+    }else{
+      node.textContent=format(value);
+      numberFrames.delete(id);
+    }
+  }
+
+  numberFrames.set(id,requestAnimationFrame(step));
+}
+
+function resetAllNumbers(){
+  for(const frame of numberFrames.values()){
+    cancelAnimationFrame(frame);
+  }
+  numberFrames.clear();
+  animatedNumbers.clear();
+}
+
+function glowBalance(){
+  const node=el('balanceWrapper');
+  node.classList.remove('balance-glow');
+  void node.offsetWidth;
+  node.classList.add('balance-glow');
+}
+
+/* ── 大きめの星粒演出 ── */
+let toastTimer=null;
+
+function showToast(message){
+  const node=el('toast');
+  clearTimeout(toastTimer);
+  node.textContent=message;
+  node.classList.add('visible');
+
+  toastTimer=setTimeout(()=>{
+    node.classList.remove('visible');
+  },3500);
+}
+
+function makeStar(x,y,symbol,color,size){
+  const node=document.createElement('span');
+  node.className='fx-star';
+  node.textContent=symbol;
+  node.style.left=x+'px';
+  node.style.top=y+'px';
+  node.style.fontSize=size+'px';
+  node.style.color=color;
+  el('fxLayer').append(node);
+  return node;
+}
+
+function animateAndRemove(node,frames,duration,delay=0){
+  const animation=node.animate(frames,{
+    duration,delay,
+    easing:'cubic-bezier(.2,.7,.2,1)',
+    fill:'both'
+  });
+
+  animation.finished.then(()=>{
+    node.remove();
+  }).catch(()=>{
+    node.remove();
+  });
+}
+
+function playEffect(kind){
+  if(reduceMotion.matches)return;
+
+  const w=window.innerWidth;
+  const h=window.innerHeight;
+  const centerX=w/2;
+  const centerY=h*.42;
+  const night=selectedAccount==='yamanashi';
+
+  const gold=['#e5b24e','#f4d879','#fff0b6'];
+  const blue=['#d6ddff','#a9bcec','#f5efff'];
+  const colors=night?blue:gold;
+
+  const layer=el('fxLayer');
+  layer.replaceChildren();
+
+  const flash=document.createElement('div');
+  flash.className='fx-flash';
+  layer.append(flash);
+
+  animateAndRemove(flash,[
+    {
+      opacity:0,
+      transform:'translate(-50%,-50%) scale(.4)'
+    },
+    {
+      opacity:.9,
+      transform:'translate(-50%,-50%) scale(1.8)',
+      offset:.35
+    },
+    {
+      opacity:0,
+      transform:'translate(-50%,-50%) scale(2.7)'
+    }
+  ],950);
+
+  if(kind==='transfer'){
+    for(let i=0;i<8;i++){
+      const x=w*.16;
+      const y=h*(.34+i*.025);
+      const star=makeStar(
+        x,y,'✦',gold[i%3],23+(i%3)*9
+      );
+
+      animateAndRemove(star,[
+        {
+          opacity:0,
+          transform:'translate(0,25px) scale(.35) rotate(-30deg)'
+        },
+        {
+          opacity:1,
+          transform:'translate(30px,-12px) scale(1.3) rotate(0deg)',
+          offset:.25
+        },
+        {
+          opacity:1,
+          transform:`translate(${w*.52}px,-55px) scale(1.2) rotate(35deg)`,
+          offset:.75
+        },
+        {
+          opacity:0,
+          transform:`translate(${w*.69}px,-85px) scale(.4) rotate(90deg)`
+        }
+      ],1800,i*120);
+    }
+    return;
+  }
+
+  for(let i=0;i<10;i++){
+    const angle=Math.PI*2*i/10;
+    const distance=105+(i%3)*27;
+
+    const star=makeStar(
+      centerX,centerY,
+      i%3===0?'★':'✦',
+      colors[i%colors.length],
+      26+(i%3)*8
+    );
+
+    let frames;
+
+    if(kind==='withdraw'){
+      const dx=Math.cos(angle)*distance*.7;
+      const dy=-130-(i%3)*50;
+
+      frames=[
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) scale(.35)'
+        },
+        {
+          opacity:1,
+          transform:`translate(calc(-50% + ${dx*.35}px),-75px) scale(1.25)`,
+          offset:.3
+        },
+        {
+          opacity:0,
+          transform:`translate(calc(-50% + ${dx}px),${dy}px) scale(.65)`
+        }
+      ];
+    }else if(kind==='correction'){
+      const dx=Math.cos(angle)*distance;
+      const dy=Math.sin(angle)*distance;
+
+      frames=[
+        {
+          opacity:0,
+          transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) rotate(0deg) scale(1.2)`
+        },
+        {
+          opacity:1,
+          transform:`translate(calc(-50% + ${dx*.55}px),calc(-50% + ${dy*.55}px)) rotate(-180deg) scale(1.25)`,
+          offset:.55
+        },
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) rotate(-360deg) scale(.2)'
+        }
+      ];
+    }else if(kind==='repayment'){
+      const dx=75+i*14;
+      const dy=-95-i*13;
+
+      frames=[
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) scale(.3) rotate(-30deg)'
+        },
+        {
+          opacity:1,
+          transform:'translate(-30px,20px) scale(1.4) rotate(0deg)',
+          offset:.3
+        },
+        {
+          opacity:0,
+          transform:`translate(${dx}px,${dy}px) scale(.75) rotate(45deg)`
+        }
+      ];
+    }else{
+      const dx=Math.cos(angle)*distance;
+      const dy=Math.sin(angle)*distance;
+
+      frames=[
+        {
+          opacity:0,
+          transform:'translate(-50%,-50%) scale(.25) rotate(-40deg)'
+        },
+        {
+          opacity:1,
+          transform:'translate(-50%,-50%) scale(1.6) rotate(0deg)',
+          offset:.25
+        },
+        {
+          opacity:1,
+          transform:`translate(calc(-50% + ${dx*.8}px),calc(-50% + ${dy*.8}px)) scale(1.25) rotate(35deg)`,
+          offset:.72
+        },
+        {
+          opacity:0,
+          transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(.65) rotate(55deg)`
+        }
+      ];
+    }
+
+    animateAndRemove(star,frames,1700,i*60);
+  }
+}
+
+function celebrate(message,kind='charge'){
+  showToast(message);
+  playEffect(kind);
+}
+
+function clearEffects(){
+  clearTimeout(toastTimer);
+  el('toast').classList.remove('visible');
+  el('fxLayer').replaceChildren();
+}
+
+/* ── 進捗表示 ── */
+function updateProgress(){
+  const paid=balances.yamanashi;
+  const ready=validAmount(paid);
+
+  const percent=ready
+    ?Math.min(100,paid/GOAL*100):0;
+
+  const percentText=ready
+    ?(paid/GOAL*100).toFixed(2)+'%':'—';
+
+  const remaining=ready
+    ?format(Math.max(0,GOAL-paid)):'—';
+
+  setNumber('homeLaLaBalance',balances.LaLa);
+  setNumber('homeYamanashiBalance',paid);
+  setNumber('progressPaid',paid);
+  setNumber('graphPaid',paid);
+
+  for(const id of ['progressPercent','graphPercent']){
+    el(id).textContent=percentText;
+  }
+
+  for(const id of ['progressRemaining','graphRemaining']){
+    el(id).textContent=remaining;
+  }
+
+  for(const id of ['progressFill','graphFill']){
+    el(id).style.width=percent+'%';
+  }
+
+  const transferReady=ready
+    &&validAmount(transferred)
+    &&transferred<=paid;
+
+  setNumber(
+    'homeTransferred',
+    transferReady?transferred:null
+  );
+
+  setNumber(
+    'homeAvailable',
+    transferReady?paid-transferred:null
+  );
+}
+
+/* ── ページ切り替え ── */
+function showPage(page){
+  if(transacting||correcting)return;
+
+  for(const name of [
+    'home','accounts','graph','settings'
+  ]){
+    el(name+'Page').hidden=name!==page;
+  }
+
+  document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.classList.toggle(
+      'active',btn.dataset.page===page
+    );
+  });
+
+  if(page==='accounts'){
+    document.body.dataset.theme=
+      selectedAccount==='yamanashi'?'moon':'lala';
+  }else{
+    document.body.dataset.theme='home';
+  }
+
+  window.scrollTo(0,0);
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    showPage(btn.dataset.page);
+  });
+});
+
+el('backHome').addEventListener('click',()=>{
+  showPage('home');
+});
+
+function openAccount(id){
+  if(transacting||correcting)return;
+
+  if(selectedAccount!==id){
+    selectedAccount=id;
+    watchSelectedAccount();
+  }
+
+  showPage('accounts');
+}
+
+el('homeLaLa').addEventListener('click',()=>{
+  openAccount('LaLa');
+});
+el('homeYamanashi').addEventListener('click',()=>{
+  openAccount('yamanashi');
+});
+el('tabLaLa').addEventListener('click',()=>{
+  openAccount('LaLa');
+});
+el('tabYamanashi').addEventListener('click',()=>{
+  openAccount('yamanashi');
+});
+
+/* ── 履歴 ── */
+const labels={
+  charge:'✦ チャージ',
+  withdraw:'✧ 星粒を使用',
+  transfer_in:'✦ 月見里返済から振替',
+  transfer_out:'☾ LaLa預金へ振替'
+};
+
+function transactionLabel(type,accountId){
+  if(type==='charge'&&accountId==='yamanashi'){
+    return '☾ 返済を記録';
+  }
+  return labels[type]||'取引';
+}
+
+function dateLabel(value){
+  const date=value?.toDate?.();
+
+  return date
+    ?date.toLocaleString('ja-JP',{
+      year:'numeric',
+      month:'numeric',
+      day:'numeric',
+      hour:'2-digit',
+      minute:'2-digit'
+    })
+    :'日時を確認中';
+}
+
+function renderHistory(snapshot){
+  const list=el('history');
+  list.replaceChildren();
+
+  const items=snapshot.docs.map(s=>({
+    id:s.id,...s.data()
+  }));
+
+  const corrections=new Map();
+
+  for(const item of items){
+    if(item.type==='correction'){
+      corrections.set(item.originalId,item);
+    }
+  }
+
+  for(const item of items){
+    const type=item.type;
+
+    if(![
+      'charge','withdraw','transfer_in',
+      'transfer_out','correction'
+    ].includes(type))continue;
+
+    const li=document.createElement('li');
+    const details=document.createElement('div');
+    details.className='history-details';
+
+    const title=document.createElement('div');
+    title.className='history-title';
+
+    const small=document.createElement('small');
+    const right=document.createElement('div');
+    right.className='history-amount';
+
+    const amount=document.createElement('strong');
+    const value=Number(item.amount);
+
+    if(type==='correction'){
+      li.classList.add('correction-entry');
+      title.textContent='↶ 取引の訂正';
+
+      small.textContent=
+        dateLabel(item.createdAt)+' ・ LaLa';
+
+      const reason=document.createElement('small');
+      reason.textContent=
+        '対象：'+transactionLabel(
+          item.originalType,selectedAccount
+        )+
+        (item.reason?' ／ 理由：'+item.reason:'');
+
+      details.append(title,small,reason);
+
+      const originalSign=
+        item.originalType==='withdraw'?-1:
+        item.originalType==='transfer_out'?0:1;
+
+      const correctionSign=-originalSign;
+
+      if(item.originalType==='transfer_out'){
+        amount.textContent='振替取消';
+      }else{
+        amount.textContent=
+          (correctionSign<0?'−':'+')+
+          format(value)+'粒';
+      }
+
+      if(correctionSign<0){
+        amount.classList.add('minus');
+      }
+
+      right.append(amount);
+      li.append(details,right);
+      list.append(li);
+      continue;
+    }
+
+    title.textContent=transactionLabel(
+      type,selectedAccount
+    );
+
+    small.textContent=
+      dateLabel(item.createdAt)+' ・ '+
+      (item.actorName||'不明');
+
+    details.append(title,small);
+
+    const negative=type==='withdraw';
+
+    if(type==='transfer_out'){
+      amount.textContent=format(value)+'粒';
+    }else{
+      amount.textContent=
+        (negative?'−':'+')+
+        format(value)+'粒';
+    }
+
+    if(negative)amount.classList.add('minus');
+
+    const corrected=corrections.has(item.id);
+
+    if(corrected){
+      amount.classList.add('cancelled');
+
+      const tag=document.createElement('span');
+      tag.className='corrected-tag';
+      tag.textContent='訂正済み';
+      right.append(amount,tag);
+    }else{
+      const button=document.createElement('button');
+      button.className='correction-button';
+      button.type='button';
+      button.textContent='訂正する';
+
+      button.addEventListener('click',()=>{
+        openCorrection(item);
+      });
+
+      right.append(amount,button);
+    }
+
+    li.append(details,right);
+    list.append(li);
+  }
+
+  el('empty').hidden=list.children.length>0;
+}
+
+/* ── 口座監視 ── */
+function stopAccountListeners(){
+  accountVersion++;
+
+  if(stopSelectedBank){
+    stopSelectedBank();
+    stopSelectedBank=null;
+  }
+
+  if(stopHistory){
+    stopHistory();
+    stopHistory=null;
+  }
+}
+
+function updateAccountTransferView(){
+  const ready=balanceReady
+    &&selectedAccount==='yamanashi'
+    &&validAmount(currentTransferred)
+    &&currentTransferred<=currentBalance;
+
+  setNumber(
+    'accountTransferred',
+    ready?currentTransferred:null
+  );
+
+  setNumber(
+    'accountAvailable',
+    ready?currentBalance-currentTransferred:null
+  );
+
+  el('transferButton').disabled=
+    !ready
+    ||currentBalance-currentTransferred===0;
+}
+
+function watchSelectedAccount(){
+  stopAccountListeners();
+
+  const version=accountVersion;
+  const id=selectedAccount;
+  const isRepayment=id==='yamanashi';
+
+  balanceReady=false;
+  currentTransferred=0;
+
+  resetNumber('balance');
+  resetNumber('accountTransferred');
+  resetNumber('accountAvailable');
+
+  el('history').replaceChildren();
+  el('empty').hidden=false;
+
+  el('tabLaLa').classList.toggle(
+    'active',!isRepayment
+  );
+  el('tabYamanashi').classList.toggle(
+    'active',isRepayment
+  );
+  el('tabYamanashi').classList.toggle(
+    'moon-tab',isRepayment
+  );
+  el('balanceCard').classList.toggle(
+    'moon-mode',isRepayment
+  );
+
+  el('lalaArtwork').hidden=isRepayment;
+  el('moonArtwork').hidden=!isRepayment;
+
+  el('accountCoin').textContent=
+    isRepayment?'☾':'★';
+
+  el('balanceTitle').textContent=accounts[id].name;
+  el('historyTitle').textContent=
+    accounts[id].name+'の履歴';
+
+  el('balanceHint').textContent=isRepayment
+    ?'月見里から返済された星粒の累計'
+    :'現在の預金残高';
+
+  el('chargeButton').textContent=isRepayment
+    ?'＋ 返済を記録'
+    :'＋ チャージ';
+
+  el('chargeButton').classList.toggle(
+    'moon-action',isRepayment
+  );
+
+  el('withdrawButton').hidden=isRepayment;
+  el('transferButton').hidden=!isRepayment;
+  el('accountTransferSummary').hidden=!isRepayment;
+
+  updateAccountTransferView();
+
+  stopSelectedBank=onSnapshot(
+    bankRef(id),
+    snapshot=>{
+      if(version!==accountVersion)return;
+
+      const data=snapshot.exists()
+        ?snapshot.data():null;
+
+      const value=data?.balance;
+
+      if(validAmount(value)){
+        const previous=balanceReady
+          ?currentBalance:null;
+
+        balanceReady=true;
+        currentBalance=value;
+        currentTransferred=isRepayment
+          ?data.transferred:0;
+
+        setNumber('balance',value);
+
+        if(previous!==null&&previous!==value){
+          glowBalance();
+        }
+
+        if(isRepayment
+          &&!validAmount(currentTransferred)){
+          balanceReady=false;
+          el('storageStatus').textContent=
+            '振替済み額のデータを確認できないよ。';
+        }
+      }else{
+        balanceReady=false;
+        resetNumber('balance');
+        el('storageStatus').textContent=
+          '口座データを確認できないよ。';
+      }
+
+      updateAccountTransferView();
+    },
+    error=>{
+      if(version!==accountVersion)return;
+
+      balanceReady=false;
+      el('storageStatus').textContent=
+        '口座を読み込めなかったよ。';
+      console.error(error);
+    }
+  );
+
+  stopHistory=onSnapshot(
+    query(
+      historyRef(id),
+      orderBy('createdAt','desc'),
+      limit(200)
+    ),
+    snapshot=>{
+      if(version===accountVersion){
+        renderHistory(snapshot);
+      }
+    },
+    error=>{
+      if(version!==accountVersion)return;
+      el('storageStatus').textContent=
+        '履歴を読み込めなかったよ。';
+      console.error(error);
+    }
+  );
+}
+
+function watchHomeBalances(){
+  stopHomeBanks.forEach(stop=>stop());
+  stopHomeBanks=[];
+
+  balances={LaLa:null,yamanashi:null};
+  transferred=null;
+  updateProgress();
+
+  for(const id of ['LaLa','yamanashi']){
+    const stop=onSnapshot(
+      bankRef(id),
+      snapshot=>{
+        const data=snapshot.exists()
+          ?snapshot.data():null;
+
+        const value=data?.balance;
+        balances[id]=validAmount(value)
+          ?value:null;
+
+        if(id==='yamanashi'){
+          transferred=validAmount(data?.transferred)
+            ?data.transferred:null;
+        }
+
+        updateProgress();
+      },
+      error=>{
+        balances[id]=null;
+        if(id==='yamanashi')transferred=null;
+        updateProgress();
+
+        el('storageStatus').textContent=
+          '残高を読み込めなかったよ。';
+        console.error(error);
+      }
+    );
+
+    stopHomeBanks.push(stop);
+  }
+}
+
+/* ── 取引画面 ── */
+function closeTransaction(){
+  el('transactionModal').classList.remove('show');
+}
+
+function openTransaction(type){
+  if(!balanceReady||transacting||correcting)return;
+
+  transactionType=type;
+  const repayment=selectedAccount==='yamanashi';
+
+  if(type==='withdraw'&&repayment)return;
+
+  if(type==='transfer'){
+    if(!repayment
+      ||!validAmount(currentTransferred)
+      ||currentTransferred>currentBalance)return;
+  }
+
+  const title={
+    charge:repayment?'☾ 返済を記録':'✦ チャージ',
+    withdraw:'✧ 星粒を使う',
+    transfer:'✦ LaLa預金へ振替'
+  };
+
+  const label={
+    charge:repayment
+      ?'返済された星粒数':'チャージする星粒数',
+    withdraw:'使用する星粒数',
+    transfer:'振り替える星粒数'
+  };
+
+  const confirm={
+    charge:repayment
+      ?'返済を記録する':'チャージする',
+    withdraw:'星粒を使う',
+    transfer:'振り替える'
+  };
+
+  el('transactionTitle').textContent=
+    title[type]+'｜'+accounts[selectedAccount].name;
+  el('amountLabel').textContent=label[type];
+  el('transactionConfirm').textContent=confirm[type];
+  el('transactionAmount').value='';
+
+  if(type==='transfer'){
+    el('transactionStatus').textContent=
+      '振替可能：'+
+      format(currentBalance-currentTransferred)+
+      '粒。返済実績は減らないよ。';
+  }else{
+    el('transactionStatus').textContent=
+      '現在：'+format(currentBalance)+'粒';
+  }
+
+  el('transactionModal').classList.add('show');
+}
+
+el('chargeButton').addEventListener('click',()=>{
+  openTransaction('charge');
+});
+el('withdrawButton').addEventListener('click',()=>{
+  openTransaction('withdraw');
+});
+el('transferButton').addEventListener('click',()=>{
+  openTransaction('transfer');
+});
+el('transactionCancel').addEventListener('click',()=>{
+  if(!transacting)closeTransaction();
+});
+
+/* ── 通常取引保存 ── */
+async function ordinaryTransaction(user,id,type,amount){
+  const targetBank=bankRef(id);
+  const entry=doc(historyRef(id));
+
+  await runTransaction(db,async tx=>{
+    const snapshot=await tx.get(targetBank);
+
+    if(!snapshot.exists()){
+      throw new Error('口座が見つからないよ。');
+    }
+
+    const old=snapshot.data().balance;
+
+    if(!validAmount(old)){
+      throw new Error('残高データを確認できないよ。');
+    }
+
+    if(type==='withdraw'){
+      if(id==='yamanashi'){
+        throw new Error(
+          '月見里返済から直接は使えないよ。'
+        );
+      }
+      if(amount>old){
+        throw new Error('残高より多くは使えないよ。');
+      }
+    }
+
+    const next=type==='charge'
+      ?old+amount:old-amount;
+
+    if(!validAmount(next)){
+      throw new Error('残高の上限を超えるよ。');
+    }
+
+    tx.update(targetBank,{balance:next});
+
+    tx.set(entry,{
+      type,
+      amount,
+      actorUid:user.uid,
+      actorName:names[user.uid]||'未登録ユーザー',
+      createdAt:serverTimestamp()
+    });
+  });
+}
+
+/* ── 振替保存 ── */
+async function transferTransaction(user,amount){
+  const lalaBank=bankRef('LaLa');
+  const repaymentBank=bankRef('yamanashi');
+
+  const transferId=doc(historyRef('LaLa')).id;
+  const lalaEntry=entryRef('LaLa',transferId);
+  const repaymentEntry=entryRef('yamanashi',transferId);
+
+  await runTransaction(db,async tx=>{
+    const lalaSnapshot=await tx.get(lalaBank);
+    const repaymentSnapshot=await tx.get(repaymentBank);
+
+    if(!lalaSnapshot.exists()
+      ||!repaymentSnapshot.exists()){
+      throw new Error('口座が見つからないよ。');
+    }
+
+    const lalaBalance=lalaSnapshot.data().balance;
+    const repaid=repaymentSnapshot.data().balance;
+    const alreadyTransferred=
+      repaymentSnapshot.data().transferred;
+
+    if(!validAmount(lalaBalance)
+      ||!validAmount(repaid)
+      ||!validAmount(alreadyTransferred)
+      ||alreadyTransferred>repaid){
+      throw new Error('口座データを確認できないよ。');
+    }
+
+    const available=repaid-alreadyTransferred;
+
+    if(amount>available){
+      throw new Error(
+        '振替可能額を超えているよ。現在の振替可能額：'+
+        format(available)+'粒'
+      );
+    }
+
+    const nextLaLa=lalaBalance+amount;
+    const nextTransferred=alreadyTransferred+amount;
+
+    if(!validAmount(nextLaLa)
+      ||!validAmount(nextTransferred)){
+      throw new Error('数値の上限を超えるよ。');
+    }
+
+    tx.update(lalaBank,{
+      balance:nextLaLa,
+      lastTransferId:transferId
+    });
+
+    tx.update(repaymentBank,{
+      transferred:nextTransferred,
+      lastTransferId:transferId
+    });
+
+    const common={
+      amount,
+      actorUid:user.uid,
+      actorName:names[user.uid]||'未登録ユーザー',
+      createdAt:serverTimestamp()
+    };
+
+    tx.set(lalaEntry,{
+      ...common,type:'transfer_in'
+    });
+
+    tx.set(repaymentEntry,{
+      ...common,type:'transfer_out'
+    });
+  });
+}
+
+/* ── 取引フォーム ── */
+el('transactionForm').addEventListener(
+  'submit',async e=>{
+    e.preventDefault();
+
+    if(transacting||correcting||!balanceReady)return;
+
+    const user=auth.currentUser;
+    if(!user)return;
+
+    const amount=Number(
+      el('transactionAmount').value
+    );
+
+    if(!validTransactionAmount(amount)){
+      el('transactionStatus').textContent=
+        '1〜1,000,000粒の整数を入力してね。';
+      return;
+    }
+
+    const type=transactionType;
+    const id=selectedAccount;
+
+    if(type==='withdraw'
+      &&amount>currentBalance){
+      el('transactionStatus').textContent=
+        '残高より多くは使えないよ。';
+      return;
+    }
+
+    if(type==='transfer'){
+      if(id!=='yamanashi')return;
+
+      if(amount>currentBalance-currentTransferred){
+        el('transactionStatus').textContent=
+          '振替可能額を超えているよ。';
+        return;
+      }
+    }
+
+    transacting=true;
+    el('transactionConfirm').disabled=true;
+    el('transactionCancel').disabled=true;
+    el('transactionStatus').textContent=
+      '保存しています…';
+
+    try{
+      if(type==='transfer'){
+        await transferTransaction(user,amount);
+      }else{
+        await ordinaryTransaction(
+          user,id,type,amount
+        );
+      }
+
+      closeTransaction();
+
+      const message={
+        charge:id==='yamanashi'
+          ?format(amount)+'粒の返済を記録したよ ☾'
+          :format(amount)+'粒チャージしたよ ✦',
+        withdraw:format(amount)+'粒を使ったよ ✧',
+        transfer:format(amount)+
+          '粒をLaLa預金へ振り替えたよ ✦'
+      };
+
+      const text=message[type]||'保存したよ ✦';
+      el('storageStatus').textContent=text;
+
+      const effect=
+        type==='transfer'?'transfer':
+        type==='withdraw'?'withdraw':
+        id==='yamanashi'?'repayment':'charge';
+
+      celebrate(text,effect);
+    }catch(error){
+      console.error(error);
+
+      el('transactionStatus').textContent=
+        error.code==='permission-denied'
+        ?'保存権限がないよ。Firestoreルールを確認してね。'
+        :error.message||'保存できなかったよ。';
+    }finally{
+      transacting=false;
+      el('transactionConfirm').disabled=false;
+      el('transactionCancel').disabled=false;
+    }
+  }
+);
+
+/* ── 訂正画面 ── */
+function openCorrection(item){
+  if(transacting||correcting)return;
+
+  const accountId=selectedAccount;
+  const amount=Number(item.amount);
+
+  if(!validTransactionAmount(amount))return;
+
+  pendingCorrection={
+    accountId,
+    originalId:item.id,
+    originalType:item.type,
+    amount
+  };
+
+  const name=transactionLabel(
+    item.type,accountId
+  );
+
+  let explanation='';
+
+  if(item.type==='charge'){
+    explanation=accountId==='yamanashi'
+      ?'月見里の返済累計から'+format(amount)+
+        '粒を差し引くよ。振替済み額を下回る場合は訂正できないよ。'
+      :'LaLa預金から'+format(amount)+
+        '粒を差し引くよ。残高不足の場合は訂正できないよ。';
+  }
+
+  if(item.type==='withdraw'){
+    explanation='LaLa預金に'+format(amount)+
+      '粒を戻すよ。';
+  }
+
+  if(item.type==='transfer_in'
+    ||item.type==='transfer_out'){
+    explanation='LaLa預金から'+format(amount)+
+      '粒を差し引き、月見里の振替済み額を'+
+      format(amount)+'粒減らすよ。\n'+
+      '返済累計は変わらないよ。'+
+      'LaLa預金の残高不足なら訂正できないよ。';
+  }
+
+  el('correctionSummary').textContent=
+    '訂正対象：'+name+
+    '（'+format(amount)+'粒）\n'+
+    explanation;
+
+  el('correctionReason').value='';
+  el('correctionStatus').textContent=
+    '内容を確認してから訂正してね。';
+  el('correctionModal').classList.add('show');
+}
+
+function closeCorrection(){
+  el('correctionModal').classList.remove('show');
+  pendingCorrection=null;
+}
+
+el('correctionCancel').addEventListener(
+  'click',()=>{
+    if(!correcting)closeCorrection();
+  }
+);
+
+/* ── 通常取引の訂正 ── */
+async function correctOrdinary(user,target,reason){
+  const {
+    accountId,originalId,originalType,amount
+  }=target;
+
+  const targetBank=bankRef(accountId);
+  const original=entryRef(accountId,originalId);
+  const correction=entryRef(
+    accountId,correctionId(originalId)
+  );
+
+  await runTransaction(db,async tx=>{
+    const bankSnap=await tx.get(targetBank);
+    const originalSnap=await tx.get(original);
+    const correctionSnap=await tx.get(correction);
+
+    if(!bankSnap.exists()||!originalSnap.exists()){
+      throw new Error(
+        '訂正対象のデータが見つからないよ。'
+      );
+    }
+
+    if(correctionSnap.exists()){
+      throw new Error(
+        'この取引はすでに訂正済みだよ。'
+      );
+    }
+
+    const data=originalSnap.data();
+
+    if(data.type!==originalType
+      ||data.amount!==amount
+      ||!['charge','withdraw'].includes(data.type)){
+      throw new Error(
+        '元の取引データが一致しないよ。'
+      );
+    }
+
+    if(accountId==='yamanashi'
+      &&data.type==='withdraw'){
+      throw new Error('この取引は訂正できないよ。');
+    }
+
+    const old=bankSnap.data().balance;
+
+    if(!validAmount(old)){
+      throw new Error('残高を確認できないよ。');
+    }
+
+    const next=data.type==='charge'
+      ?old-amount:old+amount;
+
+    if(!validAmount(next)){
+      throw new Error(
+        data.type==='charge'
+        ?'残高が足りないため訂正できないよ。'
+        :'残高の上限を超えるよ。'
+      );
+    }
+
+    if(accountId==='yamanashi'){
+      const alreadyTransferred=
+        bankSnap.data().transferred;
+
+      if(!validAmount(alreadyTransferred)
+        ||next<alreadyTransferred){
+        throw new Error(
+          '振替済みの星粒があるため訂正できないよ。'+
+          '必要なら先に振替を訂正してね。'
+        );
+      }
+    }
+
+    tx.update(targetBank,{balance:next});
+
+    tx.set(correction,{
+      type:'correction',
+      originalId,
+      originalType,
+      amount,
+      reason,
+      actorUid:user.uid,
+      actorName:'LaLa',
+      createdAt:serverTimestamp()
+    });
+  });
+}
+
+/* ── 振替の訂正 ── */
+async function correctTransfer(user,target,reason){
+  const {originalId,amount}=target;
+
+  const lalaBank=bankRef('LaLa');
+  const repaymentBank=bankRef('yamanashi');
+
+  const lalaOriginal=entryRef('LaLa',originalId);
+  const repaymentOriginal=entryRef(
+    'yamanashi',originalId
+  );
+
+  const id=correctionId(originalId);
+  const lalaCorrection=entryRef('LaLa',id);
+  const repaymentCorrection=entryRef('yamanashi',id);
+
+  await runTransaction(db,async tx=>{
+    const lalaSnap=await tx.get(lalaBank);
+    const repaymentSnap=await tx.get(repaymentBank);
+
+    const lalaOriginalSnap=
+      await tx.get(lalaOriginal);
+    const repaymentOriginalSnap=
+      await tx.get(repaymentOriginal);
+
+    const lalaCorrectionSnap=
+      await tx.get(lalaCorrection);
+    const repaymentCorrectionSnap=
+      await tx.get(repaymentCorrection);
+
+    if(!lalaSnap.exists()
+      ||!repaymentSnap.exists()
+      ||!lalaOriginalSnap.exists()
+      ||!repaymentOriginalSnap.exists()){
+      throw new Error('振替データが見つからないよ。');
+    }
+
+    if(lalaCorrectionSnap.exists()
+      ||repaymentCorrectionSnap.exists()){
+      throw new Error(
+        'この振替はすでに訂正済みだよ。'
+      );
+    }
+
+    const originalIn=lalaOriginalSnap.data();
+    const originalOut=repaymentOriginalSnap.data();
+
+    if(originalIn.type!=='transfer_in'
+      ||originalOut.type!=='transfer_out'
+      ||originalIn.amount!==amount
+      ||originalOut.amount!==amount){
+      throw new Error(
+        '振替の履歴が一致しないよ。'
+      );
+    }
+
+    const lalaBalance=lalaSnap.data().balance;
+    const repaid=repaymentSnap.data().balance;
+    const transferredAmount=
+      repaymentSnap.data().transferred;
+
+    if(!validAmount(lalaBalance)
+      ||!validAmount(repaid)
+      ||!validAmount(transferredAmount)){
+      throw new Error('残高を確認できないよ。');
+    }
+
+    if(lalaBalance<amount){
+      throw new Error(
+        'LaLa預金の残高が足りないため訂正できないよ。'
+      );
+    }
+
+    if(transferredAmount<amount){
+      throw new Error(
+        '振替済み額が不足しているため訂正できないよ。'
+      );
+    }
+
+    const nextLaLa=lalaBalance-amount;
+    const nextTransferred=transferredAmount-amount;
+
+    if(nextTransferred>repaid){
+      throw new Error(
+        '返済記録との整合性を確認できないよ。'
+      );
+    }
+
+    tx.update(lalaBank,{
+      balance:nextLaLa,
+      lastCorrectionId:id
+    });
+
+    tx.update(repaymentBank,{
+      transferred:nextTransferred,
+      lastCorrectionId:id
+    });
+
+    const common={
+      type:'correction',
+      originalId,
+      amount,
+      reason,
+      actorUid:user.uid,
+      actorName:'LaLa',
+      createdAt:serverTimestamp()
+    };
+
+    tx.set(lalaCorrection,{
+      ...common,
+      originalType:'transfer_in'
+    });
+
+    tx.set(repaymentCorrection,{
+      ...common,
+      originalType:'transfer_out'
+    });
+  });
+}
+
+/* ── 訂正フォーム ── */
+el('correctionForm').addEventListener(
+  'submit',async e=>{
+    e.preventDefault();
+
+    if(correcting||transacting||!pendingCorrection){
+      return;
+    }
+
+    const user=auth.currentUser;
+    if(!user)return;
+
+    const target={...pendingCorrection};
+    const reason=el('correctionReason').value.trim();
+
+    correcting=true;
+    el('correctionConfirm').disabled=true;
+    el('correctionCancel').disabled=true;
+    el('correctionStatus').textContent=
+      '訂正を保存しています…';
+
+    try{
+      if(target.originalType==='transfer_in'
+        ||target.originalType==='transfer_out'){
+        await correctTransfer(user,target,reason);
+      }else{
+        await correctOrdinary(user,target,reason);
+      }
+
+      closeCorrection();
+
+      const text=
+        format(target.amount)+
+        '粒の取引を訂正したよ ✧';
+
+      el('storageStatus').textContent=text;
+      celebrate(text,'correction');
+
+    }catch(error){
+      console.error(error);
+
+      el('correctionStatus').textContent=
+        error.code==='permission-denied'
+        ?'訂正の保存が許可されなかったよ。'+
+          'Firestoreルールを確認してね。'
+        :error.message||'訂正できなかったよ。';
+
+    }finally{
+      correcting=false;
+      el('correctionConfirm').disabled=false;
+      el('correctionCancel').disabled=false;
+    }
+  }
+);
+
+/* ── ログイン ── */
+async function runAuth(register){
+  if(authBusy)return;
+  if(!el('authForm').reportValidity())return;
+
+  authBusy=true;
+  el('signIn').disabled=true;
+  el('signUp').disabled=true;
+
+  const email=el('email').value.trim();
+  const password=el('password').value;
+
+  el('authStatus').textContent='確認しています…';
+
+  try{
+    if(register){
+      await createUserWithEmailAndPassword(
+        auth,email,password
+      );
+    }else{
+      await signInWithEmailAndPassword(
+        auth,email,password
+      );
+    }
+    el('password').value='';
+  }catch(error){
+    const messages={
+      'auth/email-already-in-use':
+        '登録済みのメールアドレスだよ。',
+      'auth/invalid-credential':
+        'メールアドレスかパスワードを確認してね。',
+      'auth/weak-password':
+        'パスワードは6文字以上にしてね。',
+      'auth/invalid-email':
+        'メールアドレスを確認してね。'
+    };
+
+    el('authStatus').textContent=
+      messages[error.code]||
+      'ログインできなかったよ。';
+  }finally{
+    authBusy=false;
+    el('signIn').disabled=false;
+    el('signUp').disabled=false;
+  }
+}
+
+el('authForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  runAuth(false);
+});
+
+el('signUp').addEventListener('click',()=>{
+  runAuth(true);
+});
+
+/* ── ログイン状態 ── */
+onAuthStateChanged(auth,user=>{
+  stopAccountListeners();
+  stopHomeBanks.forEach(stop=>stop());
+  stopHomeBanks=[];
+
+  resetAllNumbers();
+  clearEffects();
+
+  balanceReady=false;
+  closeTransaction();
+
+  if(!correcting){
+    closeCorrection();
+  }
+
+  el('authPanel').hidden=!!user;
+  el('bankApp').hidden=!user;
+  el('bottomNav').hidden=!user;
+
+  if(!user){
+    document.body.dataset.theme='home';
+    el('accountInfo').textContent='STAR BANK';
+    el('authStatus').textContent=
+      'メールアドレスとパスワードを入力してね。';
+    return;
+  }
+
+  el('accountInfo').replaceChildren();
+
+  const label=document.createElement('span');
+  label.textContent=user.email;
+
+  const logout=document.createElement('button');
+  logout.textContent='ログアウト';
+  logout.addEventListener('click',()=>{
+    signOut(auth);
+  });
+
+  el('accountInfo').append(label,logout);
+  el('storageStatus').textContent='';
+
+  watchHomeBalances();
+  watchSelectedAccount();
+  showPage('home');
+});
+</script>
+</body>
+</html>
