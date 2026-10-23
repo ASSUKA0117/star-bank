@@ -12,7 +12,7 @@
       color: #353a45;
       padding: 24px;
     }
-    main { max-width: 440px; margin: 50px auto; }
+    main { max-width: 440px; margin: 40px auto; }
     input, button {
       box-sizing: border-box;
       width: 100%;
@@ -21,25 +21,60 @@
       font-size: 16px;
     }
     button { cursor: pointer; }
-    #app, #logout { display: none; }
-    #status { white-space: pre-wrap; }
+    .card {
+      background: white;
+      border: 1px solid #e8dfcd;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .amount {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+    #app { display: none; }
+    #status, .error {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+    .error { color: #b3261e; }
   </style>
 </head>
 <body>
   <main>
     <h1>✦ 星粒銀行 ✦</h1>
+
     <section id="login">
       <form id="loginForm">
-        <input id="email" type="email" placeholder="メールアドレス" required>
-        <input id="password" type="password" placeholder="パスワード" required>
+        <input id="email" type="email"
+          placeholder="メールアドレス" required>
+        <input id="password" type="password"
+          placeholder="パスワード" required>
         <button type="submit">ログイン</button>
       </form>
     </section>
+
     <section id="app">
-      <p>ログイン成功！</p>
-      <p id="userEmail"></p>
-      <button id="logout">ログアウト</button>
+      <p>ログイン中：<span id="userEmail"></span></p>
+      <button id="logout" type="button">ログアウト</button>
+
+      <h2>口座残高</h2>
+
+      <div class="card">
+        <strong>✦ LaLa預金</strong>
+        <div class="amount" id="lalaBalance">読込中…</div>
+        <div class="error" id="lalaError"></div>
+      </div>
+
+      <div class="card">
+        <strong>☾ 月見里返済</strong>
+        <div class="amount" id="moonBalance">読込中…</div>
+        <div class="error" id="moonError"></div>
+      </div>
     </section>
+
     <p id="status">Firebaseに接続しています…</p>
   </main>
 
@@ -51,6 +86,10 @@
       signInWithEmailAndPassword, signOut
     } from
       "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getFirestore, doc, onSnapshot
+    } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s",
@@ -63,27 +102,101 @@
 
     const firebaseApp = initializeApp(firebaseConfig);
     const auth = getAuth(firebaseApp);
+    const db = getFirestore(firebaseApp);
     const el = id => document.getElementById(id);
 
-    onAuthStateChanged(auth, user => {
-      el("login").style.display = user ? "none" : "block";
-      el("app").style.display = user ? "block" : "none";
-      el("logout").style.display = user ? "block" : "none";
-      el("userEmail").textContent = user?.email || "";
-      el("status").textContent = user
-        ? "Firebase認証：接続成功"
-        : "ログインしてください";
-    });
+    let stopListeners = [];
+    let authVersion = 0;
+
+    function stopWatching() {
+      stopListeners.forEach(stop => stop());
+      stopListeners = [];
+    }
+
+    function watchBalance(accountId, balanceId, errorId, version) {
+      const balanceEl = el(balanceId);
+      const errorEl = el(errorId);
+
+      balanceEl.textContent = "読込中…";
+      errorEl.textContent = "";
+
+      const reference = doc(db, "StarBank", accountId);
+
+      return onSnapshot(
+        reference,
+        snapshot => {
+          if (version !== authVersion) return;
+
+          if (!snapshot.exists()) {
+            balanceEl.textContent = "— 粒";
+            errorEl.textContent =
+              "口座が見つかりません: StarBank/" + accountId;
+            return;
+          }
+
+          const value = snapshot.data().balance;
+
+          if (!Number.isSafeInteger(value) || value < 0) {
+            balanceEl.textContent = "— 粒";
+            errorEl.textContent =
+              "残高データが不正です。値: " + String(value);
+            return;
+          }
+
+          balanceEl.textContent =
+            value.toLocaleString("ja-JP") + " 粒";
+          errorEl.textContent = "";
+        },
+        error => {
+          if (version !== authVersion) return;
+          balanceEl.textContent = "— 粒";
+          errorEl.textContent =
+            "読み込みエラー: " + error.code +
+            "\n" + error.message;
+        }
+      );
+    }
+
+    onAuthStateChanged(
+      auth,
+      user => {
+        const version = ++authVersion;
+        stopWatching();
+
+        el("login").style.display = user ? "none" : "block";
+        el("app").style.display = user ? "block" : "none";
+        el("userEmail").textContent = user?.email || "";
+
+        if (user) {
+          el("status").textContent = "Firebase認証：接続成功";
+
+          stopListeners.push(
+            watchBalance("LaLa", "lalaBalance", "lalaError", version)
+          );
+          stopListeners.push(
+            watchBalance("yamanashi", "moonBalance", "moonError", version)
+          );
+        } else {
+          el("status").textContent = "ログインしてください";
+        }
+      },
+      error => {
+        el("status").textContent =
+          "認証エラー: " + error.code + "\n" + error.message;
+      }
+    );
 
     el("loginForm").addEventListener("submit", async event => {
       event.preventDefault();
       el("status").textContent = "ログイン中…";
+
       try {
         await signInWithEmailAndPassword(
           auth, el("email").value, el("password").value
         );
       } catch (error) {
-        el("status").textContent = "ログイン失敗：" + error.code;
+        el("status").textContent =
+          "ログイン失敗: " + error.code;
       }
     });
 
@@ -91,7 +204,8 @@
       try {
         await signOut(auth);
       } catch (error) {
-        el("status").textContent = "ログアウト失敗：" + error.code;
+        el("status").textContent =
+          "ログアウト失敗: " + error.code;
       }
     });
   </script>
