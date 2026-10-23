@@ -8,63 +8,134 @@
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;padding:24px;
-  background:#fff8e9;color:#353a45;
+  margin:0;
+  padding:24px 20px 110px;
+  background:#fff8e9;
+  color:#353a45;
   font-family:-apple-system,BlinkMacSystemFont,
   "Hiragino Kaku Gothic ProN",sans-serif
 }
-main{max-width:440px;margin:24px auto}
-h1{font-size:26px}
-h2{font-size:20px;margin-top:30px}
+main{max-width:440px;margin:0 auto}
+h1{font-size:26px;margin:12px 0 24px}
+h2{font-size:20px;margin:24px 0 14px}
 .card{
-  background:white;border:1px solid #e8dfcd;
-  border-radius:16px;padding:20px;margin:16px 0
+  background:white;
+  border:1px solid #e8dfcd;
+  border-radius:16px;
+  padding:20px;
+  margin:16px 0
 }
 .amount{font-size:30px;font-weight:bold;margin:12px 0}
 input,button,textarea{
-  width:100%;padding:13px;margin:7px 0;
-  font:inherit;border-radius:10px
+  width:100%;
+  padding:13px;
+  margin:7px 0;
+  font:inherit;
+  border-radius:10px
 }
 input,textarea{border:1px solid #ccd1d9}
 textarea{resize:vertical;min-height:85px}
 button{
-  border:0;background:#f2dfb5;
-  color:#624818;font-weight:bold;cursor:pointer
+  border:0;
+  background:#f2dfb5;
+  color:#624818;
+  font-weight:bold;
+  cursor:pointer
 }
 button:disabled{opacity:.5}
 .secondary{background:#eceef2;color:#444}
 .actions{display:flex;gap:10px}
 .actions button{flex:1}
 #app,#transactionPanel,#correctionPanel{display:none}
+.page{display:none}
+.page.active{display:block}
 #status,#transactionStatus,#correctionStatus,
 .error,.history-status{
-  white-space:pre-wrap;overflow-wrap:anywhere;
-  font-size:14px;line-height:1.7
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-size:14px;
+  line-height:1.7
 }
 .error{color:#b3261e}
 .muted{color:#7b8491;font-size:13px}
 .info{
-  padding:12px 0;border-top:1px solid #eee6d7;
-  display:flex;justify-content:space-between;gap:12px
+  padding:12px 0;
+  border-top:1px solid #eee6d7;
+  display:flex;
+  justify-content:space-between;
+  gap:12px
 }
 .info strong{white-space:nowrap}
 .history-item{
-  padding:13px 0;border-bottom:1px solid #e8dfcd
+  padding:13px 0;
+  border-bottom:1px solid #e8dfcd
 }
 .history-item:last-child{border-bottom:none}
 .history-title{font-weight:bold;margin-bottom:5px}
 .history-corrected{opacity:.65}
 .history-correction{
-  color:#a35a20;font-size:13px;margin-top:5px
+  color:#a35a20;
+  font-size:13px;
+  margin-top:5px
 }
 .correction-button{
-  width:auto;padding:7px 13px;
-  font-size:13px;margin-top:10px;
-  background:#eceef2;color:#444
+  width:auto;
+  padding:7px 13px;
+  font-size:13px;
+  margin-top:10px;
+  background:#eceef2;
+  color:#444
 }
 .notice{
-  background:#fff4d9;border-radius:10px;
-  padding:12px;font-size:13px;line-height:1.7
+  background:#fff4d9;
+  border-radius:10px;
+  padding:12px;
+  font-size:13px;
+  line-height:1.7
+}
+.home-label{
+  color:#7b8491;
+  font-size:13px;
+  margin-bottom:5px
+}
+.home-amount{
+  font-size:28px;
+  font-weight:bold;
+  margin:8px 0
+}
+.tabbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  display:none;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:4px;
+  padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+  background:#fffdf7;
+  border-top:1px solid #e8dfcd;
+  box-shadow:0 -4px 18px rgba(0,0,0,.04);
+  z-index:100
+}
+.tabbar button{
+  margin:0;
+  padding:9px 2px;
+  background:transparent;
+  color:#7b8491;
+  font-size:11px;
+  font-weight:normal;
+  border-radius:12px
+}
+.tabbar button.active{
+  background:#f7e8c7;
+  color:#624818;
+  font-weight:bold
+}
+.tab-icon{
+  display:block;
+  font-size:22px;
+  line-height:1.5;
+  margin-bottom:3px
 }
 </style>
 </head>
@@ -83,19 +154,45 @@ placeholder="パスワード" required>
 </section>
 
 <section id="app">
-<p class="muted">
-ログイン中：<span id="userEmail"></span>
-</p>
-<button id="logout" class="secondary" type="button">
-ログアウト
-</button>
 
-<h2>口座残高</h2>
+<!-- ホーム -->
+<section id="page-home" class="page active">
+<h2>ホーム</h2>
 
 <div class="card">
-<strong>✦ LaLa預金</strong>
+<div class="home-label">✦ LaLa預金</div>
+<div class="home-amount" id="homeLalaBalance">
+読込中…
+</div>
+</div>
+
+<div class="card">
+<div class="home-label">☾ 月見里返済・累計返済額</div>
+<div class="home-amount" id="homeMoonBalance">
+読込中…
+</div>
+
+<div class="info">
+<span>LaLa預金へ振替済み</span>
+<strong id="homeTransferred">読込中…</strong>
+</div>
+
+<div class="info">
+<span>振替可能額</span>
+<strong id="homeAvailable">読込中…</strong>
+</div>
+</div>
+</section>
+
+<!-- LaLa預金 -->
+<section id="page-lala" class="page">
+<h2>✦ LaLa預金</h2>
+
+<div class="card">
+<strong>現在の残高</strong>
 <div class="amount" id="lalaBalance">読込中…</div>
 <div class="error" id="lalaError"></div>
+
 <div class="actions">
 <button id="chargeButton" type="button" disabled>
 ＋ チャージ
@@ -107,8 +204,21 @@ type="button" disabled>
 </div>
 </div>
 
+<section class="card">
+<h2>取引履歴</h2>
+<p class="muted">新しい順に表示します。</p>
+<div id="lalaHistoryStatus" class="history-status">
+読込待機中…
+</div>
+<div id="lalaHistoryList"></div>
+</section>
+</section>
+
+<!-- 月見里返済 -->
+<section id="page-moon" class="page">
+<h2>☾ 月見里返済</h2>
+
 <div class="card">
-<strong>☾ 月見里返済</strong>
 <p class="muted">累計返済額</p>
 <div class="amount" id="moonBalance">読込中…</div>
 <div class="error" id="moonError"></div>
@@ -117,6 +227,7 @@ type="button" disabled>
 <span>LaLa預金へ振替済み</span>
 <strong id="transferredAmount">読込中…</strong>
 </div>
+
 <div class="info">
 <span>振替可能額</span>
 <strong id="availableAmount">読込中…</strong>
@@ -125,6 +236,7 @@ type="button" disabled>
 <button id="repaymentButton" type="button" disabled>
 ＋ 返済を記録
 </button>
+
 <button id="transferButton" class="secondary"
 type="button" disabled>
 ↗ LaLa預金へ振り替える
@@ -132,23 +244,31 @@ type="button" disabled>
 </div>
 
 <section class="card">
-<h2>✦ LaLa預金の取引履歴</h2>
-<p class="muted">新しい順に表示します。</p>
-<div id="lalaHistoryStatus" class="history-status">
-読込待機中…
-</div>
-<div id="lalaHistoryList"></div>
-</section>
-
-<section class="card">
-<h2>☾ 月見里返済の取引履歴</h2>
+<h2>取引履歴</h2>
 <p class="muted">返済記録と振替履歴を表示します。</p>
 <div id="moonHistoryStatus" class="history-status">
 読込待機中…
 </div>
 <div id="moonHistoryList"></div>
 </section>
+</section>
 
+<!-- その他設定 -->
+<section id="page-settings" class="page">
+<h2>その他設定</h2>
+
+<div class="card">
+<strong>アカウント</strong>
+<p class="muted">
+ログイン中：<span id="userEmail"></span>
+</p>
+<button id="logout" class="secondary" type="button">
+ログアウト
+</button>
+</div>
+</section>
+
+<!-- 取引入力 -->
 <section id="transactionPanel" class="card">
 <h2 id="transactionTitle">チャージ</h2>
 <form id="transactionForm">
@@ -167,6 +287,7 @@ type="button">
 </form>
 </section>
 
+<!-- 訂正入力 -->
 <section id="correctionPanel" class="card">
 <h2>✎ 取引の訂正</h2>
 <p class="notice">
@@ -193,10 +314,27 @@ type="button">
 </button>
 </form>
 </section>
+
 </section>
 
 <p id="status">Firebaseに接続しています…</p>
 </main>
+
+<!-- 下部タブ -->
+<nav id="tabbar" class="tabbar">
+<button type="button" class="active" data-tab="home">
+<span class="tab-icon">⌂</span>ホーム
+</button>
+<button type="button" data-tab="lala">
+<span class="tab-icon">✦</span>LaLa預金
+</button>
+<button type="button" data-tab="moon">
+<span class="tab-icon">☾</span>月見里返済
+</button>
+<button type="button" data-tab="settings">
+<span class="tab-icon">⚙</span>その他設定
+</button>
+</nav>
 
 <script type="module">
 import {initializeApp} from
@@ -265,6 +403,33 @@ function entryRef(id,entryId){
   return doc(db,"StarBank",id,"history",entryId);
 }
 
+function switchTab(tab){
+  if(transactionBusy||correctionBusy)return;
+
+  closeTransaction();
+  closeCorrection();
+
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.toggle(
+      "active",page.id==="page-"+tab
+    );
+  });
+
+  document.querySelectorAll("[data-tab]").forEach(button=>{
+    button.classList.toggle(
+      "active",button.dataset.tab===tab
+    );
+  });
+
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+document.querySelectorAll("[data-tab]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    switchTab(button.dataset.tab);
+  });
+});
+
 function stopWatching(){
   stopListeners.forEach(stop=>stop());
   stopListeners=[];
@@ -295,10 +460,30 @@ function resetBalances(){
   moonBalance=null;
   transferred=null;
 
-  el("transferredAmount").textContent="読込中…";
-  el("availableAmount").textContent="読込中…";
+  for(const id of [
+    "homeLalaBalance","homeMoonBalance",
+    "homeTransferred","homeAvailable",
+    "transferredAmount","availableAmount"
+  ]){
+    el(id).textContent="読込中…";
+  }
 
   setTransactionAvailable();
+}
+
+function updateHome(){
+  el("homeLalaBalance").textContent=
+    lalaBalance===null?"— 粒":format(lalaBalance);
+
+  el("homeMoonBalance").textContent=
+    moonBalance===null?"— 粒":format(moonBalance);
+
+  el("homeTransferred").textContent=
+    transferred===null?"—":format(transferred);
+
+  el("homeAvailable").textContent=
+    moonBalance===null||transferred===null
+      ?"—":format(moonBalance-transferred);
 }
 
 function watchBalance(accountId,balanceId,errorId,version){
@@ -326,6 +511,7 @@ function watchBalance(accountId,balanceId,errorId,version){
           el("availableAmount").textContent="—";
         }
 
+        updateHome();
         setTransactionAvailable();
         return;
       }
@@ -346,6 +532,7 @@ function watchBalance(accountId,balanceId,errorId,version){
           el("availableAmount").textContent="—";
         }
 
+        updateHome();
         setTransactionAvailable();
         return;
       }
@@ -376,6 +563,7 @@ function watchBalance(accountId,balanceId,errorId,version){
         }
       }
 
+      updateHome();
       setTransactionAvailable();
     },
     error=>{
@@ -394,6 +582,7 @@ function watchBalance(accountId,balanceId,errorId,version){
         el("availableAmount").textContent="—";
       }
 
+      updateHome();
       setTransactionAvailable();
     }
   );
@@ -477,8 +666,10 @@ function renderHistory(accountId){
     const title=document.createElement("div");
     title.className="history-title";
 
-    const typeLabel=
-      labels[entry.type]||entry.type||"不明";
+    const typeLabel=accountId==="yamanashi"&&
+      entry.type==="charge"
+      ?"返済記録"
+      :(labels[entry.type]||entry.type||"不明");
 
     const amount=
       Number.isSafeInteger(entry.amount)
@@ -500,11 +691,15 @@ function renderHistory(accountId){
       const detail=document.createElement("div");
       detail.className="history-correction";
 
+      const originalLabel=
+        accountId==="yamanashi"&&
+        entry.originalType==="charge"
+          ?"返済記録"
+          :(labels[entry.originalType]||
+            entry.originalType||"不明");
+
       detail.textContent=
-        "訂正対象："+(
-          labels[entry.originalType]||
-          entry.originalType||"不明"
-        )+
+        "訂正対象："+originalLabel+
         (entry.reason
           ?" ／ 理由："+entry.reason
           :"");
@@ -561,6 +756,7 @@ onAuthStateChanged(auth,user=>{
 
   el("login").style.display=user?"none":"block";
   el("app").style.display=user?"block":"none";
+  el("tabbar").style.display=user?"grid":"none";
   el("userEmail").textContent=user?.email||"";
 
   if(user){
@@ -911,10 +1107,14 @@ function openCorrection(accountId,entry){
   const accountLabel=accountId==="LaLa"
     ?"LaLa預金":"月見里返済";
 
+  const typeLabel=accountId==="yamanashi"&&
+    entry.type==="charge"
+    ?"返済記録"
+    :(labels[entry.type]||entry.type);
+
   el("correctionTarget").textContent=
     "対象："+accountLabel+"\n"+
-    (labels[entry.type]||entry.type)+
-    " ／ "+format(entry.amount);
+    typeLabel+" ／ "+format(entry.amount);
 
   el("correctionTarget").style.whiteSpace="pre-wrap";
   el("correctionReason").value="";
