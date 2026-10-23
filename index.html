@@ -60,6 +60,32 @@ body.theme-moon #starBackground{
   display:block
 }
 
+/* ページ別シルエット */
+#silhouetteBackground{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  display:none
+}
+#silhouetteBackground img{
+  position:absolute;
+  bottom:72px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(88vw,420px);
+  height:auto;
+  max-height:42vh;
+  object-fit:contain;
+  display:block
+}
+body.theme-home #silhouetteBackground,
+body.theme-lala #silhouetteBackground,
+body.theme-moon #silhouetteBackground{
+  display:block
+}
+
 main{
   max-width:440px;
   margin:0 auto;
@@ -239,6 +265,11 @@ body.theme-moon .notice{
   xmlns="http://www.w3.org/2000/svg"
   preserveAspectRatio="xMidYMid slice">
 </svg>
+</div>
+
+<!-- ページ別シルエット -->
+<div id="silhouetteBackground" aria-hidden="true">
+<img id="silhouetteImage" alt="">
 </div>
 
 <main>
@@ -490,25 +521,26 @@ const starPatterns={
     sparkles:[
       [55,53,4],[247,55,5]
     ]
-  },moon:{
-  dots:[
-    [78,14,1.0],
-    [139,20,1.5],
-    [185,14,1.0],
-    [219,36,1.4],
-    [272,15,1.2],
-    [307,41,1.0],
-    [87,90,0.9],
-    [169,88,1.1],
-    [250,91,1.1],
-    [291,79,0.9]
-  ],
-  sparkles:[
-    [161,40,2.5],
-    [234,69,4.5],
-    [281,42,3]
-  ]
-}
+  },
+  moon:{
+    dots:[
+      [78,14,1.0],
+      [139,20,1.5],
+      [185,14,1.0],
+      [219,36,1.4],
+      [272,15,1.2],
+      [307,41,1.0],
+      [87,90,0.9],
+      [169,88,1.1],
+      [250,91,1.1],
+      [291,79,0.9]
+    ],
+    sparkles:[
+      [161,40,2.5],
+      [234,69,4.5],
+      [281,42,3]
+    ]
+  }
 };
 
 function makeSvgElement(name,attributes){
@@ -589,6 +621,13 @@ function renderStars(tab){
   );
 }
 
+/* 画像ファイルはGitHubのindex.htmlと同じ階層 */
+const silhouetteImages={
+  home:"7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
+  lala:"84C20629-6473-4327-A6FA-8A9436F8A036.png",
+  moon:"69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
+};
+
 function applyTheme(tab){
   document.body.classList.remove(
     "theme-home",
@@ -599,6 +638,14 @@ function applyTheme(tab){
 
   document.body.classList.add("theme-"+tab);
   renderStars(tab);
+
+  const image=el("silhouetteImage");
+
+  if(silhouetteImages[tab]){
+    image.src=silhouetteImages[tab];
+  }else{
+    image.removeAttribute("src");
+  }
 }
 
 let stopListeners=[];
@@ -1507,7 +1554,7 @@ async function transferCorrection(target,reason,user){
     const moonCorrectionSnap=await tx.get(moonCorrection);
 
     if(!lalaSnap.exists()||!moonSnap.exists()){
-      throw new Error("口座が見つかりません。");
+      throw new Error("振替の元履歴が見つかりません。");
     }
 
     if(
