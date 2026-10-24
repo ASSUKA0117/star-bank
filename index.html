@@ -60,26 +60,39 @@ body.theme-moon #starBackground{
   display:block
 }
 
-/* ページ別シルエット */
+/* 右上のシルエット */
 #silhouetteBackground{
   position:fixed;
-  inset:0;
+  top:75px;
+  right:15px;
+  left:auto;
+  bottom:auto;
+  width:150px;
+  height:150px;
   z-index:0;
   pointer-events:none;
   overflow:hidden;
   display:none
 }
+
+/*
+  元画像は透明な余白が大きく、
+  シルエットが画像の下側にあるため、
+  画像を拡大して表示枠で切り出す
+*/
 #silhouetteBackground img{
   position:absolute;
-  bottom:72px;
+  width:300px;
+  height:300px;
+  max-height:none;
   left:50%;
+  top:auto;
+  bottom:0;
   transform:translateX(-50%);
-  width:min(88vw,420px);
-  height:auto;
-  max-height:42vh;
   object-fit:contain;
   display:block
 }
+
 body.theme-home #silhouetteBackground,
 body.theme-lala #silhouetteBackground,
 body.theme-moon #silhouetteBackground{
@@ -621,7 +634,7 @@ function renderStars(tab){
   );
 }
 
-/* 画像ファイルはGitHubのindex.htmlと同じ階層 */
+/* GitHubにある既存の透過PNG */
 const silhouetteImages={
   home:"7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
   lala:"84C20629-6473-4327-A6FA-8A9436F8A036.png",
@@ -1067,6 +1080,8 @@ onAuthStateChanged(auth,user=>{
       "theme-home","theme-lala",
       "theme-moon","theme-settings"
     );
+
+    el("silhouetteImage").removeAttribute("src");
 
     el("status").textContent="ログインしてください";
 
@@ -1554,7 +1569,7 @@ async function transferCorrection(target,reason,user){
     const moonCorrectionSnap=await tx.get(moonCorrection);
 
     if(!lalaSnap.exists()||!moonSnap.exists()){
-      throw new Error("振替の元履歴が見つかりません。");
+      throw new Error("口座が見つかりません。");
     }
 
     if(
