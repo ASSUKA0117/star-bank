@@ -343,6 +343,8 @@ button:disabled {
 }
 
 #app,
+#register,
+#pendingApproval,
 #transactionPanel,
 #correctionPanel {
   display: none;
@@ -900,6 +902,12 @@ body.completion-open {
     display: none;
   }
 }
+/* 新規登録・承認待ち */
+.auth-card { max-width: 440px; margin: 18px 0; }
+.auth-card h2 { margin-top: 0; }
+.auth-note { font-size: 13px; line-height: 1.8; color: #6e7786; }
+.uid-box { padding: 12px; border-radius: 10px; background: #f4f2ed; font-size: 12px; overflow-wrap: anywhere; user-select: all; }
+.auth-feedback { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; color: #b3261e; }
 </style>
 </head>
 
@@ -934,6 +942,35 @@ body.completion-open {
 
     <button type="submit">ログイン</button>
   </form>
+  <button id="openRegister" type="button" class="secondary">新規アカウント登録</button>
+</section>
+
+<section id="register" class="card auth-card">
+  <h2>✦ 新規アカウント登録</h2>
+  <p class="auth-note">晩餐館専用の登録画面です。登録後、LaLaによる承認が必要です。</p>
+  <form id="registerForm">
+    <label for="registerEmail">メールアドレス</label>
+    <input id="registerEmail" type="email" autocomplete="email" required>
+    <label for="registerPassword">パスワード（6文字以上）</label>
+    <input id="registerPassword" type="password" autocomplete="new-password" minlength="6" required>
+    <label for="registerPasswordConfirm">パスワード（確認）</label>
+    <input id="registerPasswordConfirm" type="password" autocomplete="new-password" minlength="6" required>
+    <p id="registerStatus" class="auth-feedback" role="status"></p>
+    <button id="registerSubmit" type="submit">アカウントを登録する</button>
+    <button id="registerCancel" type="button" class="secondary">ログインに戻る</button>
+  </form>
+</section>
+
+<section id="pendingApproval" class="card auth-card">
+  <h2>☾ 承認待ち</h2>
+  <p class="auth-note">アカウント登録が完了しました。LaLaの承認後、星粒銀行を利用できます。</p>
+  <p class="muted">登録メール：<span id="pendingEmail"></span></p>
+  <p class="auth-note">LaLaに次のユーザーID（UID）を伝えてください。パスワードは伝える必要はありません。</p>
+  <div id="pendingUid" class="uid-box"></div>
+  <button id="copyPendingUid" type="button">UIDをコピー</button>
+  <button id="retryApproval" type="button" class="secondary">承認を確認する</button>
+  <p id="pendingStatus" class="auth-note" role="status"></p>
+  <button id="pendingLogout" type="button" class="secondary">ログアウト</button>
 </section>
 
 <section id="app">
@@ -1210,6 +1247,7 @@ body.completion-open {
   <p class="muted">
     ログイン中：
     <span id="userEmail"></span>
+    <span id="userDisplayName"></span>
   </p>
 
   <button
@@ -1436,6 +1474,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut
 } from
   "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -1445,6 +1484,7 @@ import {
   doc,
   collection,
   onSnapshot,
+  getDocFromServer,
   runTransaction,
   serverTimestamp
 } from
@@ -1468,6 +1508,83 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
 const el = id => document.getElementById(id);
+const LALA_UID = "BIR5n29dcHPytcnfDftUwDB4XGG2";
+const actorNameFor = user => user.uid === LALA_UID ? "LaLa" : "晩餐館";
+let authChecking = false;
+
+function showAuthSection(section) {
+  for (const id of ["login", "register", "pendingApproval", "app"]) {
+    el(id).style.display = id === section ? "block" : "none";
+  }
+  el("tabbar").style.display = section === "app" ? "grid" : "none";
+}
+
+function showPending(user, message = "承認待ちです。承認後に「承認を確認する」を押してください。") {
+  showAuthSection("pendingApproval");
+  el("pendingEmail").textContent = user.email || "";
+  el("pendingUid").textContent = user.uid;
+  el("pendingStatus").textContent = message;
+  el("status").textContent = "承認待ち";
+}
+
+async function verifyApproval(user, version) {
+  if (authChecking) return;
+  authChecking = true;
+  el("pendingStatus").textContent = "承認状況を確認しています…";
+  try {
+    // Firestoreルールそのものを使って認可を検証する。クライアントの表示制御だけに依存しない。
+    await getDocFromServer(bankRef("LaLa"));
+    if (version !== authVersion || auth.currentUser?.uid !== user.uid) return;
+    startAuthorizedSession(user, version);
+  } catch (error) {
+    if (version !== authVersion || auth.currentUser?.uid !== user.uid) return;
+    showPending(user, error.code === "permission-denied"
+      ? "現在は承認待ちです。LaLaが許可したら再確認してください。"
+      : "確認できませんでした：" + (error.code || error.message));
+  } finally {
+    authChecking = false;
+  }
+}
+
+el("openRegister").addEventListener("click", () => {
+  el("registerStatus").textContent = "";
+  showAuthSection("register");
+});
+el("registerCancel").addEventListener("click", () => showAuthSection("login"));
+el("registerForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const password = el("registerPassword").value;
+  if (password !== el("registerPasswordConfirm").value) {
+    el("registerStatus").textContent = "確認用パスワードが一致しません。";
+    return;
+  }
+  const button = el("registerSubmit");
+  button.disabled = true;
+  el("registerStatus").textContent = "登録中…";
+  try {
+    await createUserWithEmailAndPassword(auth, el("registerEmail").value.trim(), password);
+    el("registerForm").reset();
+  } catch (error) {
+    el("registerStatus").textContent = "登録失敗：" + (error.code || error.message);
+  } finally {
+    button.disabled = false;
+  }
+});
+el("copyPendingUid").addEventListener("click", async () => {
+  const uid = auth.currentUser?.uid;
+  if (!uid) return;
+  try {
+    await navigator.clipboard.writeText(uid);
+    el("pendingStatus").textContent = "UIDをコピーしました。";
+  } catch {
+    el("pendingStatus").textContent = "コピーできませんでした。上のUIDを長押ししてコピーしてください。";
+  }
+});
+el("retryApproval").addEventListener("click", () => {
+  const user = auth.currentUser;
+  if (user) verifyApproval(user, authVersion);
+});
+el("pendingLogout").addEventListener("click", () => signOut(auth));
 
 /* =========================
    ランダムセリフ：全30個
@@ -2338,6 +2455,12 @@ function renderHistory(accountId) {
         : "日時不明";
 
     item.append(title,date);
+    if (entry.actorName) {
+      const actor = document.createElement("div");
+      actor.className = "muted";
+      actor.textContent = "操作：" + entry.actorName;
+      item.append(actor);
+    }
 
     if (entry.type === "correction") {
       const detail = document.createElement("div");
@@ -2409,99 +2532,51 @@ function renderAllHistories() {
    認証
 ========================= */
 
-onAuthStateChanged(
-  auth,
+function startAuthorizedSession(user, version) {
+  if (version !== authVersion || auth.currentUser?.uid !== user.uid) return;
+  showAuthSection("app");
+  el("userEmail").textContent = user.email || "";
+  el("userDisplayName").textContent = "（" + actorNameFor(user) + "）";
+  el("status").textContent = "Firebase認証：接続成功";
+  const activeTab = document.querySelector("[data-tab].active")?.dataset.tab || "home";
+  applyTheme(activeTab);
+  stopWatching();
+  stopListeners.push(watchBalance("LaLa", "lalaBalance", "lalaError", version));
+  stopListeners.push(watchBalance("yamanashi", "moonBalance", "moonError", version));
+  stopListeners.push(watchHistory("LaLa", version));
+  stopListeners.push(watchHistory("yamanashi", version));
+}
 
-  user => {
-    const version = ++authVersion;
-
-    stopWatching();
-    resetBalances();
-    closeTransaction();
-    closeCorrection();
-    closeCompletion();
-
-    transactionBusy = false;
-    correctionBusy = false;
-    correctionTarget = null;
-
-    histories.LaLa = [];
-    histories.yamanashi = [];
-
-    el("login").style.display =
-      user ? "none" : "block";
-
-    el("app").style.display =
-      user ? "block" : "none";
-
-    el("tabbar").style.display =
-      user ? "grid" : "none";
-
-    el("userEmail").textContent =
-      user?.email || "";
-
-    if (user) {
-      el("status").textContent =
-        "Firebase認証：接続成功";
-
-      const activeTab =
-        document.querySelector(
-          "[data-tab].active"
-        )?.dataset.tab || "home";
-
-      applyTheme(activeTab);
-
-      stopListeners.push(
-        watchBalance(
-          "LaLa",
-          "lalaBalance",
-          "lalaError",
-          version
-        )
-      );
-
-      stopListeners.push(
-        watchBalance(
-          "yamanashi",
-          "moonBalance",
-          "moonError",
-          version
-        )
-      );
-
-      stopListeners.push(
-        watchHistory("LaLa",version)
-      );
-
-      stopListeners.push(
-        watchHistory("yamanashi",version)
-      );
-
-    } else {
-      document.body.classList.remove(
-        "theme-home",
-        "theme-lala",
-        "theme-moon",
-        "theme-settings"
-      );
-
-      el("status").textContent =
-        "ログインしてください";
-
-      for (const id of ["LaLa","yamanashi"]) {
-        const {list,status} = historyElements(id);
-
-        list.replaceChildren();
-        status.textContent = "読込待機中…";
-      }
-    }
-  },
-
-  error => {
-    el("status").textContent =
-      "認証エラー: " + error.code;
+onAuthStateChanged(auth, user => {
+  const version = ++authVersion;
+  stopWatching();
+  resetBalances();
+  closeTransaction();
+  closeCorrection();
+  closeCompletion();
+  transactionBusy = false;
+  correctionBusy = false;
+  correctionTarget = null;
+  histories.LaLa = [];
+  histories.yamanashi = [];
+  for (const id of ["LaLa", "yamanashi"]) {
+    const {list,status} = historyElements(id);
+    list.replaceChildren();
+    status.textContent = "読込待機中…";
   }
-);
+  if (!user) {
+    document.body.classList.remove("theme-home", "theme-lala", "theme-moon", "theme-settings");
+    showAuthSection("login");
+    el("status").textContent = "ログインしてください";
+  } else if (user.uid === LALA_UID) {
+    startAuthorizedSession(user, version);
+  } else {
+    showPending(user);
+    verifyApproval(user, version);
+  }
+}, error => {
+  el("status").textContent = "認証エラー: " + error.code;
+});
 
 el("loginForm").addEventListener(
   "submit",
@@ -2706,7 +2781,7 @@ async function ordinaryTransaction(
           : type,
       amount,
       actorUid: user.uid,
-      actorName: "LaLa",
+      actorName: actorNameFor(user),
       createdAt: serverTimestamp()
     });
   });
@@ -2796,7 +2871,7 @@ async function transferTransaction(
     const common = {
       amount,
       actorUid: user.uid,
-      actorName: "LaLa",
+      actorName: actorNameFor(user),
       createdAt: serverTimestamp()
     };
 
@@ -3120,7 +3195,7 @@ async function ordinaryCorrection(
       type: "correction",
       amount,
       actorUid: user.uid,
-      actorName: "LaLa",
+      actorName: actorNameFor(user),
       createdAt: serverTimestamp(),
       originalId: id,
       originalType: type,
@@ -3266,7 +3341,7 @@ async function transferCorrection(
       type: "correction",
       amount,
       actorUid: user.uid,
-      actorName: "LaLa",
+      actorName: actorNameFor(user),
       createdAt: serverTimestamp(),
       originalId: id,
       reason
