@@ -5,374 +5,521 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>星粒銀行</title>
+
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  padding:24px 20px 110px;
-  background:#fff8e9;
-  color:#353a45;
-  font-family:-apple-system,BlinkMacSystemFont,
-  "Hiragino Kaku Gothic ProN",sans-serif;
-  min-height:100vh
+* {
+  box-sizing: border-box;
 }
 
-body.theme-home{
-  background:linear-gradient(
-    155deg,#FAD575 0%,#FFE7A5 50%,#FFF7DE 100%
-  ) fixed
+body {
+  margin: 0;
+  padding: 24px 20px 110px;
+  background: #fff8e9;
+  color: #353a45;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Hiragino Kaku Gothic ProN", sans-serif;
+  min-height: 100vh;
 }
-body.theme-lala{
-  background:linear-gradient(
-    155deg,#F6B38C 0%,#FAD2B4 50%,#FFF0DF 100%
-  ) fixed
-}
-body.theme-moon{
-  background:linear-gradient(
-    155deg,#17284E 0%,#344B78 55%,#7285AD 100%
+
+body.theme-home {
+  background: linear-gradient(
+    155deg,
+    #FAD575 0%,
+    #FFE7A5 50%,
+    #FFF7DE 100%
   ) fixed;
-  color:white
-}
-body.theme-settings{
-  background:#fff8e9
 }
 
-#starBackground{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  z-index:0;
-  display:none
+body.theme-lala {
+  background: linear-gradient(
+    155deg,
+    #F6B38C 0%,
+    #FAD2B4 50%,
+    #FFF0DF 100%
+  ) fixed;
 }
-#starBackground svg{
-  width:100%;
-  height:100%;
-  display:block
+
+body.theme-moon {
+  background: linear-gradient(
+    155deg,
+    #17284E 0%,
+    #344B78 55%,
+    #7285AD 100%
+  ) fixed;
+  color: white;
 }
+
+body.theme-settings {
+  background: #fff8e9;
+}
+
+#starBackground {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  display: none;
+}
+
+#starBackground svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 body.theme-home #starBackground,
 body.theme-lala #starBackground,
-body.theme-moon #starBackground{
-  display:block
+body.theme-moon #starBackground {
+  display: block;
 }
 
-main{
-  max-width:440px;
-  margin:0 auto;
-  position:relative;
-  z-index:1
-}
-h1{font-size:26px;margin:12px 0 24px}
-h2{font-size:20px;margin:24px 0 14px}
-
-.card{
-  background:white;
-  border:1px solid #e8dfcd;
-  border-radius:16px;
-  padding:20px;
-  margin:16px 0
+main {
+  max-width: 440px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
-/* シルエット表示 */
-.silhouette-scene{
-  position:relative;
-  height:190px;
-  margin:-2px -2px 18px;
-  border-radius:16px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center
-}
-.silhouette-scene img{
-  position:relative;
-  z-index:1;
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:contain
-}
-.silhouette-scene .silhouette-crop{
-  position:absolute;
-  inset:0;
-  overflow:hidden
-}
-.silhouette-scene .silhouette-crop img{
-  position:absolute;
-  width:100%;
-  height:auto;
-  max-width:none;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%)
+h1 {
+  font-size: 26px;
+  margin: 12px 0 24px;
 }
 
-.scene-home{
-  background:radial-gradient(
+h2 {
+  font-size: 20px;
+  margin: 24px 0 14px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e8dfcd;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+/* イラスト */
+
+.silhouette-scene {
+  position: relative;
+  height: 190px;
+  margin: -2px -2px 18px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.silhouette-scene img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.silhouette-scene .silhouette-crop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.silhouette-scene .silhouette-crop img {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.scene-home {
+  background: radial-gradient(
     ellipse at center,
     #ffe7a0 0%,
     #fff1c9 58%,
     rgba(255,247,222,.4) 100%
-  )
+  );
 }
-.scene-lala{
-  background:radial-gradient(
+
+.scene-lala {
+  background: radial-gradient(
     ellipse at center,
     #ffe5bb 0%,
     #fff0d8 58%,
     rgba(255,240,223,.4) 100%
-  )
+  );
 }
 
-/* LaLa画像の縮小設定は維持 */
-.scene-lala .silhouette-crop img{
-  width:auto;
-  height:85%;
-  max-width:90%;
-  object-fit:contain;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%)
+/* LaLaの画像サイズは変更しない */
+.scene-lala .silhouette-crop img {
+  width: auto;
+  height: 85%;
+  max-width: 90%;
+  object-fit: contain;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.scene-moon{
-  background:radial-gradient(
+.scene-moon {
+  background: radial-gradient(
     ellipse at center,
     #7889b1 0%,
     #a7b2d0 58%,
     #e3e7f1 100%
-  )
+  );
 }
 
-/* 月見里限定：眠っているZzz */
-.sleep-effects{
-  position:absolute;
-  inset:0;
-  z-index:3;
-  pointer-events:none;
-  overflow:hidden
-}
-.sleep-z{
-  position:absolute;
-  color:rgba(255,255,255,.95);
-  font-family:"Trebuchet MS",sans-serif;
-  font-weight:600;
-  line-height:1;
-  opacity:0;
-  text-shadow:0 0 5px rgba(255,255,255,.28);
-  animation:sleepFloat 4.8s ease-in-out infinite
+/* 月見里のZzzアニメーション */
+
+.sleep-effects {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-/* 男の子の頭の右上に配置 */
-.sleep-z.z1{
-  left:54%;
-  top:43%;
-  font-size:15px;
-  animation-delay:0s
-}
-.sleep-z.z2{
-  left:61%;
-  top:32%;
-  font-size:21px;
-  animation-delay:1.2s
-}
-.sleep-z.z3{
-  left:69%;
-  top:19%;
-  font-size:30px;
-  animation-delay:2.4s
+.sleep-z {
+  position: absolute;
+  color: rgba(255,255,255,.95);
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0;
+  text-shadow: 0 0 5px rgba(255,255,255,.28);
+  animation: sleepFloat 4.8s ease-in-out infinite;
 }
 
-@keyframes sleepFloat{
-  0%{
-    opacity:0;
-    transform:translate(0,9px) rotate(-12deg) scale(.85)
+.sleep-z.z1 {
+  left: 54%;
+  top: 43%;
+  font-size: 15px;
+  animation-delay: 0s;
+}
+
+.sleep-z.z2 {
+  left: 61%;
+  top: 32%;
+  font-size: 21px;
+  animation-delay: 1.2s;
+}
+
+.sleep-z.z3 {
+  left: 69%;
+  top: 19%;
+  font-size: 30px;
+  animation-delay: 2.4s;
+}
+
+@keyframes sleepFloat {
+  0% {
+    opacity: 0;
+    transform: translate(0,9px)
+      rotate(-12deg) scale(.85);
   }
-  18%{
-    opacity:.95
-  }
-  55%{
-    opacity:.9
-  }
-  85%{
-    opacity:0;
-    transform:translate(10px,-15px) rotate(5deg) scale(1.06)
-  }
-  100%{
-    opacity:0;
-    transform:translate(12px,-20px) rotate(7deg) scale(1.08)
-  }
-}
 
-@media(prefers-reduced-motion:reduce){
-  .sleep-z{
-    animation:none;
-    opacity:.85;
-    transform:none
+  18% {
+    opacity: .95;
+  }
+
+  55% {
+    opacity: .9;
+  }
+
+  85% {
+    opacity: 0;
+    transform: translate(10px,-15px)
+      rotate(5deg) scale(1.06);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(12px,-20px)
+      rotate(7deg) scale(1.08);
   }
 }
 
-.scene-caption{
-  text-align:center;
-  color:#938b7e;
-  font-size:12px;
-  margin:-8px 0 18px
+@media (prefers-reduced-motion: reduce) {
+  .sleep-z {
+    animation: none;
+    opacity: .85;
+    transform: none;
+  }
 }
 
-.amount{
-  font-size:30px;
-  font-weight:bold;
-  margin:12px 0
-}
-input,button,textarea{
-  width:100%;
-  padding:13px;
-  margin:7px 0;
-  font:inherit;
-  border-radius:10px
-}
-input,textarea{
-  border:1px solid #ccd1d9;
-  color:#353a45;
-  background:white
-}
-textarea{resize:vertical;min-height:85px}
-button{
-  border:0;
-  background:#f2dfb5;
-  color:#624818;
-  font-weight:bold;
-  cursor:pointer
-}
-button:disabled{opacity:.5}
-.secondary{background:#eceef2;color:#444}
-.actions{display:flex;gap:10px}
-.actions button{flex:1}
+/* ランダムセリフ */
 
-#app,#transactionPanel,#correctionPanel{display:none}
-.page{display:none}
-.page.active{display:block}
-
-#status,#transactionStatus,#correctionStatus,
-.error,.history-status{
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  font-size:14px;
-  line-height:1.7
-}
-.error{color:#b3261e}
-.muted{color:#7b8491;font-size:13px}
-
-.info{
-  padding:12px 0;
-  border-top:1px solid #eee6d7;
-  display:flex;
-  justify-content:space-between;
-  gap:12px
-}
-.info strong{white-space:nowrap}
-
-.history-item{
-  padding:13px 0;
-  border-bottom:1px solid #e8dfcd
-}
-.history-item:last-child{border-bottom:none}
-.history-title{font-weight:bold;margin-bottom:5px}
-.history-corrected{opacity:.65}
-.history-correction{
-  color:#a35a20;
-  font-size:13px;
-  margin-top:5px
-}
-.correction-button{
-  width:auto;
-  padding:7px 13px;
-  font-size:13px;
-  margin-top:10px;
-  background:#eceef2;
-  color:#444
-}
-.notice{
-  background:#fff4d9;
-  border-radius:10px;
-  padding:12px;
-  font-size:13px;
-  line-height:1.7
-}
-.home-label{
-  color:#7b8491;
-  font-size:13px;
-  margin-bottom:5px
-}
-.home-amount{
-  font-size:28px;
-  font-weight:bold;
-  margin:8px 0
+.scene-quote {
+  margin: -8px 0 18px;
+  padding: 4px 8px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 8px;
 }
 
-body.theme-moon .card{
-  background:rgba(23,40,78,.72);
-  border-color:rgba(255,255,255,.25);
-  color:white;
-  backdrop-filter:blur(5px);
-  -webkit-backdrop-filter:blur(5px)
+.scene-quote:focus-visible {
+  outline: 2px solid #8b99c1;
+  outline-offset: 3px;
 }
-body.theme-moon .muted{
-  color:#d8e0f2
+
+.scene-quote-text {
+  display: block;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #938b7e;
+  min-height: 22px;
 }
+
+.scene-quote-hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  color: #b0a99d;
+}
+
+body.theme-moon .scene-quote-text {
+  color: #d8e0f2;
+}
+
+body.theme-moon .scene-quote-hint {
+  color: #aebbd5;
+}
+
+/* 共通 */
+
+.amount {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+input,
+button,
+textarea {
+  width: 100%;
+  padding: 13px;
+  margin: 7px 0;
+  font: inherit;
+  border-radius: 10px;
+}
+
+input,
+textarea {
+  border: 1px solid #ccd1d9;
+  color: #353a45;
+  background: white;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 85px;
+}
+
+button {
+  border: 0;
+  background: #f2dfb5;
+  color: #624818;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .5;
+}
+
+.secondary {
+  background: #eceef2;
+  color: #444;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+#app,
+#transactionPanel,
+#correctionPanel {
+  display: none;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+#status,
+#transactionStatus,
+#correctionStatus,
+.error,
+.history-status {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.error {
+  color: #b3261e;
+}
+
+.muted {
+  color: #7b8491;
+  font-size: 13px;
+}
+
+.info {
+  padding: 12px 0;
+  border-top: 1px solid #eee6d7;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.info strong {
+  white-space: nowrap;
+}
+
+.history-item {
+  padding: 13px 0;
+  border-bottom: 1px solid #e8dfcd;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.history-corrected {
+  opacity: .65;
+}
+
+.history-correction {
+  color: #a35a20;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.correction-button {
+  width: auto;
+  padding: 7px 13px;
+  font-size: 13px;
+  margin-top: 10px;
+  background: #eceef2;
+  color: #444;
+}
+
+.notice {
+  background: #fff4d9;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.home-label {
+  color: #7b8491;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.home-amount {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+/* 月見里テーマ */
+
+body.theme-moon .card {
+  background: rgba(23,40,78,.72);
+  border-color: rgba(255,255,255,.25);
+  color: white;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+body.theme-moon .muted {
+  color: #d8e0f2;
+}
+
 body.theme-moon .info,
-body.theme-moon .history-item{
-  border-color:rgba(255,255,255,.2)
-}
-body.theme-moon .history-correction{
-  color:#ffe0a8
-}
-body.theme-moon .error{
-  color:#ffb4aa
-}
-body.theme-moon .notice{
-  background:rgba(255,244,217,.14);
-  color:white
-}
-body.theme-moon .scene-caption{
-  color:#d8e0f2
+body.theme-moon .history-item {
+  border-color: rgba(255,255,255,.2);
 }
 
-.tabbar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  display:none;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:4px;
-  padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-  background:#fffdf7;
-  border-top:1px solid #e8dfcd;
-  box-shadow:0 -4px 18px rgba(0,0,0,.04);
-  z-index:100
+body.theme-moon .history-correction {
+  color: #ffe0a8;
 }
-.tabbar button{
-  margin:0;
-  padding:9px 2px;
-  background:transparent;
-  color:#7b8491;
-  font-size:11px;
-  font-weight:normal;
-  border-radius:12px
+
+body.theme-moon .error {
+  color: #ffb4aa;
 }
-.tabbar button.active{
-  background:#f7e8c7;
-  color:#624818;
-  font-weight:bold
+
+body.theme-moon .notice {
+  background: rgba(255,244,217,.14);
+  color: white;
 }
-.tab-icon{
-  display:block;
-  font-size:22px;
-  line-height:1.5;
-  margin-bottom:3px
+
+/* ナビゲーション */
+
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 4px;
+  padding: 10px 8px
+    calc(10px + env(safe-area-inset-bottom));
+  background: #fffdf7;
+  border-top: 1px solid #e8dfcd;
+  box-shadow: 0 -4px 18px rgba(0,0,0,.04);
+  z-index: 100;
+}
+
+.tabbar button {
+  margin: 0;
+  padding: 9px 2px;
+  background: transparent;
+  color: #7b8491;
+  font-size: 11px;
+  font-weight: normal;
+  border-radius: 12px;
+}
+
+.tabbar button.active {
+  background: #f7e8c7;
+  color: #624818;
+  font-weight: bold;
+}
+
+.tab-icon {
+  display: block;
+  font-size: 22px;
+  line-height: 1.5;
+  margin-bottom: 3px;
 }
 </style>
 </head>
@@ -380,355 +527,685 @@ body.theme-moon .scene-caption{
 <body>
 
 <div id="starBackground" aria-hidden="true">
-<svg id="starsSvg"
-  xmlns="http://www.w3.org/2000/svg"
-  preserveAspectRatio="xMidYMid slice">
-</svg>
+  <svg id="starsSvg"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid slice">
+  </svg>
 </div>
 
 <main>
+
 <h1>✦ 星粒銀行 ✦</h1>
 
 <section id="login">
-<form id="loginForm">
-<input id="email" type="email"
-placeholder="メールアドレス" required>
-<input id="password" type="password"
-placeholder="パスワード" required>
-<button type="submit">ログイン</button>
-</form>
+  <form id="loginForm">
+    <input
+      id="email"
+      type="email"
+      placeholder="メールアドレス"
+      required
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="パスワード"
+      required
+    >
+
+    <button type="submit">ログイン</button>
+  </form>
 </section>
 
 <section id="app">
 
-<!-- ホーム -->
+<!-- =========================
+     ホーム
+========================= -->
+
 <section id="page-home" class="page active">
+
 <h2>ホーム</h2>
 
 <div class="card">
 
-<div class="silhouette-scene scene-home">
-<div class="silhouette-crop">
-<img
-  src="7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
-  alt="男の子と猫のシルエット">
-</div>
-</div>
+  <div class="silhouette-scene scene-home">
+    <div class="silhouette-crop">
+      <img
+        src="7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
+        alt="男の子と猫のシルエット"
+      >
+    </div>
+  </div>
 
-<p class="scene-caption">
-星粒といっしょに、ひとやすみ。
-</p>
+  <div
+    class="scene-quote"
+    data-quote-page="home"
+    role="button"
+    tabindex="0"
+    aria-label="ホームのメッセージを切り替える"
+  >
+    <span
+      class="scene-quote-text"
+      id="quote-home"
+    ></span>
+    <span class="scene-quote-hint">
+      タップで次の言葉へ ✦
+    </span>
+  </div>
 
-<div class="home-label">★ LaLa預金</div>
-<div class="home-amount" id="homeLalaBalance">
-読込中…
-</div>
+  <div class="home-label">★ LaLa預金</div>
+
+  <div class="home-amount" id="homeLalaBalance">
+    読込中…
+  </div>
+
 </div>
 
 <div class="card">
-<div class="home-label">
-☾ 月見里返済・累計返済額
-</div>
-<div class="home-amount" id="homeMoonBalance">
-読込中…
+
+  <div class="home-label">
+    ☾ 月見里返済・累計返済額
+  </div>
+
+  <div class="home-amount" id="homeMoonBalance">
+    読込中…
+  </div>
+
+  <div class="info">
+    <span>LaLa預金へ振替済み</span>
+    <strong id="homeTransferred">読込中…</strong>
+  </div>
+
+  <div class="info">
+    <span>振替可能額</span>
+    <strong id="homeAvailable">読込中…</strong>
+  </div>
+
 </div>
 
-<div class="info">
-<span>LaLa預金へ振替済み</span>
-<strong id="homeTransferred">読込中…</strong>
-</div>
-
-<div class="info">
-<span>振替可能額</span>
-<strong id="homeAvailable">読込中…</strong>
-</div>
-</div>
 </section>
 
-<!-- LaLa預金 -->
+<!-- =========================
+     LaLa預金
+========================= -->
+
 <section id="page-lala" class="page">
+
 <h2>★ LaLa預金</h2>
 
 <div class="card">
 
-<div class="silhouette-scene scene-lala">
-<div class="silhouette-crop">
-<img
-  src="84C20629-6473-4327-A6FA-8A9436F8A036.png"
-  alt="猫を抱き上げる男の子のシルエット">
-</div>
-</div>
+  <div class="silhouette-scene scene-lala">
+    <div class="silhouette-crop">
+      <img
+        src="84C20629-6473-4327-A6FA-8A9436F8A036.png"
+        alt="猫を抱き上げる男の子のシルエット"
+      >
+    </div>
+  </div>
 
-<p class="scene-caption">
-星粒といっしょに、ひとやすみ。
-</p>
+  <div
+    class="scene-quote"
+    data-quote-page="lala"
+    role="button"
+    tabindex="0"
+    aria-label="LaLa預金のメッセージを切り替える"
+  >
+    <span
+      class="scene-quote-text"
+      id="quote-lala"
+    ></span>
+    <span class="scene-quote-hint">
+      タップで次の言葉へ ✦
+    </span>
+  </div>
 
-<strong>現在の残高</strong>
-<div class="amount" id="lalaBalance">
-読込中…
-</div>
-<div class="error" id="lalaError"></div>
+  <strong>現在の残高</strong>
 
-<div class="actions">
-<button id="chargeButton" type="button" disabled>
-＋ チャージ
-</button>
-<button id="withdrawButton" class="secondary"
-type="button" disabled>
-− 星粒を使う
-</button>
-</div>
+  <div class="amount" id="lalaBalance">
+    読込中…
+  </div>
+
+  <div class="error" id="lalaError"></div>
+
+  <div class="actions">
+    <button
+      id="chargeButton"
+      type="button"
+      disabled
+    >
+      ＋ チャージ
+    </button>
+
+    <button
+      id="withdrawButton"
+      class="secondary"
+      type="button"
+      disabled
+    >
+      − 星粒を使う
+    </button>
+  </div>
+
 </div>
 
 <section class="card">
-<h2>取引履歴</h2>
-<p class="muted">新しい順に表示します。</p>
-<div id="lalaHistoryStatus" class="history-status">
-読込待機中…
-</div>
-<div id="lalaHistoryList"></div>
-</section>
+
+  <h2>取引履歴</h2>
+
+  <p class="muted">
+    新しい順に表示します。
+  </p>
+
+  <div
+    id="lalaHistoryStatus"
+    class="history-status"
+  >
+    読込待機中…
+  </div>
+
+  <div id="lalaHistoryList"></div>
+
 </section>
 
-<!-- 月見里返済 -->
+</section>
+
+<!-- =========================
+     月見里返済
+========================= -->
+
 <section id="page-moon" class="page">
+
 <h2>☾ 月見里返済</h2>
 
 <div class="card">
 
-<div class="silhouette-scene scene-moon">
+  <div class="silhouette-scene scene-moon">
 
-<div class="silhouette-crop">
-<img
-  src="69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
-  alt="寝そべる男の子と猫のシルエット">
-</div>
+    <div class="silhouette-crop">
+      <img
+        src="69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
+        alt="寝そべる男の子と猫のシルエット"
+      >
+    </div>
 
-<!-- ふわふわ浮かぶZzz -->
-<div class="sleep-effects" aria-hidden="true">
-<span class="sleep-z z1">z</span>
-<span class="sleep-z z2">z</span>
-<span class="sleep-z z3">Z</span>
-</div>
+    <div class="sleep-effects" aria-hidden="true">
+      <span class="sleep-z z1">z</span>
+      <span class="sleep-z z2">z</span>
+      <span class="sleep-z z3">Z</span>
+    </div>
 
-</div>
+  </div>
 
-<p class="scene-caption">
-月明かりの下で、のんびり。
-</p>
+  <div
+    class="scene-quote"
+    data-quote-page="moon"
+    role="button"
+    tabindex="0"
+    aria-label="月見里返済のメッセージを切り替える"
+  >
+    <span
+      class="scene-quote-text"
+      id="quote-moon"
+    ></span>
+    <span class="scene-quote-hint">
+      タップで次の言葉へ ☾
+    </span>
+  </div>
 
-<p class="muted">累計返済額</p>
-<div class="amount" id="moonBalance">
-読込中…
-</div>
-<div class="error" id="moonError"></div>
+  <p class="muted">累計返済額</p>
 
-<div class="info">
-<span>LaLa預金へ振替済み</span>
-<strong id="transferredAmount">
-読込中…
-</strong>
-</div>
+  <div class="amount" id="moonBalance">
+    読込中…
+  </div>
 
-<div class="info">
-<span>振替可能額</span>
-<strong id="availableAmount">
-読込中…
-</strong>
-</div>
+  <div class="error" id="moonError"></div>
 
-<button id="repaymentButton" type="button" disabled>
-＋ 返済を記録
-</button>
+  <div class="info">
+    <span>LaLa預金へ振替済み</span>
+    <strong id="transferredAmount">
+      読込中…
+    </strong>
+  </div>
 
-<button id="transferButton" class="secondary"
-type="button" disabled>
-↗ LaLa預金へ振り替える
-</button>
+  <div class="info">
+    <span>振替可能額</span>
+    <strong id="availableAmount">
+      読込中…
+    </strong>
+  </div>
+
+  <button
+    id="repaymentButton"
+    type="button"
+    disabled
+  >
+    ＋ 返済を記録
+  </button>
+
+  <button
+    id="transferButton"
+    class="secondary"
+    type="button"
+    disabled
+  >
+    ↗ LaLa預金へ振り替える
+  </button>
+
 </div>
 
 <section class="card">
-<h2>取引履歴</h2>
-<p class="muted">
-返済記録と振替履歴を表示します。
-</p>
-<div id="moonHistoryStatus" class="history-status">
-読込待機中…
-</div>
-<div id="moonHistoryList"></div>
-</section>
+
+  <h2>取引履歴</h2>
+
+  <p class="muted">
+    返済記録と振替履歴を表示します。
+  </p>
+
+  <div
+    id="moonHistoryStatus"
+    class="history-status"
+  >
+    読込待機中…
+  </div>
+
+  <div id="moonHistoryList"></div>
+
 </section>
 
-<!-- その他設定 -->
+</section>
+
+<!-- =========================
+     その他設定
+========================= -->
+
 <section id="page-settings" class="page">
+
 <h2>その他設定</h2>
 
 <div class="card">
-<strong>アカウント</strong>
-<p class="muted">
-ログイン中：<span id="userEmail"></span>
-</p>
-<button id="logout" class="secondary" type="button">
-ログアウト
-</button>
+
+  <strong>アカウント</strong>
+
+  <p class="muted">
+    ログイン中：
+    <span id="userEmail"></span>
+  </p>
+
+  <button
+    id="logout"
+    class="secondary"
+    type="button"
+  >
+    ログアウト
+  </button>
+
 </div>
+
 </section>
 
-<!-- 取引入力 -->
+<!-- =========================
+     取引入力
+========================= -->
+
 <section id="transactionPanel" class="card">
+
 <h2 id="transactionTitle">チャージ</h2>
+
 <form id="transactionForm">
-<label for="transactionAmount">星粒数</label>
-<input id="transactionAmount" type="number"
-min="1" max="1000000" step="1"
-inputmode="numeric" required>
-<p id="transactionStatus"></p>
-<button id="transactionConfirm" type="submit">
-確定する
-</button>
-<button id="transactionCancel" class="secondary"
-type="button">
-キャンセル
-</button>
+
+  <label for="transactionAmount">
+    星粒数
+  </label>
+
+  <input
+    id="transactionAmount"
+    type="number"
+    min="1"
+    max="1000000"
+    step="1"
+    inputmode="numeric"
+    required
+  >
+
+  <p id="transactionStatus"></p>
+
+  <button
+    id="transactionConfirm"
+    type="submit"
+  >
+    確定する
+  </button>
+
+  <button
+    id="transactionCancel"
+    class="secondary"
+    type="button"
+  >
+    キャンセル
+  </button>
+
 </form>
+
 </section>
 
-<!-- 訂正入力 -->
+<!-- =========================
+     訂正入力
+========================= -->
+
 <section id="correctionPanel" class="card">
+
 <h2>✎ 取引の訂正</h2>
+
 <p class="notice">
-訂正すると残高も自動で調整されます。
-元の履歴は削除されず、訂正履歴が追加されます。
+  訂正すると残高も自動で調整されます。
+  元の履歴は削除されず、訂正履歴が追加されます。
 </p>
 
 <div id="correctionTarget"></div>
 
 <form id="correctionForm">
-<label for="correctionReason">訂正理由</label>
-<textarea id="correctionReason" maxlength="200"
-placeholder="例：入力ミス、二重登録、テスト"
-required></textarea>
 
-<p id="correctionStatus"></p>
+  <label for="correctionReason">
+    訂正理由
+  </label>
 
-<button id="correctionConfirm" type="submit">
-この取引を訂正する
-</button>
-<button id="correctionCancel" class="secondary"
-type="button">
-キャンセル
-</button>
+  <textarea
+    id="correctionReason"
+    maxlength="200"
+    placeholder="例：入力ミス、二重登録、テスト"
+    required
+  ></textarea>
+
+  <p id="correctionStatus"></p>
+
+  <button
+    id="correctionConfirm"
+    type="submit"
+  >
+    この取引を訂正する
+  </button>
+
+  <button
+    id="correctionCancel"
+    class="secondary"
+    type="button"
+  >
+    キャンセル
+  </button>
+
 </form>
+
 </section>
 
 </section>
 
 <p id="status">
-Firebaseに接続しています…
+  Firebaseに接続しています…
 </p>
+
 </main>
 
 <nav id="tabbar" class="tabbar">
-<button type="button" class="active" data-tab="home">
-<span class="tab-icon">⌂</span>ホーム
+
+<button
+  type="button"
+  class="active"
+  data-tab="home"
+>
+  <span class="tab-icon">⌂</span>
+  ホーム
 </button>
-<button type="button" data-tab="lala">
-<span class="tab-icon">★</span>LaLa預金
+
+<button
+  type="button"
+  data-tab="lala"
+>
+  <span class="tab-icon">★</span>
+  LaLa預金
 </button>
-<button type="button" data-tab="moon">
-<span class="tab-icon">☾</span>月見里返済
+
+<button
+  type="button"
+  data-tab="moon"
+>
+  <span class="tab-icon">☾</span>
+  月見里返済
 </button>
-<button type="button" data-tab="settings">
-<span class="tab-icon">⚙</span>その他設定
+
+<button
+  type="button"
+  data-tab="settings"
+>
+  <span class="tab-icon">⚙</span>
+  その他設定
 </button>
+
 </nav>
 
 <script type="module">
-import {initializeApp} from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
-  getAuth,onAuthStateChanged,
-  signInWithEmailAndPassword,signOut
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut
 } from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import {
-  getFirestore,doc,collection,onSnapshot,
-  runTransaction,serverTimestamp
+  getFirestore,
+  doc,
+  collection,
+  onSnapshot,
+  runTransaction,
+  serverTimestamp
 } from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-const firebaseConfig={
-  apiKey:"AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s",
-  authDomain:"star-bank-f4d5a.firebaseapp.com",
-  projectId:"star-bank-f4d5a",
-  storageBucket:"star-bank-f4d5a.firebasestorage.app",
-  messagingSenderId:"484567746900",
-  appId:"1:484567746900:web:dc6e0c69765c1c851920c1"
+/* =========================
+   Firebase
+========================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDplm1_t5mFuI0achPitdCige3PNgF1M_s",
+  authDomain: "star-bank-f4d5a.firebaseapp.com",
+  projectId: "star-bank-f4d5a",
+  storageBucket: "star-bank-f4d5a.firebasestorage.app",
+  messagingSenderId: "484567746900",
+  appId: "1:484567746900:web:dc6e0c69765c1c851920c1"
 };
 
-const firebaseApp=initializeApp(firebaseConfig);
-const auth=getAuth(firebaseApp);
-const db=getFirestore(firebaseApp);
-const el=id=>document.getElementById(id);
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
 
-const svgNS="http://www.w3.org/2000/svg";
+const el = id => document.getElementById(id);
 
-const starPatterns={
-  home:{
-    dots:[
-      [20,22,1.8],[77,16,1.3],[124,43,2],
-      [190,17,1.5],[252,38,2],[298,13,1.2],
-      [48,86,1.4],[159,91,1.5],[270,88,1.6]
+/* =========================
+   ランダムセリフ：全30個
+========================= */
+
+const quotes = {
+
+  home: [
+    "幸せは、あたたかい子犬。",
+    "やれやれ！",
+    "一緒にいるだけで楽しい友達がいる。",
+    "幸せは案外、身近なところにある。",
+    "今日は何かいいことがあるかもしれない。",
+    "友達がいれば、退屈な日も面白い。",
+    "人生って、思いどおりにならないね。",
+    "何もしない日だって悪くない。",
+    "小さな喜びを見逃したくない。",
+    "どうして僕ばっかりこんな目に？"
+  ],
+
+  lala: [
+    "誰が気にするの？！",
+    "どうして私に言うの？",
+    "失敗しても、次がある。",
+    "うまくいかない日も、挑戦は続く。",
+    "僕にはまだ希望がある。たぶん。",
+    "小さな成功でも、うれしいものだ。",
+    "また負けちゃった。でも明日もやるよ。",
+    "人生に説明書があればいいのに。",
+    "夢を見るのに、お金はいらない。",
+    "自信はないけど、やってみよう。"
+  ],
+
+  moon: [
+    "安心毛布",
+    "今日はもう、ゆっくり休もう。",
+    "お昼寝は、人生の大切な時間だ。",
+    "明日のことは明日考えればいい。",
+    "世界が忙しくても、僕は眠る。",
+    "安心できる場所がひとつあればいい。",
+    "考えすぎると眠れなくなるね。",
+    "ときには何もしない勇気も必要だ。",
+    "月を眺めていると、悩みが小さく見える。",
+    "おやすみ。続きは明日。"
+  ]
+
+};
+
+const lastQuoteIndex = {
+  home: -1,
+  lala: -1,
+  moon: -1
+};
+
+function changeQuote(page) {
+  const list = quotes[page];
+  const target = el("quote-" + page);
+
+  if (!list || !target) return;
+
+  let index;
+
+  do {
+    index = Math.floor(Math.random() * list.length);
+  } while (
+    list.length > 1 &&
+    index === lastQuoteIndex[page]
+  );
+
+  lastQuoteIndex[page] = index;
+  target.textContent = "「" + list[index] + "」";
+}
+
+/* タップやキーボードでセリフを変更 */
+
+document.querySelectorAll(
+  "[data-quote-page]"
+).forEach(element => {
+
+  const page = element.dataset.quotePage;
+
+  element.addEventListener("click", () => {
+    changeQuote(page);
+  });
+
+  element.addEventListener("keydown", event => {
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+      changeQuote(page);
+    }
+  });
+
+});
+
+/* 初回のセリフ表示 */
+
+["home", "lala", "moon"].forEach(changeQuote);
+
+/* =========================
+   星空の背景
+========================= */
+
+const svgNS = "http://www.w3.org/2000/svg";
+
+const starPatterns = {
+
+  home: {
+    dots: [
+      [20,22,1.8],
+      [77,16,1.3],
+      [124,43,2],
+      [190,17,1.5],
+      [252,38,2],
+      [298,13,1.2],
+      [48,86,1.4],
+      [159,91,1.5],
+      [270,88,1.6]
     ],
-    sparkles:[
-      [54,43,5],[220,73,6],[287,52,4]
+    sparkles: [
+      [54,43,5],
+      [220,73,6],
+      [287,52,4]
     ]
   },
-  lala:{
-    dots:[
-      [25,18,1.4],[93,26,1.2],[154,12,1.8],
-      [265,24,1.6],[296,78,1.3],[65,91,1.3],
-      [132,83,1.2],[237,93,1.4]
+
+  lala: {
+    dots: [
+      [25,18,1.4],
+      [93,26,1.2],
+      [154,12,1.8],
+      [265,24,1.6],
+      [296,78,1.3],
+      [65,91,1.3],
+      [132,83,1.2],
+      [237,93,1.4]
     ],
-    sparkles:[
-      [55,53,4],[247,55,5]
+    sparkles: [
+      [55,53,4],
+      [247,55,5]
     ]
   },
-  moon:{
-    dots:[
+
+  moon: {
+    dots: [
       [78,14,1.0],
       [139,20,1.5],
       [185,14,1.0],
       [219,36,1.4],
       [272,15,1.2],
       [307,41,1.0],
-      [87,90,0.9],
+      [87,90,.9],
       [169,88,1.1],
       [250,91,1.1],
-      [291,79,0.9]
+      [291,79,.9]
     ],
-    sparkles:[
+    sparkles: [
       [161,40,2.5],
       [234,69,4.5],
       [281,42,3]
     ]
   }
+
 };
 
-function makeSvgElement(name,attributes){
-  const node=document.createElementNS(svgNS,name);
+function makeSvgElement(name, attributes) {
+  const node = document.createElementNS(
+    svgNS, name
+  );
 
-  for(const [key,value] of Object.entries(attributes)){
-    node.setAttribute(key,String(value));
+  for (const [key,value] of Object.entries(attributes)) {
+    node.setAttribute(key, String(value));
   }
 
   return node;
 }
 
-function sparklePath(x,y,r){
-  const c=1.3;
+function sparklePath(x,y,r) {
+  const c = 1.3;
 
   return [
     `M ${x} ${y-r}`,
@@ -740,43 +1217,52 @@ function sparklePath(x,y,r){
   ].join(" ");
 }
 
-function renderStars(tab){
-  const svg=el("starsSvg");
+function renderStars(tab) {
+  const svg = el("starsSvg");
   svg.replaceChildren();
 
-  const pattern=starPatterns[tab];
+  const pattern = starPatterns[tab];
 
-  if(!pattern)return;
+  if (!pattern) return;
 
-  svg.setAttribute("viewBox","0 0 320 880");
-  svg.setAttribute("preserveAspectRatio","xMidYMid slice");
+  svg.setAttribute(
+    "viewBox", "0 0 320 880"
+  );
 
-  const defs=makeSvgElement("defs",{});
-  const tile=makeSvgElement("pattern",{
-    id:"starTile",
-    x:0,
-    y:0,
-    width:320,
-    height:110,
-    patternUnits:"userSpaceOnUse"
+  svg.setAttribute(
+    "preserveAspectRatio",
+    "xMidYMid slice"
+  );
+
+  const defs = makeSvgElement("defs", {});
+
+  const tile = makeSvgElement("pattern", {
+    id: "starTile",
+    x: 0,
+    y: 0,
+    width: 320,
+    height: 110,
+    patternUnits: "userSpaceOnUse"
   });
 
-  for(const [x,y,r] of pattern.dots){
+  for (const [x,y,r] of pattern.dots) {
     tile.append(
-      makeSvgElement("circle",{
-        cx:x,cy:y,r,
-        fill:"white",
-        opacity:tab==="lala"?.8:.85
+      makeSvgElement("circle", {
+        cx: x,
+        cy: y,
+        r,
+        fill: "white",
+        opacity: tab === "lala" ? .8 : .85
       })
     );
   }
 
-  for(const [x,y,r] of pattern.sparkles){
+  for (const [x,y,r] of pattern.sparkles) {
     tile.append(
-      makeSvgElement("path",{
-        d:sparklePath(x,y,r),
-        fill:"white",
-        opacity:.9
+      makeSvgElement("path", {
+        d: sparklePath(x,y,r),
+        fill: "white",
+        opacity: .9
       })
     );
   }
@@ -785,16 +1271,21 @@ function renderStars(tab){
   svg.append(defs);
 
   svg.append(
-    makeSvgElement("rect",{
-      x:0,y:0,
-      width:320,
-      height:880,
-      fill:"url(#starTile)"
+    makeSvgElement("rect", {
+      x: 0,
+      y: 0,
+      width: 320,
+      height: 880,
+      fill: "url(#starTile)"
     })
   );
 }
 
-function applyTheme(tab){
+/* =========================
+   テーマ・タブ
+========================= */
+
+function applyTheme(tab) {
   document.body.classList.remove(
     "theme-home",
     "theme-lala",
@@ -802,155 +1293,198 @@ function applyTheme(tab){
     "theme-settings"
   );
 
-  document.body.classList.add("theme-"+tab);
+  document.body.classList.add(
+    "theme-" + tab
+  );
+
   renderStars(tab);
 }
 
-let stopListeners=[];
-let authVersion=0;
-let lalaBalance=null;
-let moonBalance=null;
-let transferred=null;
-let transactionType="charge";
-let transactionBusy=false;
-let correctionBusy=false;
-let correctionTarget=null;
+let stopListeners = [];
+let authVersion = 0;
 
-const histories={
-  LaLa:[],
-  yamanashi:[]
+let lalaBalance = null;
+let moonBalance = null;
+let transferred = null;
+
+let transactionType = "charge";
+let transactionBusy = false;
+let correctionBusy = false;
+let correctionTarget = null;
+
+const histories = {
+  LaLa: [],
+  yamanashi: []
 };
 
-const labels={
-  charge:"チャージ",
-  withdraw:"出金",
-  transfer_in:"振替入金",
-  transfer_out:"振替出金",
-  correction:"訂正"
+const labels = {
+  charge: "チャージ",
+  withdraw: "出金",
+  transfer_in: "振替入金",
+  transfer_out: "振替出金",
+  correction: "訂正"
 };
 
-const format=n=>n.toLocaleString("ja-JP")+" 粒";
+const format = n =>
+  n.toLocaleString("ja-JP") + " 粒";
 
-function bankRef(id){
-  return doc(db,"StarBank",id);
+function bankRef(id) {
+  return doc(db, "StarBank", id);
 }
 
-function historyRef(id){
-  return collection(db,"StarBank",id,"history");
+function historyRef(id) {
+  return collection(
+    db, "StarBank", id, "history"
+  );
 }
 
-function entryRef(id,entryId){
-  return doc(db,"StarBank",id,"history",entryId);
+function entryRef(id, entryId) {
+  return doc(
+    db, "StarBank", id, "history", entryId
+  );
 }
 
-function switchTab(tab){
-  if(transactionBusy||correctionBusy)return;
+function switchTab(tab) {
+  if (transactionBusy || correctionBusy) return;
 
   closeTransaction();
   closeCorrection();
 
-  document.querySelectorAll(".page").forEach(page=>{
+  document.querySelectorAll(".page").forEach(page => {
     page.classList.toggle(
-      "active",page.id==="page-"+tab
+      "active",
+      page.id === "page-" + tab
     );
   });
 
-  document.querySelectorAll("[data-tab]").forEach(button=>{
+  document.querySelectorAll("[data-tab]").forEach(button => {
     button.classList.toggle(
-      "active",button.dataset.tab===tab
+      "active",
+      button.dataset.tab === tab
     );
   });
 
   applyTheme(tab);
 
-  window.scrollTo({top:0,behavior:"instant"});
+  /* タブ切り替えのたびにセリフを変更 */
+  if (quotes[tab]) {
+    changeQuote(tab);
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
 }
 
-document.querySelectorAll("[data-tab]").forEach(button=>{
-  button.addEventListener("click",()=>{
+document.querySelectorAll("[data-tab]").forEach(button => {
+  button.addEventListener("click", () => {
     switchTab(button.dataset.tab);
   });
 });
 
-function stopWatching(){
-  stopListeners.forEach(stop=>stop());
-  stopListeners=[];
+/* =========================
+   口座残高
+========================= */
+
+function stopWatching() {
+  stopListeners.forEach(stop => stop());
+  stopListeners = [];
 }
 
-function setTransactionAvailable(){
-  const busy=transactionBusy||correctionBusy;
+function setTransactionAvailable() {
+  const busy = transactionBusy || correctionBusy;
 
-  el("chargeButton").disabled=
-    busy||lalaBalance===null;
+  el("chargeButton").disabled =
+    busy || lalaBalance === null;
 
-  el("withdrawButton").disabled=
-    busy||lalaBalance===null;
+  el("withdrawButton").disabled =
+    busy || lalaBalance === null;
 
-  el("repaymentButton").disabled=
-    busy||moonBalance===null||transferred===null;
+  el("repaymentButton").disabled =
+    busy ||
+    moonBalance === null ||
+    transferred === null;
 
-  el("transferButton").disabled=
-    busy||
-    lalaBalance===null||
-    moonBalance===null||
-    transferred===null||
-    moonBalance-transferred<=0;
+  el("transferButton").disabled =
+    busy ||
+    lalaBalance === null ||
+    moonBalance === null ||
+    transferred === null ||
+    moonBalance - transferred <= 0;
 }
 
-function resetBalances(){
-  lalaBalance=null;
-  moonBalance=null;
-  transferred=null;
+function resetBalances() {
+  lalaBalance = null;
+  moonBalance = null;
+  transferred = null;
 
-  for(const id of [
-    "homeLalaBalance","homeMoonBalance",
-    "homeTransferred","homeAvailable",
-    "transferredAmount","availableAmount"
-  ]){
-    el(id).textContent="読込中…";
+  for (const id of [
+    "homeLalaBalance",
+    "homeMoonBalance",
+    "homeTransferred",
+    "homeAvailable",
+    "transferredAmount",
+    "availableAmount"
+  ]) {
+    el(id).textContent = "読込中…";
   }
 
   setTransactionAvailable();
 }
 
-function updateHome(){
-  el("homeLalaBalance").textContent=
-    lalaBalance===null?"— 粒":format(lalaBalance);
+function updateHome() {
+  el("homeLalaBalance").textContent =
+    lalaBalance === null
+      ? "— 粒"
+      : format(lalaBalance);
 
-  el("homeMoonBalance").textContent=
-    moonBalance===null?"— 粒":format(moonBalance);
+  el("homeMoonBalance").textContent =
+    moonBalance === null
+      ? "— 粒"
+      : format(moonBalance);
 
-  el("homeTransferred").textContent=
-    transferred===null?"—":format(transferred);
+  el("homeTransferred").textContent =
+    transferred === null
+      ? "—"
+      : format(transferred);
 
-  el("homeAvailable").textContent=
-    moonBalance===null||transferred===null
-      ?"—":format(moonBalance-transferred);
+  el("homeAvailable").textContent =
+    moonBalance === null || transferred === null
+      ? "—"
+      : format(moonBalance - transferred);
 }
 
-function watchBalance(accountId,balanceId,errorId,version){
-  const balanceEl=el(balanceId);
-  const errorEl=el(errorId);
+function watchBalance(
+  accountId,
+  balanceId,
+  errorId,
+  version
+) {
+  const balanceEl = el(balanceId);
+  const errorEl = el(errorId);
 
-  balanceEl.textContent="読込中…";
-  errorEl.textContent="";
+  balanceEl.textContent = "読込中…";
+  errorEl.textContent = "";
 
   return onSnapshot(
     bankRef(accountId),
-    snapshot=>{
-      if(version!==authVersion)return;
 
-      if(!snapshot.exists()){
-        balanceEl.textContent="— 粒";
-        errorEl.textContent="口座が見つかりません。";
+    snapshot => {
+      if (version !== authVersion) return;
 
-        if(accountId==="LaLa"){
-          lalaBalance=null;
-        }else{
-          moonBalance=null;
-          transferred=null;
-          el("transferredAmount").textContent="—";
-          el("availableAmount").textContent="—";
+      if (!snapshot.exists()) {
+        balanceEl.textContent = "— 粒";
+        errorEl.textContent =
+          "口座が見つかりません。";
+
+        if (accountId === "LaLa") {
+          lalaBalance = null;
+        } else {
+          moonBalance = null;
+          transferred = null;
+          el("transferredAmount").textContent = "—";
+          el("availableAmount").textContent = "—";
         }
 
         updateHome();
@@ -958,20 +1492,24 @@ function watchBalance(accountId,balanceId,errorId,version){
         return;
       }
 
-      const data=snapshot.data();
-      const value=data.balance;
+      const data = snapshot.data();
+      const value = data.balance;
 
-      if(!Number.isSafeInteger(value)||value<0){
-        balanceEl.textContent="— 粒";
-        errorEl.textContent="残高データが不正です。";
+      if (
+        !Number.isSafeInteger(value) ||
+        value < 0
+      ) {
+        balanceEl.textContent = "— 粒";
+        errorEl.textContent =
+          "残高データが不正です。";
 
-        if(accountId==="LaLa"){
-          lalaBalance=null;
-        }else{
-          moonBalance=null;
-          transferred=null;
-          el("transferredAmount").textContent="—";
-          el("availableAmount").textContent="—";
+        if (accountId === "LaLa") {
+          lalaBalance = null;
+        } else {
+          moonBalance = null;
+          transferred = null;
+          el("transferredAmount").textContent = "—";
+          el("availableAmount").textContent = "—";
         }
 
         updateHome();
@@ -979,49 +1517,59 @@ function watchBalance(accountId,balanceId,errorId,version){
         return;
       }
 
-      balanceEl.textContent=format(value);
-      errorEl.textContent="";
+      balanceEl.textContent = format(value);
+      errorEl.textContent = "";
 
-      if(accountId==="LaLa"){
-        lalaBalance=value;
-      }else{
-        moonBalance=value;
-        const t=data.transferred;
+      if (accountId === "LaLa") {
+        lalaBalance = value;
+      } else {
+        moonBalance = value;
 
-        if(
-          !Number.isSafeInteger(t)||
-          t<0||
-          t>value
-        ){
-          transferred=null;
-          el("transferredAmount").textContent="—";
-          el("availableAmount").textContent="—";
-          errorEl.textContent=
+        const t = data.transferred;
+
+        if (
+          !Number.isSafeInteger(t) ||
+          t < 0 ||
+          t > value
+        ) {
+          transferred = null;
+
+          el("transferredAmount").textContent = "—";
+          el("availableAmount").textContent = "—";
+
+          errorEl.textContent =
             "振替済み額のデータを確認してください。";
-        }else{
-          transferred=t;
-          el("transferredAmount").textContent=format(t);
-          el("availableAmount").textContent=format(value-t);
+        } else {
+          transferred = t;
+
+          el("transferredAmount").textContent =
+            format(t);
+
+          el("availableAmount").textContent =
+            format(value - t);
         }
       }
 
       updateHome();
       setTransactionAvailable();
     },
-    error=>{
-      if(version!==authVersion)return;
 
-      balanceEl.textContent="— 粒";
-      errorEl.textContent=
-        "読み込みエラー: "+error.code+"\n"+error.message;
+    error => {
+      if (version !== authVersion) return;
 
-      if(accountId==="LaLa"){
-        lalaBalance=null;
-      }else{
-        moonBalance=null;
-        transferred=null;
-        el("transferredAmount").textContent="—";
-        el("availableAmount").textContent="—";
+      balanceEl.textContent = "— 粒";
+
+      errorEl.textContent =
+        "読み込みエラー: " +
+        error.code + "\n" + error.message;
+
+      if (accountId === "LaLa") {
+        lalaBalance = null;
+      } else {
+        moonBalance = null;
+        transferred = null;
+        el("transferredAmount").textContent = "—";
+        el("availableAmount").textContent = "—";
       }
 
       updateHome();
@@ -1030,142 +1578,175 @@ function watchBalance(accountId,balanceId,errorId,version){
   );
 }
 
-function historyElements(accountId){
-  return accountId==="LaLa"
-    ?{
-      list:el("lalaHistoryList"),
-      status:el("lalaHistoryStatus")
-    }
-    :{
-      list:el("moonHistoryList"),
-      status:el("moonHistoryStatus")
-    };
+/* =========================
+   取引履歴
+========================= */
+
+function historyElements(accountId) {
+  return accountId === "LaLa"
+    ? {
+        list: el("lalaHistoryList"),
+        status: el("lalaHistoryStatus")
+      }
+    : {
+        list: el("moonHistoryList"),
+        status: el("moonHistoryStatus")
+      };
 }
 
-function watchHistory(accountId,version){
-  const {list,status}=historyElements(accountId);
+function watchHistory(accountId, version) {
+  const {list,status} = historyElements(accountId);
 
   list.replaceChildren();
-  status.textContent="履歴を読み込んでいます…";
+  status.textContent = "履歴を読み込んでいます…";
 
   return onSnapshot(
     historyRef(accountId),
-    snapshot=>{
-      if(version!==authVersion)return;
 
-      const entries=snapshot.docs.map(item=>({
-        id:item.id,
+    snapshot => {
+      if (version !== authVersion) return;
+
+      const entries = snapshot.docs.map(item => ({
+        id: item.id,
         ...item.data()
       }));
 
-      entries.sort((a,b)=>
-        (b.createdAt?.toMillis?.()??0)-
-        (a.createdAt?.toMillis?.()??0)
+      entries.sort((a,b) =>
+        (b.createdAt?.toMillis?.() ?? 0) -
+        (a.createdAt?.toMillis?.() ?? 0)
       );
 
-      histories[accountId]=entries;
+      histories[accountId] = entries;
       renderHistory(accountId);
     },
-    error=>{
-      if(version!==authVersion)return;
 
-      status.textContent=
-        "履歴の読み込みエラー："+
-        error.code+"\n"+error.message;
+    error => {
+      if (version !== authVersion) return;
+
+      status.textContent =
+        "履歴の読み込みエラー：" +
+        error.code + "\n" + error.message;
     }
   );
 }
 
-function renderHistory(accountId){
-  const {list,status}=historyElements(accountId);
-  const entries=histories[accountId];
+function renderHistory(accountId) {
+  const {list,status} = historyElements(accountId);
+  const entries = histories[accountId];
 
   list.replaceChildren();
 
-  if(!entries.length){
-    status.textContent="取引履歴はありません。";
+  if (!entries.length) {
+    status.textContent = "取引履歴はありません。";
     return;
   }
 
-  status.textContent=entries.length+"件の履歴があります。";
+  status.textContent =
+    entries.length + "件の履歴があります。";
 
-  const correctedIds=new Set(
+  const correctedIds = new Set(
     entries
-      .filter(e=>e.type==="correction"&&e.originalId)
-      .map(e=>e.originalId)
+      .filter(e =>
+        e.type === "correction" &&
+        e.originalId
+      )
+      .map(e => e.originalId)
   );
 
-  for(const entry of entries){
-    const item=document.createElement("div");
-    item.className="history-item";
+  for (const entry of entries) {
+    const item = document.createElement("div");
+    item.className = "history-item";
 
-    const isCorrected=correctedIds.has(entry.id);
+    const isCorrected = correctedIds.has(entry.id);
 
-    if(isCorrected){
+    if (isCorrected) {
       item.classList.add("history-corrected");
     }
 
-    const title=document.createElement("div");
-    title.className="history-title";
+    const title = document.createElement("div");
+    title.className = "history-title";
 
-    const typeLabel=accountId==="yamanashi"&&
-      entry.type==="charge"
-      ?"返済記録"
-      :(labels[entry.type]||entry.type||"不明");
+    const typeLabel =
+      accountId === "yamanashi" &&
+      entry.type === "charge"
+        ? "返済記録"
+        : (
+            labels[entry.type] ||
+            entry.type ||
+            "不明"
+          );
 
-    const amount=
+    const amount =
       Number.isSafeInteger(entry.amount)
-        ?format(entry.amount)
-        :"金額不明";
+        ? format(entry.amount)
+        : "金額不明";
 
-    title.textContent=typeLabel+"："+amount;
+    title.textContent =
+      typeLabel + "：" + amount;
 
-    const date=document.createElement("div");
-    date.className="muted";
+    const date = document.createElement("div");
+    date.className = "muted";
 
-    date.textContent=entry.createdAt?.toDate
-      ?entry.createdAt.toDate().toLocaleString("ja-JP")
-      :"日時不明";
+    date.textContent =
+      entry.createdAt?.toDate
+        ? entry.createdAt
+            .toDate()
+            .toLocaleString("ja-JP")
+        : "日時不明";
 
     item.append(title,date);
 
-    if(entry.type==="correction"){
-      const detail=document.createElement("div");
-      detail.className="history-correction";
+    if (entry.type === "correction") {
+      const detail = document.createElement("div");
+      detail.className = "history-correction";
 
-      const originalLabel=
-        accountId==="yamanashi"&&
-        entry.originalType==="charge"
-          ?"返済記録"
-          :(labels[entry.originalType]||
-            entry.originalType||"不明");
+      const originalLabel =
+        accountId === "yamanashi" &&
+        entry.originalType === "charge"
+          ? "返済記録"
+          : (
+              labels[entry.originalType] ||
+              entry.originalType ||
+              "不明"
+            );
 
-      detail.textContent=
-        "訂正対象："+originalLabel+
-        (entry.reason
-          ?" ／ 理由："+entry.reason
-          :"");
+      detail.textContent =
+        "訂正対象：" +
+        originalLabel +
+        (
+          entry.reason
+            ? " ／ 理由：" + entry.reason
+            : ""
+        );
 
       item.append(detail);
-    }else if(isCorrected){
-      const detail=document.createElement("div");
-      detail.className="history-correction";
-      detail.textContent="訂正済み";
+
+    } else if (isCorrected) {
+      const detail = document.createElement("div");
+      detail.className = "history-correction";
+      detail.textContent = "訂正済み";
       item.append(detail);
-    }else if(
-      ["charge","withdraw",
-       "transfer_in","transfer_out"].includes(entry.type)
-      &&Number.isSafeInteger(entry.amount)
-      &&entry.amount>0
-    ){
-      const button=document.createElement("button");
-      button.type="button";
-      button.className="correction-button";
-      button.textContent="✎ この取引を訂正";
 
-      button.disabled=transactionBusy||correctionBusy;
+    } else if (
+      [
+        "charge",
+        "withdraw",
+        "transfer_in",
+        "transfer_out"
+      ].includes(entry.type) &&
+      Number.isSafeInteger(entry.amount) &&
+      entry.amount > 0
+    ) {
+      const button = document.createElement("button");
 
-      button.addEventListener("click",()=>{
+      button.type = "button";
+      button.className = "correction-button";
+      button.textContent = "✎ この取引を訂正";
+
+      button.disabled =
+        transactionBusy || correctionBusy;
+
+      button.addEventListener("click", () => {
         openCorrection(accountId,entry);
       });
 
@@ -1176,693 +1757,987 @@ function renderHistory(accountId){
   }
 }
 
-function renderAllHistories(){
+function renderAllHistories() {
   renderHistory("LaLa");
   renderHistory("yamanashi");
 }
 
-onAuthStateChanged(auth,user=>{
-  const version=++authVersion;
+/* =========================
+   認証
+========================= */
 
-  stopWatching();
-  resetBalances();
-  closeTransaction();
-  closeCorrection();
+onAuthStateChanged(
+  auth,
 
-  transactionBusy=false;
-  correctionBusy=false;
-  correctionTarget=null;
+  user => {
+    const version = ++authVersion;
 
-  histories.LaLa=[];
-  histories.yamanashi=[];
+    stopWatching();
+    resetBalances();
+    closeTransaction();
+    closeCorrection();
 
-  el("login").style.display=user?"none":"block";
-  el("app").style.display=user?"block":"none";
-  el("tabbar").style.display=user?"grid":"none";
-  el("userEmail").textContent=user?.email||"";
+    transactionBusy = false;
+    correctionBusy = false;
+    correctionTarget = null;
 
-  if(user){
-    el("status").textContent="Firebase認証：接続成功";
+    histories.LaLa = [];
+    histories.yamanashi = [];
 
-    const activeTab=
-      document.querySelector("[data-tab].active")
-        ?.dataset.tab||"home";
+    el("login").style.display =
+      user ? "none" : "block";
 
-    applyTheme(activeTab);
+    el("app").style.display =
+      user ? "block" : "none";
 
-    stopListeners.push(
-      watchBalance("LaLa","lalaBalance","lalaError",version)
-    );
+    el("tabbar").style.display =
+      user ? "grid" : "none";
 
-    stopListeners.push(
-      watchBalance("yamanashi","moonBalance","moonError",version)
-    );
+    el("userEmail").textContent =
+      user?.email || "";
 
-    stopListeners.push(watchHistory("LaLa",version));
-    stopListeners.push(watchHistory("yamanashi",version));
-  }else{
-    document.body.classList.remove(
-      "theme-home","theme-lala",
-      "theme-moon","theme-settings"
-    );
+    if (user) {
+      el("status").textContent =
+        "Firebase認証：接続成功";
 
-    el("status").textContent="ログインしてください";
+      const activeTab =
+        document.querySelector(
+          "[data-tab].active"
+        )?.dataset.tab || "home";
 
-    for(const id of ["LaLa","yamanashi"]){
-      const {list,status}=historyElements(id);
-      list.replaceChildren();
-      status.textContent="読込待機中…";
+      applyTheme(activeTab);
+
+      stopListeners.push(
+        watchBalance(
+          "LaLa",
+          "lalaBalance",
+          "lalaError",
+          version
+        )
+      );
+
+      stopListeners.push(
+        watchBalance(
+          "yamanashi",
+          "moonBalance",
+          "moonError",
+          version
+        )
+      );
+
+      stopListeners.push(
+        watchHistory("LaLa",version)
+      );
+
+      stopListeners.push(
+        watchHistory("yamanashi",version)
+      );
+
+    } else {
+      document.body.classList.remove(
+        "theme-home",
+        "theme-lala",
+        "theme-moon",
+        "theme-settings"
+      );
+
+      el("status").textContent =
+        "ログインしてください";
+
+      for (const id of ["LaLa","yamanashi"]) {
+        const {list,status} = historyElements(id);
+
+        list.replaceChildren();
+        status.textContent = "読込待機中…";
+      }
+    }
+  },
+
+  error => {
+    el("status").textContent =
+      "認証エラー: " + error.code;
+  }
+);
+
+el("loginForm").addEventListener(
+  "submit",
+  async event => {
+    event.preventDefault();
+
+    el("status").textContent = "ログイン中…";
+
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        el("email").value,
+        el("password").value
+      );
+    } catch (error) {
+      el("status").textContent =
+        "ログイン失敗: " + error.code;
     }
   }
-},error=>{
-  el("status").textContent="認証エラー: "+error.code;
-});
+);
 
-el("loginForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  el("status").textContent="ログイン中…";
-
-  try{
-    await signInWithEmailAndPassword(
-      auth,el("email").value,el("password").value
-    );
-  }catch(error){
-    el("status").textContent=
-      "ログイン失敗: "+error.code;
+el("logout").addEventListener(
+  "click",
+  async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      el("status").textContent =
+        "ログアウト失敗: " + error.code;
+    }
   }
-});
+);
 
-el("logout").addEventListener("click",async()=>{
-  try{
-    await signOut(auth);
-  }catch(error){
-    el("status").textContent=
-      "ログアウト失敗: "+error.code;
-  }
-});
+/* =========================
+   取引画面
+========================= */
 
-function openTransaction(type){
-  if(transactionBusy||correctionBusy)return;
+function openTransaction(type) {
+  if (transactionBusy || correctionBusy) return;
 
-  if(type==="repayment"){
-    if(moonBalance===null||transferred===null)return;
-  }else if(type==="transfer"){
-    if(
-      lalaBalance===null||
-      moonBalance===null||
-      transferred===null||
-      moonBalance-transferred<=0
-    )return;
-  }else if(lalaBalance===null){
+  if (type === "repayment") {
+    if (
+      moonBalance === null ||
+      transferred === null
+    ) return;
+
+  } else if (type === "transfer") {
+    if (
+      lalaBalance === null ||
+      moonBalance === null ||
+      transferred === null ||
+      moonBalance - transferred <= 0
+    ) return;
+
+  } else if (lalaBalance === null) {
     return;
   }
 
   closeCorrection();
-  transactionType=type;
+  transactionType = type;
 
-  const titles={
-    charge:"✦ 星粒をチャージ",
-    withdraw:"✧ 星粒を使う",
-    repayment:"☾ 月見里からの返済を記録",
-    transfer:"↗ LaLa預金へ振り替える"
+  const titles = {
+    charge: "✦ 星粒をチャージ",
+    withdraw: "✧ 星粒を使う",
+    repayment: "☾ 月見里からの返済を記録",
+    transfer: "↗ LaLa預金へ振り替える"
   };
 
-  el("transactionTitle").textContent=titles[type];
-  el("transactionAmount").value="";
+  el("transactionTitle").textContent =
+    titles[type];
 
-  if(type==="transfer"){
-    el("transactionStatus").textContent=
-      "振替可能額："+format(moonBalance-transferred);
-  }else{
-    const current=type==="repayment"
-      ?moonBalance:lalaBalance;
+  el("transactionAmount").value = "";
 
-    el("transactionStatus").textContent=
-      "現在の残高："+format(current);
+  if (type === "transfer") {
+    el("transactionStatus").textContent =
+      "振替可能額：" +
+      format(moonBalance - transferred);
+  } else {
+    const current =
+      type === "repayment"
+        ? moonBalance
+        : lalaBalance;
+
+    el("transactionStatus").textContent =
+      "現在の残高：" + format(current);
   }
 
-  el("transactionPanel").style.display="block";
+  el("transactionPanel").style.display = "block";
+
   el("transactionPanel").scrollIntoView({
-    behavior:"smooth",block:"nearest"
+    behavior: "smooth",
+    block: "nearest"
   });
 }
 
-function closeTransaction(){
-  el("transactionPanel").style.display="none";
+function closeTransaction() {
+  el("transactionPanel").style.display = "none";
 }
 
-el("chargeButton").addEventListener("click",()=>{
-  openTransaction("charge");
-});
+el("chargeButton").addEventListener(
+  "click",
+  () => openTransaction("charge")
+);
 
-el("withdrawButton").addEventListener("click",()=>{
-  openTransaction("withdraw");
-});
+el("withdrawButton").addEventListener(
+  "click",
+  () => openTransaction("withdraw")
+);
 
-el("repaymentButton").addEventListener("click",()=>{
-  openTransaction("repayment");
-});
+el("repaymentButton").addEventListener(
+  "click",
+  () => openTransaction("repayment")
+);
 
-el("transferButton").addEventListener("click",()=>{
-  openTransaction("transfer");
-});
+el("transferButton").addEventListener(
+  "click",
+  () => openTransaction("transfer")
+);
 
-el("transactionCancel").addEventListener("click",()=>{
-  if(!transactionBusy)closeTransaction();
-});
+el("transactionCancel").addEventListener(
+  "click",
+  () => {
+    if (!transactionBusy) closeTransaction();
+  }
+);
 
-async function ordinaryTransaction(type,amount,user){
-  const accountId=type==="repayment"?"yamanashi":"LaLa";
-  const bank=bankRef(accountId);
-  const historyEntry=doc(historyRef(accountId));
+/* =========================
+   通常取引
+========================= */
 
-  await runTransaction(db,async tx=>{
-    const snapshot=await tx.get(bank);
+async function ordinaryTransaction(
+  type,
+  amount,
+  user
+) {
+  const accountId =
+    type === "repayment"
+      ? "yamanashi"
+      : "LaLa";
 
-    if(!snapshot.exists()){
+  const bank = bankRef(accountId);
+  const historyEntry = doc(historyRef(accountId));
+
+  await runTransaction(db,async tx => {
+    const snapshot = await tx.get(bank);
+
+    if (!snapshot.exists()) {
       throw new Error("口座が見つかりません。");
     }
 
-    const data=snapshot.data();
-    const current=data.balance;
+    const data = snapshot.data();
+    const current = data.balance;
 
-    if(!Number.isSafeInteger(current)||current<0){
+    if (
+      !Number.isSafeInteger(current) ||
+      current < 0
+    ) {
       throw new Error("残高データが不正です。");
     }
 
-    if(type==="withdraw"&&amount>current){
+    if (
+      type === "withdraw" &&
+      amount > current
+    ) {
       throw new Error("残高が足りません。");
     }
 
-    const next=type==="withdraw"
-      ?current-amount:current+amount;
+    const next =
+      type === "withdraw"
+        ? current - amount
+        : current + amount;
 
-    if(!Number.isSafeInteger(next)||next<0){
-      throw new Error("残高の上限を超えています。");
+    if (
+      !Number.isSafeInteger(next) ||
+      next < 0
+    ) {
+      throw new Error(
+        "残高の上限を超えています。"
+      );
     }
 
-    if(type==="repayment"){
-      if(
-        !Number.isSafeInteger(data.transferred)||
-        data.transferred<0||
-        next<data.transferred
-      ){
-        throw new Error("返済データを確認してください。");
+    if (type === "repayment") {
+      if (
+        !Number.isSafeInteger(data.transferred) ||
+        data.transferred < 0 ||
+        next < data.transferred
+      ) {
+        throw new Error(
+          "返済データを確認してください。"
+        );
       }
     }
 
-    tx.update(bank,{balance:next});
+    tx.update(bank,{
+      balance: next
+    });
 
     tx.set(historyEntry,{
-      type:type==="repayment"?"charge":type,
+      type:
+        type === "repayment"
+          ? "charge"
+          : type,
       amount,
-      actorUid:user.uid,
-      actorName:"LaLa",
-      createdAt:serverTimestamp()
+      actorUid: user.uid,
+      actorName: "LaLa",
+      createdAt: serverTimestamp()
     });
   });
 }
 
-async function transferTransaction(amount,user){
-  const lala=bankRef("LaLa");
-  const moon=bankRef("yamanashi");
+/* =========================
+   月見里 → LaLa 振替
+========================= */
 
-  const lalaHistory=doc(historyRef("LaLa"));
-  const transferId=lalaHistory.id;
-  const moonHistory=entryRef("yamanashi",transferId);
+async function transferTransaction(
+  amount,
+  user
+) {
+  const lala = bankRef("LaLa");
+  const moon = bankRef("yamanashi");
 
-  await runTransaction(db,async tx=>{
-    const lalaSnap=await tx.get(lala);
-    const moonSnap=await tx.get(moon);
+  const lalaHistory = doc(historyRef("LaLa"));
+  const transferId = lalaHistory.id;
 
-    if(!lalaSnap.exists()||!moonSnap.exists()){
+  const moonHistory = entryRef(
+    "yamanashi",
+    transferId
+  );
+
+  await runTransaction(db,async tx => {
+    const lalaSnap = await tx.get(lala);
+    const moonSnap = await tx.get(moon);
+
+    if (
+      !lalaSnap.exists() ||
+      !moonSnap.exists()
+    ) {
       throw new Error("口座が見つかりません。");
     }
 
-    const lalaData=lalaSnap.data();
-    const moonData=moonSnap.data();
+    const lalaData = lalaSnap.data();
+    const moonData = moonSnap.data();
 
-    const lalaCurrent=lalaData.balance;
-    const moonTotal=moonData.balance;
-    const moonTransferred=moonData.transferred;
+    const lalaCurrent = lalaData.balance;
+    const moonTotal = moonData.balance;
+    const moonTransferred = moonData.transferred;
 
-    if(
-      !Number.isSafeInteger(lalaCurrent)||
-      lalaCurrent<0||
-      !Number.isSafeInteger(moonTotal)||
-      moonTotal<0||
-      !Number.isSafeInteger(moonTransferred)||
-      moonTransferred<0||
-      moonTransferred>moonTotal
-    ){
-      throw new Error("口座データが不正です。");
-    }
-
-    const available=moonTotal-moonTransferred;
-
-    if(amount>available){
+    if (
+      !Number.isSafeInteger(lalaCurrent) ||
+      lalaCurrent < 0 ||
+      !Number.isSafeInteger(moonTotal) ||
+      moonTotal < 0 ||
+      !Number.isSafeInteger(moonTransferred) ||
+      moonTransferred < 0 ||
+      moonTransferred > moonTotal
+    ) {
       throw new Error(
-        "振替可能額を超えています。現在："+format(available)
+        "口座データが不正です。"
       );
     }
 
-    const lalaNext=lalaCurrent+amount;
-    const transferredNext=moonTransferred+amount;
+    const available =
+      moonTotal - moonTransferred;
 
-    if(!Number.isSafeInteger(lalaNext)){
-      throw new Error("残高の上限を超えています。");
+    if (amount > available) {
+      throw new Error(
+        "振替可能額を超えています。現在：" +
+        format(available)
+      );
+    }
+
+    const lalaNext = lalaCurrent + amount;
+    const transferredNext =
+      moonTransferred + amount;
+
+    if (!Number.isSafeInteger(lalaNext)) {
+      throw new Error(
+        "残高の上限を超えています。"
+      );
     }
 
     tx.update(lala,{
-      balance:lalaNext,
-      lastTransferId:transferId
+      balance: lalaNext,
+      lastTransferId: transferId
     });
 
     tx.update(moon,{
-      transferred:transferredNext,
-      lastTransferId:transferId
+      transferred: transferredNext,
+      lastTransferId: transferId
     });
 
-    const common={
+    const common = {
       amount,
-      actorUid:user.uid,
-      actorName:"LaLa",
-      createdAt:serverTimestamp()
+      actorUid: user.uid,
+      actorName: "LaLa",
+      createdAt: serverTimestamp()
     };
 
     tx.set(lalaHistory,{
       ...common,
-      type:"transfer_in"
+      type: "transfer_in"
     });
 
     tx.set(moonHistory,{
       ...common,
-      type:"transfer_out"
+      type: "transfer_out"
     });
   });
 }
 
-el("transactionForm").addEventListener("submit",async event=>{
-  event.preventDefault();
+/* =========================
+   取引確定
+========================= */
 
-  if(transactionBusy||correctionBusy)return;
+el("transactionForm").addEventListener(
+  "submit",
+  async event => {
+    event.preventDefault();
 
-  const user=auth.currentUser;
-  const raw=el("transactionAmount").value.trim();
-  const amount=Number(raw);
+    if (
+      transactionBusy ||
+      correctionBusy
+    ) return;
 
-  if(!user){
-    el("transactionStatus").textContent=
-      "ログインが必要です。";
-    return;
-  }
+    const user = auth.currentUser;
 
-  if(
-    raw===""||
-    !Number.isSafeInteger(amount)||
-    amount<1||
-    amount>1000000
-  ){
-    el("transactionStatus").textContent=
-      "1〜1,000,000の整数を入力してください。";
-    return;
-  }
+    const raw =
+      el("transactionAmount").value.trim();
 
-  const type=transactionType;
+    const amount = Number(raw);
 
-  const transactionLabels={
-    charge:"チャージ",
-    withdraw:"出金",
-    repayment:"返済の記録",
-    transfer:"LaLa預金への振替"
-  };
-
-  const label=transactionLabels[type];
-
-  if(!confirm(
-    amount.toLocaleString("ja-JP")+
-    "粒の"+label+"を実行しますか？"
-  ))return;
-
-  transactionBusy=true;
-  setTransactionAvailable();
-  renderAllHistories();
-
-  el("transactionConfirm").disabled=true;
-  el("transactionCancel").disabled=true;
-  el("transactionStatus").textContent="処理中…";
-
-  try{
-    if(type==="transfer"){
-      await transferTransaction(amount,user);
-    }else{
-      await ordinaryTransaction(type,amount,user);
+    if (!user) {
+      el("transactionStatus").textContent =
+        "ログインが必要です。";
+      return;
     }
 
-    el("status").textContent=label+"が完了しました。";
-    closeTransaction();
-  }catch(error){
-    el("transactionStatus").textContent=
-      "取引エラー: "+
-      (error.code||"unknown")+
-      "\n"+error.message;
-  }finally{
-    transactionBusy=false;
-    el("transactionConfirm").disabled=false;
-    el("transactionCancel").disabled=false;
+    if (
+      raw === "" ||
+      !Number.isSafeInteger(amount) ||
+      amount < 1 ||
+      amount > 1000000
+    ) {
+      el("transactionStatus").textContent =
+        "1〜1,000,000の整数を入力してください。";
+      return;
+    }
+
+    const type = transactionType;
+
+    const transactionLabels = {
+      charge: "チャージ",
+      withdraw: "出金",
+      repayment: "返済の記録",
+      transfer: "LaLa預金への振替"
+    };
+
+    const label = transactionLabels[type];
+
+    if (!confirm(
+      amount.toLocaleString("ja-JP") +
+      "粒の" +
+      label +
+      "を実行しますか？"
+    )) return;
+
+    transactionBusy = true;
     setTransactionAvailable();
     renderAllHistories();
+
+    el("transactionConfirm").disabled = true;
+    el("transactionCancel").disabled = true;
+
+    el("transactionStatus").textContent =
+      "処理中…";
+
+    try {
+      if (type === "transfer") {
+        await transferTransaction(amount,user);
+      } else {
+        await ordinaryTransaction(
+          type,
+          amount,
+          user
+        );
+      }
+
+      el("status").textContent =
+        label + "が完了しました。";
+
+      closeTransaction();
+
+    } catch (error) {
+      el("transactionStatus").textContent =
+        "取引エラー: " +
+        (error.code || "unknown") +
+        "\n" +
+        error.message;
+
+    } finally {
+      transactionBusy = false;
+
+      el("transactionConfirm").disabled = false;
+      el("transactionCancel").disabled = false;
+
+      setTransactionAvailable();
+      renderAllHistories();
+    }
   }
-});
+);
 
-function openCorrection(accountId,entry){
-  if(transactionBusy||correctionBusy)return;
-  if(entry.type==="correction")return;
+/* =========================
+   訂正画面
+========================= */
 
-  const corrected=histories[accountId].some(
-    e=>e.type==="correction"&&e.originalId===entry.id
+function openCorrection(accountId,entry) {
+  if (
+    transactionBusy ||
+    correctionBusy
+  ) return;
+
+  if (entry.type === "correction") return;
+
+  const corrected = histories[accountId].some(
+    e =>
+      e.type === "correction" &&
+      e.originalId === entry.id
   );
 
-  if(corrected){
+  if (corrected) {
     alert("この取引は訂正済みです。");
     return;
   }
 
   closeTransaction();
 
-  correctionTarget={
+  correctionTarget = {
     accountId,
-    id:entry.id,
-    type:entry.type,
-    amount:entry.amount
+    id: entry.id,
+    type: entry.type,
+    amount: entry.amount
   };
 
-  const accountLabel=accountId==="LaLa"
-    ?"LaLa預金":"月見里返済";
+  const accountLabel =
+    accountId === "LaLa"
+      ? "LaLa預金"
+      : "月見里返済";
 
-  const typeLabel=accountId==="yamanashi"&&
-    entry.type==="charge"
-    ?"返済記録"
-    :(labels[entry.type]||entry.type);
+  const typeLabel =
+    accountId === "yamanashi" &&
+    entry.type === "charge"
+      ? "返済記録"
+      : (labels[entry.type] || entry.type);
 
-  el("correctionTarget").textContent=
-    "対象："+accountLabel+"\n"+
-    typeLabel+" ／ "+format(entry.amount);
+  el("correctionTarget").textContent =
+    "対象：" +
+    accountLabel +
+    "\n" +
+    typeLabel +
+    " ／ " +
+    format(entry.amount);
 
-  el("correctionTarget").style.whiteSpace="pre-wrap";
-  el("correctionReason").value="";
-  el("correctionStatus").textContent="";
+  el("correctionTarget").style.whiteSpace =
+    "pre-wrap";
 
-  el("correctionPanel").style.display="block";
+  el("correctionReason").value = "";
+  el("correctionStatus").textContent = "";
+
+  el("correctionPanel").style.display = "block";
+
   el("correctionPanel").scrollIntoView({
-    behavior:"smooth",block:"nearest"
+    behavior: "smooth",
+    block: "nearest"
   });
 }
 
-function closeCorrection(){
-  el("correctionPanel").style.display="none";
-  correctionTarget=null;
+function closeCorrection() {
+  el("correctionPanel").style.display = "none";
+  correctionTarget = null;
 }
 
-el("correctionCancel").addEventListener("click",()=>{
-  if(!correctionBusy)closeCorrection();
-});
+el("correctionCancel").addEventListener(
+  "click",
+  () => {
+    if (!correctionBusy) closeCorrection();
+  }
+);
 
-function validAccountData(data,accountId){
-  if(
-    !Number.isSafeInteger(data.balance)||
-    data.balance<0
-  ){
-    throw new Error("残高データが不正です。");
+function validAccountData(data,accountId) {
+  if (
+    !Number.isSafeInteger(data.balance) ||
+    data.balance < 0
+  ) {
+    throw new Error(
+      "残高データが不正です。"
+    );
   }
 
-  if(accountId==="yamanashi"){
-    if(
-      !Number.isSafeInteger(data.transferred)||
-      data.transferred<0||
-      data.transferred>data.balance
-    ){
-      throw new Error("振替済み額のデータが不正です。");
+  if (accountId === "yamanashi") {
+    if (
+      !Number.isSafeInteger(data.transferred) ||
+      data.transferred < 0 ||
+      data.transferred > data.balance
+    ) {
+      throw new Error(
+        "振替済み額のデータが不正です。"
+      );
     }
   }
 }
 
-async function ordinaryCorrection(target,reason,user){
-  const {accountId,id,type,amount}=target;
+/* =========================
+   通常取引の訂正
+========================= */
 
-  const bank=bankRef(accountId);
-  const original=entryRef(accountId,id);
-  const correction=entryRef(
-    accountId,"correction_"+id
+async function ordinaryCorrection(
+  target,
+  reason,
+  user
+) {
+  const {
+    accountId,
+    id,
+    type,
+    amount
+  } = target;
+
+  const bank = bankRef(accountId);
+  const original = entryRef(accountId,id);
+
+  const correction = entryRef(
+    accountId,
+    "correction_" + id
   );
 
-  await runTransaction(db,async tx=>{
-    const originalSnap=await tx.get(original);
-    const correctionSnap=await tx.get(correction);
-    const bankSnap=await tx.get(bank);
+  await runTransaction(db,async tx => {
+    const originalSnap = await tx.get(original);
+    const correctionSnap = await tx.get(correction);
+    const bankSnap = await tx.get(bank);
 
-    if(!originalSnap.exists()){
-      throw new Error("元の取引が見つかりません。");
+    if (!originalSnap.exists()) {
+      throw new Error(
+        "元の取引が見つかりません。"
+      );
     }
 
-    if(correctionSnap.exists()){
-      throw new Error("この取引はすでに訂正済みです。");
+    if (correctionSnap.exists()) {
+      throw new Error(
+        "この取引はすでに訂正済みです。"
+      );
     }
 
-    if(!bankSnap.exists()){
-      throw new Error("口座が見つかりません。");
+    if (!bankSnap.exists()) {
+      throw new Error(
+        "口座が見つかりません。"
+      );
     }
 
-    const originalData=originalSnap.data();
-    const data=bankSnap.data();
+    const originalData = originalSnap.data();
+    const data = bankSnap.data();
 
-    if(
-      originalData.type!==type||
-      originalData.amount!==amount
-    ){
-      throw new Error("取引内容が変更されています。");
+    if (
+      originalData.type !== type ||
+      originalData.amount !== amount
+    ) {
+      throw new Error(
+        "取引内容が変更されています。"
+      );
     }
 
     validAccountData(data,accountId);
 
     let next;
 
-    if(type==="charge"){
-      next=data.balance-amount;
-    }else if(type==="withdraw"&&accountId==="LaLa"){
-      next=data.balance+amount;
-    }else{
-      throw new Error("この取引は訂正できません。");
+    if (type === "charge") {
+      next = data.balance - amount;
+
+    } else if (
+      type === "withdraw" &&
+      accountId === "LaLa"
+    ) {
+      next = data.balance + amount;
+
+    } else {
+      throw new Error(
+        "この取引は訂正できません。"
+      );
     }
 
-    if(
-      !Number.isSafeInteger(next)||
-      next<0
-    ){
+    if (
+      !Number.isSafeInteger(next) ||
+      next < 0
+    ) {
       throw new Error(
         "残高が不足しているため訂正できません。"
       );
     }
 
-    if(
-      accountId==="yamanashi"&&
-      next<data.transferred
-    ){
+    if (
+      accountId === "yamanashi" &&
+      next < data.transferred
+    ) {
       throw new Error(
         "振替済み額を下回るため訂正できません。"
       );
     }
 
-    tx.update(bank,{balance:next});
+    tx.update(bank,{
+      balance: next
+    });
 
     tx.set(correction,{
-      type:"correction",
+      type: "correction",
       amount,
-      actorUid:user.uid,
-      actorName:"LaLa",
-      createdAt:serverTimestamp(),
-      originalId:id,
-      originalType:type,
+      actorUid: user.uid,
+      actorName: "LaLa",
+      createdAt: serverTimestamp(),
+      originalId: id,
+      originalType: type,
       reason
     });
   });
 }
 
-async function transferCorrection(target,reason,user){
-  const {id,amount}=target;
-  const correctionId="correction_"+id;
+/* =========================
+   振替の訂正
+========================= */
 
-  const lala=bankRef("LaLa");
-  const moon=bankRef("yamanashi");
+async function transferCorrection(
+  target,
+  reason,
+  user
+) {
+  const {id,amount} = target;
 
-  const lalaOriginal=entryRef("LaLa",id);
-  const moonOriginal=entryRef("yamanashi",id);
+  const correctionId =
+    "correction_" + id;
 
-  const lalaCorrection=entryRef("LaLa",correctionId);
-  const moonCorrection=entryRef("yamanashi",correctionId);
+  const lala = bankRef("LaLa");
+  const moon = bankRef("yamanashi");
 
-  await runTransaction(db,async tx=>{
-    const lalaSnap=await tx.get(lala);
-    const moonSnap=await tx.get(moon);
+  const lalaOriginal = entryRef(
+    "LaLa",id
+  );
 
-    const lalaOriginalSnap=await tx.get(lalaOriginal);
-    const moonOriginalSnap=await tx.get(moonOriginal);
+  const moonOriginal = entryRef(
+    "yamanashi",id
+  );
 
-    const lalaCorrectionSnap=await tx.get(lalaCorrection);
-    const moonCorrectionSnap=await tx.get(moonCorrection);
+  const lalaCorrection = entryRef(
+    "LaLa",correctionId
+  );
 
-    if(!lalaSnap.exists()||!moonSnap.exists()){
-      throw new Error("口座が見つかりません。");
+  const moonCorrection = entryRef(
+    "yamanashi",correctionId
+  );
+
+  await runTransaction(db,async tx => {
+    const lalaSnap = await tx.get(lala);
+    const moonSnap = await tx.get(moon);
+
+    const lalaOriginalSnap =
+      await tx.get(lalaOriginal);
+
+    const moonOriginalSnap =
+      await tx.get(moonOriginal);
+
+    const lalaCorrectionSnap =
+      await tx.get(lalaCorrection);
+
+    const moonCorrectionSnap =
+      await tx.get(moonCorrection);
+
+    if (
+      !lalaSnap.exists() ||
+      !moonSnap.exists()
+    ) {
+      throw new Error(
+        "口座が見つかりません。"
+      );
     }
 
-    if(
-      !lalaOriginalSnap.exists()||
+    if (
+      !lalaOriginalSnap.exists() ||
       !moonOriginalSnap.exists()
-    ){
-      throw new Error("振替の元履歴が見つかりません。");
+    ) {
+      throw new Error(
+        "振替の元履歴が見つかりません。"
+      );
     }
 
-    if(
-      lalaCorrectionSnap.exists()||
+    if (
+      lalaCorrectionSnap.exists() ||
       moonCorrectionSnap.exists()
-    ){
-      throw new Error("この振替はすでに訂正済みです。");
+    ) {
+      throw new Error(
+        "この振替はすでに訂正済みです。"
+      );
     }
 
-    const lalaData=lalaSnap.data();
-    const moonData=moonSnap.data();
+    const lalaData = lalaSnap.data();
+    const moonData = moonSnap.data();
 
     validAccountData(lalaData,"LaLa");
     validAccountData(moonData,"yamanashi");
 
-    const inHistory=lalaOriginalSnap.data();
-    const outHistory=moonOriginalSnap.data();
+    const inHistory =
+      lalaOriginalSnap.data();
 
-    if(
-      inHistory.type!=="transfer_in"||
-      outHistory.type!=="transfer_out"||
-      inHistory.amount!==amount||
-      outHistory.amount!==amount
-    ){
-      throw new Error("振替履歴が一致しません。");
+    const outHistory =
+      moonOriginalSnap.data();
+
+    if (
+      inHistory.type !== "transfer_in" ||
+      outHistory.type !== "transfer_out" ||
+      inHistory.amount !== amount ||
+      outHistory.amount !== amount
+    ) {
+      throw new Error(
+        "振替履歴が一致しません。"
+      );
     }
 
-    const nextLala=lalaData.balance-amount;
-    const nextTransferred=moonData.transferred-amount;
+    const nextLala =
+      lalaData.balance - amount;
 
-    if(
-      !Number.isSafeInteger(nextLala)||
-      nextLala<0
-    ){
+    const nextTransferred =
+      moonData.transferred - amount;
+
+    if (
+      !Number.isSafeInteger(nextLala) ||
+      nextLala < 0
+    ) {
       throw new Error(
         "LaLa預金の残高が不足しているため訂正できません。"
       );
     }
 
-    if(
-      !Number.isSafeInteger(nextTransferred)||
-      nextTransferred<0
-    ){
+    if (
+      !Number.isSafeInteger(nextTransferred) ||
+      nextTransferred < 0
+    ) {
       throw new Error(
         "振替済み額が不足しているため訂正できません。"
       );
     }
 
     tx.update(lala,{
-      balance:nextLala,
-      lastCorrectionId:correctionId
+      balance: nextLala,
+      lastCorrectionId: correctionId
     });
 
     tx.update(moon,{
-      transferred:nextTransferred,
-      lastCorrectionId:correctionId
+      transferred: nextTransferred,
+      lastCorrectionId: correctionId
     });
 
-    const common={
-      type:"correction",
+    const common = {
+      type: "correction",
       amount,
-      actorUid:user.uid,
-      actorName:"LaLa",
-      createdAt:serverTimestamp(),
-      originalId:id,
+      actorUid: user.uid,
+      actorName: "LaLa",
+      createdAt: serverTimestamp(),
+      originalId: id,
       reason
     };
 
     tx.set(lalaCorrection,{
       ...common,
-      originalType:"transfer_in"
+      originalType: "transfer_in"
     });
 
     tx.set(moonCorrection,{
       ...common,
-      originalType:"transfer_out"
+      originalType: "transfer_out"
     });
   });
 }
 
-el("correctionForm").addEventListener("submit",async event=>{
-  event.preventDefault();
+/* =========================
+   訂正確定
+========================= */
 
-  if(correctionBusy||transactionBusy)return;
-  if(!correctionTarget)return;
+el("correctionForm").addEventListener(
+  "submit",
+  async event => {
+    event.preventDefault();
 
-  const user=auth.currentUser;
-  const reason=el("correctionReason").value.trim();
-  const target={...correctionTarget};
+    if (
+      correctionBusy ||
+      transactionBusy
+    ) return;
 
-  if(!user){
-    el("correctionStatus").textContent=
-      "ログインが必要です。";
-    return;
-  }
+    if (!correctionTarget) return;
 
-  if(!reason||reason.length>200){
-    el("correctionStatus").textContent=
-      "訂正理由を1〜200文字で入力してください。";
-    return;
-  }
+    const user = auth.currentUser;
 
-  if(!confirm(
-    (labels[target.type]||target.type)+
-    " "+format(target.amount)+
-    " を訂正しますか？\n\n"+
-    "理由："+reason+"\n\n"+
-    "残高も自動で変更されます。"
-  ))return;
+    const reason =
+      el("correctionReason").value.trim();
 
-  correctionBusy=true;
-  setTransactionAvailable();
-  renderAllHistories();
+    const target = {...correctionTarget};
 
-  el("correctionConfirm").disabled=true;
-  el("correctionCancel").disabled=true;
-  el("correctionStatus").textContent="訂正処理中…";
-
-  try{
-    if(
-      target.type==="transfer_in"||
-      target.type==="transfer_out"
-    ){
-      await transferCorrection(target,reason,user);
-    }else{
-      await ordinaryCorrection(target,reason,user);
+    if (!user) {
+      el("correctionStatus").textContent =
+        "ログインが必要です。";
+      return;
     }
 
-    el("status").textContent="取引を訂正しました。";
-    closeCorrection();
-  }catch(error){
-    el("correctionStatus").textContent=
-      "訂正エラー: "+
-      (error.code||"unknown")+
-      "\n"+error.message;
-  }finally{
-    correctionBusy=false;
-    el("correctionConfirm").disabled=false;
-    el("correctionCancel").disabled=false;
+    if (
+      !reason ||
+      reason.length > 200
+    ) {
+      el("correctionStatus").textContent =
+        "訂正理由を1〜200文字で入力してください。";
+      return;
+    }
+
+    if (!confirm(
+      (labels[target.type] || target.type) +
+      " " +
+      format(target.amount) +
+      " を訂正しますか？\n\n" +
+      "理由：" + reason + "\n\n" +
+      "残高も自動で変更されます。"
+    )) return;
+
+    correctionBusy = true;
     setTransactionAvailable();
     renderAllHistories();
+
+    el("correctionConfirm").disabled = true;
+    el("correctionCancel").disabled = true;
+
+    el("correctionStatus").textContent =
+      "訂正処理中…";
+
+    try {
+      if (
+        target.type === "transfer_in" ||
+        target.type === "transfer_out"
+      ) {
+        await transferCorrection(
+          target,
+          reason,
+          user
+        );
+
+      } else {
+        await ordinaryCorrection(
+          target,
+          reason,
+          user
+        );
+      }
+
+      el("status").textContent =
+        "取引を訂正しました。";
+
+      closeCorrection();
+
+    } catch (error) {
+      el("correctionStatus").textContent =
+        "訂正エラー: " +
+        (error.code || "unknown") +
+        "\n" +
+        error.message;
+
+    } finally {
+      correctionBusy = false;
+
+      el("correctionConfirm").disabled = false;
+      el("correctionCancel").disabled = false;
+
+      setTransactionAvailable();
+      renderAllHistories();
+    }
   }
-});
+);
+
 </script>
+
 </body>
 </html>
