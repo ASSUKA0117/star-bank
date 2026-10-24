@@ -97,7 +97,6 @@ h2{font-size:20px;margin:24px 0 14px}
   object-fit:contain
 }
 
-/* 元PNGの透明余白を除き、シルエットを中央に表示 */
 .silhouette-scene .silhouette-crop{
   position:absolute;
   inset:0;
@@ -131,6 +130,17 @@ h2{font-size:20px;margin:24px 0 14px}
     #fff0d8 58%,
     rgba(255,240,223,.4) 100%
   )
+}
+
+/* LaLa預金の画像だけ縮小して全体を表示 */
+.scene-lala .silhouette-crop img{
+  width:auto;
+  height:85%;
+  max-width:90%;
+  object-fit:contain;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
 }
 
 /* 月見里返済 */
