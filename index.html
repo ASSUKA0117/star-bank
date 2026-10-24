@@ -18,7 +18,6 @@ body{
   min-height:100vh
 }
 
-/* ページごとの背景 */
 body.theme-home{
   background:linear-gradient(
     155deg,#FAD575 0%,#FFE7A5 50%,#FFF7DE 100%
@@ -39,7 +38,6 @@ body.theme-settings{
   background:#fff8e9
 }
 
-/* 星の背景 */
 #starBackground{
   position:fixed;
   inset:0;
@@ -77,7 +75,7 @@ h2{font-size:20px;margin:24px 0 14px}
   margin:16px 0
 }
 
-/* カード内のシルエット */
+/* シルエット表示 */
 .silhouette-scene{
   position:relative;
   height:190px;
@@ -96,7 +94,6 @@ h2{font-size:20px;margin:24px 0 14px}
   height:100%;
   object-fit:contain
 }
-
 .silhouette-scene .silhouette-crop{
   position:absolute;
   inset:0;
@@ -112,7 +109,6 @@ h2{font-size:20px;margin:24px 0 14px}
   transform:translate(-50%,-50%)
 }
 
-/* ホーム */
 .scene-home{
   background:radial-gradient(
     ellipse at center,
@@ -121,8 +117,6 @@ h2{font-size:20px;margin:24px 0 14px}
     rgba(255,247,222,.4) 100%
   )
 }
-
-/* LaLa預金 */
 .scene-lala{
   background:radial-gradient(
     ellipse at center,
@@ -132,7 +126,7 @@ h2{font-size:20px;margin:24px 0 14px}
   )
 }
 
-/* LaLa預金の画像だけ縮小して全体を表示 */
+/* LaLa画像の縮小設定は維持 */
 .scene-lala .silhouette-crop img{
   width:auto;
   height:85%;
@@ -140,10 +134,9 @@ h2{font-size:20px;margin:24px 0 14px}
   object-fit:contain;
   left:50%;
   top:50%;
-  transform:translate(-50%,-50%);
+  transform:translate(-50%,-50%)
 }
 
-/* 月見里返済 */
 .scene-moon{
   background:radial-gradient(
     ellipse at center,
@@ -151,6 +144,74 @@ h2{font-size:20px;margin:24px 0 14px}
     #a7b2d0 58%,
     #e3e7f1 100%
   )
+}
+
+/* 月見里限定：眠っているZzz */
+.sleep-effects{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  overflow:hidden
+}
+.sleep-z{
+  position:absolute;
+  color:rgba(255,255,255,.95);
+  font-family:"Trebuchet MS",sans-serif;
+  font-weight:600;
+  line-height:1;
+  opacity:0;
+  text-shadow:0 0 5px rgba(255,255,255,.28);
+  animation:sleepFloat 4.8s ease-in-out infinite
+}
+
+/* 男の子の頭の右上に配置 */
+.sleep-z.z1{
+  left:54%;
+  top:43%;
+  font-size:15px;
+  animation-delay:0s
+}
+.sleep-z.z2{
+  left:61%;
+  top:32%;
+  font-size:21px;
+  animation-delay:1.2s
+}
+.sleep-z.z3{
+  left:69%;
+  top:19%;
+  font-size:30px;
+  animation-delay:2.4s
+}
+
+@keyframes sleepFloat{
+  0%{
+    opacity:0;
+    transform:translate(0,9px) rotate(-12deg) scale(.85)
+  }
+  18%{
+    opacity:.95
+  }
+  55%{
+    opacity:.9
+  }
+  85%{
+    opacity:0;
+    transform:translate(10px,-15px) rotate(5deg) scale(1.06)
+  }
+  100%{
+    opacity:0;
+    transform:translate(12px,-20px) rotate(7deg) scale(1.08)
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sleep-z{
+    animation:none;
+    opacity:.85;
+    transform:none
+  }
 }
 
 .scene-caption{
@@ -251,7 +312,6 @@ button:disabled{opacity:.5}
   margin:8px 0
 }
 
-/* 夜空ページ */
 body.theme-moon .card{
   background:rgba(23,40,78,.72);
   border-color:rgba(255,255,255,.25);
@@ -280,7 +340,6 @@ body.theme-moon .scene-caption{
   color:#d8e0f2
 }
 
-/* 下部タブ */
 .tabbar{
   position:fixed;
   bottom:0;
@@ -320,7 +379,6 @@ body.theme-moon .scene-caption{
 
 <body>
 
-<!-- 背景の星 -->
 <div id="starBackground" aria-hidden="true">
 <svg id="starsSvg"
   xmlns="http://www.w3.org/2000/svg"
@@ -357,7 +415,9 @@ placeholder="パスワード" required>
 </div>
 </div>
 
-<p class="scene-caption">星粒といっしょに、ひとやすみ。</p>
+<p class="scene-caption">
+星粒といっしょに、ひとやすみ。
+</p>
 
 <div class="home-label">★ LaLa預金</div>
 <div class="home-amount" id="homeLalaBalance">
@@ -366,7 +426,9 @@ placeholder="パスワード" required>
 </div>
 
 <div class="card">
-<div class="home-label">☾ 月見里返済・累計返済額</div>
+<div class="home-label">
+☾ 月見里返済・累計返済額
+</div>
 <div class="home-amount" id="homeMoonBalance">
 読込中…
 </div>
@@ -397,10 +459,14 @@ placeholder="パスワード" required>
 </div>
 </div>
 
-<p class="scene-caption">星粒といっしょに、ひとやすみ。</p>
+<p class="scene-caption">
+星粒といっしょに、ひとやすみ。
+</p>
 
 <strong>現在の残高</strong>
-<div class="amount" id="lalaBalance">読込中…</div>
+<div class="amount" id="lalaBalance">
+読込中…
+</div>
 <div class="error" id="lalaError"></div>
 
 <div class="actions">
@@ -431,27 +497,44 @@ type="button" disabled>
 <div class="card">
 
 <div class="silhouette-scene scene-moon">
+
 <div class="silhouette-crop">
 <img
   src="69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
   alt="寝そべる男の子と猫のシルエット">
 </div>
+
+<!-- ふわふわ浮かぶZzz -->
+<div class="sleep-effects" aria-hidden="true">
+<span class="sleep-z z1">z</span>
+<span class="sleep-z z2">z</span>
+<span class="sleep-z z3">Z</span>
 </div>
 
-<p class="scene-caption">月明かりの下で、のんびり。</p>
+</div>
+
+<p class="scene-caption">
+月明かりの下で、のんびり。
+</p>
 
 <p class="muted">累計返済額</p>
-<div class="amount" id="moonBalance">読込中…</div>
+<div class="amount" id="moonBalance">
+読込中…
+</div>
 <div class="error" id="moonError"></div>
 
 <div class="info">
 <span>LaLa預金へ振替済み</span>
-<strong id="transferredAmount">読込中…</strong>
+<strong id="transferredAmount">
+読込中…
+</strong>
 </div>
 
 <div class="info">
 <span>振替可能額</span>
-<strong id="availableAmount">読込中…</strong>
+<strong id="availableAmount">
+読込中…
+</strong>
 </div>
 
 <button id="repaymentButton" type="button" disabled>
@@ -466,7 +549,9 @@ type="button" disabled>
 
 <section class="card">
 <h2>取引履歴</h2>
-<p class="muted">返済記録と振替履歴を表示します。</p>
+<p class="muted">
+返済記録と振替履歴を表示します。
+</p>
 <div id="moonHistoryStatus" class="history-status">
 読込待機中…
 </div>
@@ -538,10 +623,11 @@ type="button">
 
 </section>
 
-<p id="status">Firebaseに接続しています…</p>
+<p id="status">
+Firebaseに接続しています…
+</p>
 </main>
 
-<!-- 下部タブ -->
 <nav id="tabbar" class="tabbar">
 <button type="button" class="active" data-tab="home">
 <span class="tab-icon">⌂</span>ホーム
@@ -587,7 +673,6 @@ const auth=getAuth(firebaseApp);
 const db=getFirestore(firebaseApp);
 const el=id=>document.getElementById(id);
 
-/* 背景の星を生成 */
 const svgNS="http://www.w3.org/2000/svg";
 
 const starPatterns={
