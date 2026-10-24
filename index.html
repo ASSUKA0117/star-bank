@@ -39,7 +39,7 @@ body.theme-settings{
   background:#fff8e9
 }
 
-/* 星専用の背景レイヤー */
+/* 星の背景 */
 #starBackground{
   position:fixed;
   inset:0;
@@ -60,45 +60,6 @@ body.theme-moon #starBackground{
   display:block
 }
 
-/* 右上のシルエット */
-#silhouetteBackground{
-  position:fixed;
-  top:75px;
-  right:15px;
-  left:auto;
-  bottom:auto;
-  width:150px;
-  height:150px;
-  z-index:0;
-  pointer-events:none;
-  overflow:hidden;
-  display:none
-}
-
-/*
-  元画像は透明な余白が大きく、
-  シルエットが画像の下側にあるため、
-  画像を拡大して表示枠で切り出す
-*/
-#silhouetteBackground img{
-  position:absolute;
-  width:300px;
-  height:300px;
-  max-height:none;
-  left:50%;
-  top:auto;
-  bottom:0;
-  transform:translateX(-50%);
-  object-fit:contain;
-  display:block
-}
-
-body.theme-home #silhouetteBackground,
-body.theme-lala #silhouetteBackground,
-body.theme-moon #silhouetteBackground{
-  display:block
-}
-
 main{
   max-width:440px;
   margin:0 auto;
@@ -115,6 +76,80 @@ h2{font-size:20px;margin:24px 0 14px}
   padding:20px;
   margin:16px 0
 }
+
+/* カード内のシルエット */
+.silhouette-scene{
+  position:relative;
+  height:190px;
+  margin:-2px -2px 18px;
+  border-radius:16px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
+.silhouette-scene img{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain
+}
+
+/* 元PNGの透明余白を除き、シルエットを中央に表示 */
+.silhouette-scene .silhouette-crop{
+  position:absolute;
+  inset:0;
+  overflow:hidden
+}
+.silhouette-scene .silhouette-crop img{
+  position:absolute;
+  width:100%;
+  height:auto;
+  max-width:none;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%)
+}
+
+/* ホーム */
+.scene-home{
+  background:radial-gradient(
+    ellipse at center,
+    #ffe7a0 0%,
+    #fff1c9 58%,
+    rgba(255,247,222,.4) 100%
+  )
+}
+
+/* LaLa預金 */
+.scene-lala{
+  background:radial-gradient(
+    ellipse at center,
+    #ffe5bb 0%,
+    #fff0d8 58%,
+    rgba(255,240,223,.4) 100%
+  )
+}
+
+/* 月見里返済 */
+.scene-moon{
+  background:radial-gradient(
+    ellipse at center,
+    #7889b1 0%,
+    #a7b2d0 58%,
+    #e3e7f1 100%
+  )
+}
+
+.scene-caption{
+  text-align:center;
+  color:#938b7e;
+  font-size:12px;
+  margin:-8px 0 18px
+}
+
 .amount{
   font-size:30px;
   font-weight:bold;
@@ -231,6 +266,9 @@ body.theme-moon .notice{
   background:rgba(255,244,217,.14);
   color:white
 }
+body.theme-moon .scene-caption{
+  color:#d8e0f2
+}
 
 /* 下部タブ */
 .tabbar{
@@ -280,11 +318,6 @@ body.theme-moon .notice{
 </svg>
 </div>
 
-<!-- ページ別シルエット -->
-<div id="silhouetteBackground" aria-hidden="true">
-<img id="silhouetteImage" alt="">
-</div>
-
 <main>
 <h1>✦ 星粒銀行 ✦</h1>
 
@@ -305,6 +338,17 @@ placeholder="パスワード" required>
 <h2>ホーム</h2>
 
 <div class="card">
+
+<div class="silhouette-scene scene-home">
+<div class="silhouette-crop">
+<img
+  src="7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png"
+  alt="男の子と猫のシルエット">
+</div>
+</div>
+
+<p class="scene-caption">星粒といっしょに、ひとやすみ。</p>
+
 <div class="home-label">★ LaLa預金</div>
 <div class="home-amount" id="homeLalaBalance">
 読込中…
@@ -334,6 +378,17 @@ placeholder="パスワード" required>
 <h2>★ LaLa預金</h2>
 
 <div class="card">
+
+<div class="silhouette-scene scene-lala">
+<div class="silhouette-crop">
+<img
+  src="84C20629-6473-4327-A6FA-8A9436F8A036.png"
+  alt="猫を抱き上げる男の子のシルエット">
+</div>
+</div>
+
+<p class="scene-caption">星粒といっしょに、ひとやすみ。</p>
+
 <strong>現在の残高</strong>
 <div class="amount" id="lalaBalance">読込中…</div>
 <div class="error" id="lalaError"></div>
@@ -364,6 +419,17 @@ type="button" disabled>
 <h2>☾ 月見里返済</h2>
 
 <div class="card">
+
+<div class="silhouette-scene scene-moon">
+<div class="silhouette-crop">
+<img
+  src="69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
+  alt="寝そべる男の子と猫のシルエット">
+</div>
+</div>
+
+<p class="scene-caption">月明かりの下で、のんびり。</p>
+
 <p class="muted">累計返済額</p>
 <div class="amount" id="moonBalance">読込中…</div>
 <div class="error" id="moonError"></div>
@@ -587,7 +653,6 @@ function renderStars(tab){
 
   if(!pattern)return;
 
-  /* 画面全体に繰り返すための模様 */
   svg.setAttribute("viewBox","0 0 320 880");
   svg.setAttribute("preserveAspectRatio","xMidYMid slice");
 
@@ -634,13 +699,6 @@ function renderStars(tab){
   );
 }
 
-/* GitHubにある既存の透過PNG */
-const silhouetteImages={
-  home:"7F86A3FD-DBEE-4C0B-8064-56D36F3D2443.png",
-  lala:"84C20629-6473-4327-A6FA-8A9436F8A036.png",
-  moon:"69BD7493-904A-43A1-9F1E-E143989AC4F8.png"
-};
-
 function applyTheme(tab){
   document.body.classList.remove(
     "theme-home",
@@ -651,14 +709,6 @@ function applyTheme(tab){
 
   document.body.classList.add("theme-"+tab);
   renderStars(tab);
-
-  const image=el("silhouetteImage");
-
-  if(silhouetteImages[tab]){
-    image.src=silhouetteImages[tab];
-  }else{
-    image.removeAttribute("src");
-  }
 }
 
 let stopListeners=[];
@@ -1080,8 +1130,6 @@ onAuthStateChanged(auth,user=>{
       "theme-home","theme-lala",
       "theme-moon","theme-settings"
     );
-
-    el("silhouetteImage").removeAttribute("src");
 
     el("status").textContent="ログインしてください";
 
